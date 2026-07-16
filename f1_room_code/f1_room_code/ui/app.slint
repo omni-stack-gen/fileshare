@@ -1,0 +1,73 @@
+import { State, I18n } from "shared.slint";
+export { State } from "shared.slint";
+import { MainPage } from "MainPage.slint";
+import { ClockModeBackground1 } from "ClockModeBackground1.slint";
+import { DoorCameraCall } from "DoorCameraCall.slint";
+import { LobbyPhoneCall } from "LobbyPhoneCall.slint";
+import { GuardPhoneCall } from "GuardPhoneCall.slint";
+import { GuardPhoneCommunication } from "GuardPhoneCommunication.slint";
+import { EVCalling } from "EVCalling.slint";
+import { CCTVScreen } from "CCTVScreen.slint";
+import { CctvSetting } from "CctvSetting.slint";
+import { CctvList } from "CctvList.slint";
+import { Setting } from "Setting.slint";
+import { CaptureImage } from "CaptureImage.slint";
+import { CaptureFullImage } from "CaptureFullImage.slint";
+import { GeneralSetting } from "GeneralSetting.slint";
+import { DisplaySetting } from "DisplaySetting.slint";
+import { SoundSetting } from "SoundSetting.slint";
+import { NetworkSetting } from "NetworkSetting.slint";
+import { ModeSetting } from "ModeSetting.slint";
+import { EtcSetting } from "EtcSetting.slint";
+import { PasswordChange } from "PasswordChange.slint";
+import { SettingsInfoPage } from "SettingsInfoPage.slint";
+import { OverlayLayer } from "Overlays.slint";
+
+export component AppWindow inherits Window {
+    width: 1024px;
+    height: 600px;
+    title: "KR Room UI";
+    default-font-family: "Inter";
+    background: State.current-page == "MwoLv" || State.current-page == "Bu0fW" || State.current-page == "JVRSN"
+        ? #00000000
+        : #101828;
+
+    callback navigate(string);
+    callback go-back();
+    callback show-overlay(string);
+    callback close-overlay();
+    callback show-pressed-effect(string);
+    callback submit-password-change();
+    callback connect-wifi(string, string);
+    callback reset-idle-timer();
+
+    property <string> observed-current-page: State.current-page;
+    changed observed-current-page => {
+        State.page-changed(State.current-page);
+    }
+
+    if State.current-page == "LCvek": MainPage { }
+    if State.current-page == "VnIoT" || State.current-page == "ZIuRY" || State.current-page == "7K5Lz" || State.current-page == "vc3r5" || State.current-page == "eZ1L3": ClockModeBackground1 { }
+    if State.current-page == "MwoLv": DoorCameraCall { }
+    if State.current-page == "Bu0fW": LobbyPhoneCall { }
+    if State.current-page == "EJDbm": GuardPhoneCall { }
+    if State.current-page == "YanGa": GuardPhoneCommunication { }
+    if State.current-page == "hcEj1": EVCalling { }
+    if State.current-page == "JVRSN": CCTVScreen { }
+    if State.current-page == "UGcOs": CctvSetting { }
+    if State.current-page == "foYV2": CctvSetting { }
+    if State.current-page == "GUr03": CctvList { }
+    if State.current-page == "kKrEC": Setting { }
+    if State.current-page == "NeeP0": CaptureImage { }
+    if State.current-page == "hEzDU": CaptureFullImage { }
+    if State.current-page == "BqdKn": GeneralSetting { }
+    if State.current-page == "NKtaE": DisplaySetting { }
+    if State.current-page == "HODTk": SoundSetting { }
+    if State.current-page == "mcVw9": NetworkSetting { }
+    if State.current-page == "FpPpi": ModeSetting { }
+    if State.current-page == "gzCRD": EtcSetting { }
+    if State.current-page == "ITtGQ": PasswordChange { }
+    if State.current-page == "kPRcM": SettingsInfoPage { }
+
+    if State.active-overlay != "": OverlayLayer { }
+}

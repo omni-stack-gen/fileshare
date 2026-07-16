@@ -1,0 +1,33 @@
+import { I18n } from "shared.slint";
+
+export component ButtonEffectVYZDx inherits Rectangle {
+    width: 110px;
+    height: 132px;
+    clip: true;
+    border-radius: 14px;
+    background: #1dba25ff;
+    Image {
+        x: 39px; y: 36px;
+        width: 32px;
+        height: 32px;
+        source: @image-url("../assets/images/Es0ay.png");
+        image-fit: contain;
+    }
+    Rectangle {
+        x: 42.887px; y: 76px;
+        width: 24.227px;
+        height: 20px;
+        background: #00000000;
+        Text {
+            width: parent.width;
+            height: parent.height;
+            text: I18n.text("call");
+            color: #ffffffff;
+            font-family: "Inter";
+            font-size: 14px;
+            font-weight: 500;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+    }
+}

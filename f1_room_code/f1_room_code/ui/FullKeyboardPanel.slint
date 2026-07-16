@@ -1,0 +1,184 @@
+import { State, I18n } from "shared.slint";
+
+component TextKey inherits Rectangle {
+    in property <string> label: "";
+    in property <string> value: label;
+    callback pressed(string);
+
+    background: touch.pressed ? #155dfcff : #ffffff1a;
+    border-radius: 8px;
+
+    Text {
+        width: parent.width;
+        height: parent.height;
+        text: root.label;
+        color: #ffffffff;
+        font-family: "Inter";
+        font-size: 14px;
+        font-weight: 500;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+
+    touch := TouchArea {
+        width: parent.width;
+        height: parent.height;
+        clicked => { State.play-touch-sound(); root.pressed(root.value); }
+    }
+}
+
+component ModeButton inherits Rectangle {
+    in property <string> label: "";
+    in property <bool> selected: false;
+    callback clicked();
+
+    background: root.selected || touch.pressed ? #155dfcff : #ffffff1a;
+    border-radius: 8px;
+
+    Text {
+        width: parent.width;
+        height: parent.height;
+        text: root.label;
+        color: #ffffffff;
+        font-family: "Inter";
+        font-size: 12px;
+        font-weight: 500;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+
+    touch := TouchArea {
+        width: parent.width;
+        height: parent.height;
+        clicked => { State.play-touch-sound(); root.clicked(); }
+    }
+}
+
+export component FullKeyboardPanel inherits Rectangle {
+    in property <string> mode: "lower";
+    in property <bool> full-symbols: false;
+    in property <bool> disabled: false;
+    callback key-pressed(string);
+    callback mode-changed(string);
+    callback clear-pressed();
+
+    width: 650px;
+    height: 208px;
+    background: #00000000;
+    opacity: root.disabled ? 0.55 : 1.0;
+
+    if root.mode != "symbols": Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: #00000000;
+
+        TextKey { x: 58px; y: 0px; width: 48px; height: 36px; label: "1"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 112px; y: 0px; width: 48px; height: 36px; label: "2"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 166px; y: 0px; width: 48px; height: 36px; label: "3"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 220px; y: 0px; width: 48px; height: 36px; label: "4"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 274px; y: 0px; width: 48px; height: 36px; label: "5"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 328px; y: 0px; width: 48px; height: 36px; label: "6"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 382px; y: 0px; width: 48px; height: 36px; label: "7"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 436px; y: 0px; width: 48px; height: 36px; label: "8"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 490px; y: 0px; width: 48px; height: 36px; label: "9"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 544px; y: 0px; width: 48px; height: 36px; label: "0"; pressed(value) => { root.key-pressed(value); } }
+
+        TextKey { x: 58px; y: 42px; width: 48px; height: 36px; label: root.mode == "upper" ? "Q" : "q"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 112px; y: 42px; width: 48px; height: 36px; label: root.mode == "upper" ? "W" : "w"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 166px; y: 42px; width: 48px; height: 36px; label: root.mode == "upper" ? "E" : "e"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 220px; y: 42px; width: 48px; height: 36px; label: root.mode == "upper" ? "R" : "r"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 274px; y: 42px; width: 48px; height: 36px; label: root.mode == "upper" ? "T" : "t"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 328px; y: 42px; width: 48px; height: 36px; label: root.mode == "upper" ? "Y" : "y"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 382px; y: 42px; width: 48px; height: 36px; label: root.mode == "upper" ? "U" : "u"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 436px; y: 42px; width: 48px; height: 36px; label: root.mode == "upper" ? "I" : "i"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 490px; y: 42px; width: 48px; height: 36px; label: root.mode == "upper" ? "O" : "o"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 544px; y: 42px; width: 48px; height: 36px; label: root.mode == "upper" ? "P" : "p"; pressed(value) => { root.key-pressed(value); } }
+
+        TextKey { x: 85px; y: 84px; width: 48px; height: 36px; label: root.mode == "upper" ? "A" : "a"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 139px; y: 84px; width: 48px; height: 36px; label: root.mode == "upper" ? "S" : "s"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 193px; y: 84px; width: 48px; height: 36px; label: root.mode == "upper" ? "D" : "d"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 247px; y: 84px; width: 48px; height: 36px; label: root.mode == "upper" ? "F" : "f"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 301px; y: 84px; width: 48px; height: 36px; label: root.mode == "upper" ? "G" : "g"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 355px; y: 84px; width: 48px; height: 36px; label: root.mode == "upper" ? "H" : "h"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 409px; y: 84px; width: 48px; height: 36px; label: root.mode == "upper" ? "J" : "j"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 463px; y: 84px; width: 48px; height: 36px; label: root.mode == "upper" ? "K" : "k"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 517px; y: 84px; width: 48px; height: 36px; label: root.mode == "upper" ? "L" : "l"; pressed(value) => { root.key-pressed(value); } }
+
+        TextKey { x: 139px; y: 126px; width: 48px; height: 36px; label: root.mode == "upper" ? "Z" : "z"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 193px; y: 126px; width: 48px; height: 36px; label: root.mode == "upper" ? "X" : "x"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 247px; y: 126px; width: 48px; height: 36px; label: root.mode == "upper" ? "C" : "c"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 301px; y: 126px; width: 48px; height: 36px; label: root.mode == "upper" ? "V" : "v"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 355px; y: 126px; width: 48px; height: 36px; label: root.mode == "upper" ? "B" : "b"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 409px; y: 126px; width: 48px; height: 36px; label: root.mode == "upper" ? "N" : "n"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 463px; y: 126px; width: 48px; height: 36px; label: root.mode == "upper" ? "M" : "m"; pressed(value) => { root.key-pressed(value); } }
+
+        ModeButton { x: 220px; y: 172px; width: 54px; height: 36px; label: "!@#"; clicked => { State.play-touch-sound(); root.mode-changed("symbols"); } }
+        ModeButton { x: 280px; y: 172px; width: 60px; height: 36px; label: "Caps"; selected: root.mode == "upper"; clicked => { State.play-touch-sound(); root.mode-changed(root.mode == "upper" ? "lower" : "upper"); } }
+        ModeButton { x: 347px; y: 172px; width: 82px; height: 36px; label: I18n.text("clear"); clicked => { State.play-touch-sound(); root.clear-pressed(); } }
+    }
+
+    if root.mode == "symbols": Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: #00000000;
+
+        TextKey { x: 58px; y: 0px; width: 48px; height: 36px; label: "!"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 112px; y: 0px; width: 48px; height: 36px; label: "@"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 166px; y: 0px; width: 48px; height: 36px; label: "#"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 220px; y: 0px; width: 48px; height: 36px; label: "$"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 274px; y: 0px; width: 48px; height: 36px; label: "%"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 328px; y: 0px; width: 48px; height: 36px; label: "^"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 382px; y: 0px; width: 48px; height: 36px; label: "&"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 436px; y: 0px; width: 48px; height: 36px; label: "*"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 490px; y: 0px; width: 48px; height: 36px; label: "("; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 544px; y: 0px; width: 48px; height: 36px; label: ")"; pressed(value) => { root.key-pressed(value); } }
+
+        TextKey { x: 58px; y: 42px; width: 48px; height: 36px; label: "-"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 112px; y: 42px; width: 48px; height: 36px; label: "_"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 166px; y: 42px; width: 48px; height: 36px; label: "="; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 220px; y: 42px; width: 48px; height: 36px; label: "+"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 274px; y: 42px; width: 48px; height: 36px; label: "["; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 328px; y: 42px; width: 48px; height: 36px; label: "]"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 382px; y: 42px; width: 48px; height: 36px; label: "{"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 436px; y: 42px; width: 48px; height: 36px; label: "}"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 490px; y: 42px; width: 48px; height: 36px; label: "|"; pressed(value) => { root.key-pressed(value); } }
+        TextKey { x: 544px; y: 42px; width: 48px; height: 36px; label: "\\"; pressed(value) => { root.key-pressed(value); } }
+
+        if !root.full-symbols: Rectangle {
+            width: parent.width;
+            height: parent.height;
+            background: #00000000;
+            TextKey { x: 58px; y: 84px; width: 48px; height: 36px; label: "."; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 112px; y: 84px; width: 48px; height: 36px; label: ":"; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 166px; y: 84px; width: 48px; height: 36px; label: "/"; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 220px; y: 84px; width: 48px; height: 36px; label: "?"; pressed(value) => { root.key-pressed(value); } }
+        }
+
+        if root.full-symbols: Rectangle {
+            width: parent.width;
+            height: parent.height;
+            background: #00000000;
+            TextKey { x: 58px; y: 84px; width: 48px; height: 36px; label: ";"; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 112px; y: 84px; width: 48px; height: 36px; label: ":"; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 166px; y: 84px; width: 48px; height: 36px; label: "'"; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 220px; y: 84px; width: 48px; height: 36px; label: "\""; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 274px; y: 84px; width: 48px; height: 36px; label: ","; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 328px; y: 84px; width: 48px; height: 36px; label: "."; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 382px; y: 84px; width: 48px; height: 36px; label: "<"; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 436px; y: 84px; width: 48px; height: 36px; label: ">"; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 490px; y: 84px; width: 48px; height: 36px; label: "/"; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 544px; y: 84px; width: 48px; height: 36px; label: "?"; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 193px; y: 126px; width: 48px; height: 36px; label: "~"; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 247px; y: 126px; width: 48px; height: 36px; label: "`"; pressed(value) => { root.key-pressed(value); } }
+            TextKey { x: 301px; y: 126px; width: 156px; height: 36px; label: I18n.text("space"); value: " "; pressed(value) => { root.key-pressed(value); } }
+        }
+
+        ModeButton { x: 253px; y: 172px; width: 56px; height: 36px; label: "ABC"; selected: true; clicked => { State.play-touch-sound(); root.mode-changed("lower"); } }
+        ModeButton { x: 315px; y: 172px; width: 82px; height: 36px; label: I18n.text("clear"); clicked => { State.play-touch-sound(); root.clear-pressed(); } }
+    }
+
+    if root.disabled: TouchArea {
+        width: parent.width;
+        height: parent.height;
+    }
+}

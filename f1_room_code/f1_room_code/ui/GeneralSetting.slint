@@ -1,0 +1,1532 @@
+import { State } from "shared.slint";
+
+component PickerPopup inherits Rectangle {
+    in property <[string]> options: [];
+    in property <string> selected-value: "";
+    callback picked(string);
+
+    background: #2d394cff;
+    border-radius: 12px;
+    border-width: 1px;
+    border-color: #ffffff14;
+    clip: true;
+
+    picker-scroll := Flickable {
+        width: parent.width;
+        height: parent.height;
+        viewport-height: root.options.length * 36px;
+
+        for option[index] in root.options: Rectangle {
+            x: 0px;
+            y: 36px * index;
+            width: parent.width;
+            height: 36px;
+            background: option == root.selected-value ? #155dfc66 : #00000000;
+
+            Text {
+                x: 16px;
+                y: 8px;
+                width: parent.width - 32px;
+                height: 20px;
+                text: option;
+                color: option == root.selected-value ? #ffffffff : #ffffffcc;
+                font-family: "Inter";
+                font-size: 14px;
+                font-weight: option == root.selected-value ? 500 : 400;
+                vertical-alignment: center;
+            }
+
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    root.picked(option);
+                }
+            }
+        }
+    }
+}
+
+export component GeneralSetting inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: #ffffffff;
+    property <string> draft-time-period: State.time-period;
+    property <string> draft-language: State.language;
+    property <string> draft-general-hour: State.general-hour;
+    property <string> draft-general-minute: State.general-minute;
+    property <string> draft-general-year: State.general-year;
+    property <string> draft-general-month: State.general-month;
+    property <string> draft-general-day: State.general-day;
+    in property <[string]> hour-options: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+    in property <[string]> minute-options: ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"];
+    in property <[string]> year-options: ["2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029"];
+    in property <[string]> month-options: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+    in property <[string]> day-options: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
+
+    function tr(key: string) -> string {
+        if root.draft-language == "en" {
+            if key == "title" { return "General Settings"; }
+            if key == "time" { return "Time Settings"; }
+            if key == "date" { return "Date Settings"; }
+            if key == "language" { return "Language Settings"; }
+            if key == "save" { return "Save"; }
+        } else if root.draft-language == "vi" {
+            if key == "title" { return "Cai dat chung"; }
+            if key == "time" { return "Cai dat gio"; }
+            if key == "date" { return "Cai dat ngay"; }
+            if key == "language" { return "Cai dat ngon ngu"; }
+            if key == "save" { return "Luu"; }
+        } else if root.draft-language == "es" {
+            if key == "title" { return "Ajustes generales"; }
+            if key == "time" { return "Ajuste de hora"; }
+            if key == "date" { return "Ajuste de fecha"; }
+            if key == "language" { return "Ajuste de idioma"; }
+            if key == "save" { return "Guardar"; }
+        } else if root.draft-language == "ja" {
+            if key == "title" { return "一般設定"; }
+            if key == "time" { return "時間設定"; }
+            if key == "date" { return "日付設定"; }
+            if key == "language" { return "言語設定"; }
+            if key == "save" { return "保存"; }
+        } else if root.draft-language == "ar" {
+            if key == "title" { return "الإعدادات العامة"; }
+            if key == "time" { return "إعداد الوقت"; }
+            if key == "date" { return "إعداد التاريخ"; }
+            if key == "language" { return "إعداد اللغة"; }
+            if key == "save" { return "حفظ"; }
+        }
+
+        if key == "title" { return "일반설정"; }
+        if key == "time" { return "시간 설정"; }
+        if key == "date" { return "날짜 설정"; }
+        if key == "language" { return "언어 설정"; }
+        if key == "save" { return "저장"; }
+        return "";
+    }
+
+    function period-label(period: string) -> string {
+        if root.draft-language == "ja" {
+            return period == "AM" ? "午前" : "午後";
+        } else if root.draft-language == "ko-KR" {
+            return period == "AM" ? "오전" : "오후";
+        }
+        return period;
+    }
+
+    function toggle-picker(name: string) {
+        State.active-picker = State.active-picker == name ? "" : name;
+    }
+
+    function pick-value(name: string, value: string) {
+        if name == "general-hour" {
+            root.draft-general-hour = value;
+        } else if name == "general-minute" {
+            root.draft-general-minute = value;
+        } else if name == "general-year" {
+            root.draft-general-year = value;
+        } else if name == "general-month" {
+            root.draft-general-month = value;
+        } else if name == "general-day" {
+            root.draft-general-day = value;
+        }
+        State.active-picker = "";
+    }
+
+    function save-all() {
+        let time-changed =
+            root.draft-time-period != State.time-period ||
+            root.draft-general-hour != State.general-hour ||
+            root.draft-general-minute != State.general-minute ||
+            root.draft-general-year != State.general-year ||
+            root.draft-general-month != State.general-month ||
+            root.draft-general-day != State.general-day;
+        State.time-period = root.draft-time-period;
+        State.general-hour = root.draft-general-hour;
+        State.general-minute = root.draft-general-minute;
+        State.general-year = root.draft-general-year;
+        State.general-month = root.draft-general-month;
+        State.general-day = root.draft-general-day;
+        State.language = root.draft-language;
+        State.save-string-setting("general.time_period", root.draft-time-period);
+        State.save-string-setting("general.hour", root.draft-general-hour);
+        State.save-string-setting("general.minute", root.draft-general-minute);
+        State.save-string-setting("general.year", root.draft-general-year);
+        State.save-string-setting("general.month", root.draft-general-month);
+        State.save-string-setting("general.day", root.draft-general-day);
+        State.save-string-setting("general.language", root.draft-language);
+        if time-changed {
+            State.set-system-time(
+                root.draft-time-period,
+                root.draft-general-hour,
+                root.draft-general-minute,
+                root.draft-general-year,
+                root.draft-general-month,
+                root.draft-general-day
+            );
+        }
+        State.active-picker = "";
+    }
+
+    Rectangle {
+        x: 0px; y: 0px;
+        width: 1024px;
+        height: 600px;
+        background: #ffffffff;
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 1024px;
+            height: 600px;
+            background: @linear-gradient(210.368deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+            Rectangle {
+                x: 60px; y: 24px;
+                width: 904px;
+                height: 48px;
+                background: #00000000;
+                Rectangle {
+                    x: 24px; y: 0px;
+                    width: 48px;
+                    height: 48px;
+                    background: #00000000;
+                    border-radius: 33554400px;
+                    Image {
+                        x: 8px; y: 8px;
+                        width: 32px;
+                        height: 32px;
+                        source: @image-url("../assets/images/1ZUDW.png");
+                        image-fit: contain;
+                    }
+                    TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.current-page = "kKrEC"; } }
+                }
+                Rectangle {
+                    x: 272px; y: 0px;
+                    width: 360px;
+                    height: 48px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: -1px;
+                        width: parent.width;
+                        text: root.tr("title");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 32px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                    }
+                }
+            }
+            Rectangle {
+                x: 60px; y: 92px;
+                width: 904px;
+                height: 405px;
+                background: #00000000;
+                clip: true;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 904px;
+                    height: 110px;
+                    background: #ffffff0d;
+                    border-radius: 16px;
+                    Rectangle {
+                        x: 20px; y: 16px;
+                        width: 864px;
+                        height: 25.5px;
+                        background: #00000000;
+                        Image {
+                            x: 0px; y: 3px;
+                            width: 18px;
+                            height: 18px;
+                            source: @image-url("../assets/images/V7D3b.png");
+                            image-fit: contain;
+                        }
+                        Rectangle {
+                            x: 28px; y: 0px;
+                            width: 180px;
+                            height: 25.5px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 2px;
+                                width: parent.width;
+                                text: root.tr("time");
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 17px;
+                                font-weight: 500;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                    Rectangle {
+                        x: 20px; y: 51.5px;
+                        width: 864px;
+                        height: 42.5px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 0px;
+                            width: 128.719px;
+                            height: 42.5px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 61.359px;
+                                height: 42.5px;
+                                background: root.draft-time-period == "AM" ? #155dfcff : #ffffff1a;
+                                border-radius: 10px;
+                                Text {
+                                    x: 0px; y: 9px;
+                                    width: parent.width;
+                                    text: root.period-label("AM");
+                                    color: root.draft-time-period == "AM" ? #ffffffff : #ffffffb2;
+                                    font-family: "Inter";
+                                    font-size: 15px;
+                                    font-weight: 500;
+                                    horizontal-alignment: center;
+                                }
+                            }
+                            Rectangle {
+                                x: 67.359px; y: 0px;
+                                width: 61.359px;
+                                height: 42.5px;
+                                background: root.draft-time-period == "PM" ? #155dfcff : #ffffff1a;
+                                border-radius: 10px;
+                                Text {
+                                    x: 0px; y: 9px;
+                                    width: parent.width;
+                                    text: root.period-label("PM");
+                                    color: root.draft-time-period == "PM" ? #ffffffff : #ffffffb2;
+                                    font-family: "Inter";
+                                    font-size: 15px;
+                                    font-weight: 500;
+                                    horizontal-alignment: center;
+                                }
+                            }
+                            TouchArea { x: 0px; y: 0px; width: 61.359px; height: 42.5px; clicked => { State.play-touch-sound(); root.draft-time-period = "AM"; } }
+                            TouchArea { x: 67.359px; y: 0px; width: 61.359px; height: 42.5px; clicked => { State.play-touch-sound(); root.draft-time-period = "PM"; } }
+                        }
+                        Rectangle {
+                            x: 138.719px; y: 0px;
+                            width: 357.641px;
+                            height: 42.5px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 357.641px;
+                                height: 40.5px;
+                                background: #ffffff1a;
+                                border-radius: 10px;
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -218.719px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                            }
+                            Image {
+                                x: 331.641px; y: 13.25px;
+                                width: 16px;
+                                height: 16px;
+                                source: @image-url("../assets/images/70t9b.png");
+                                image-fit: contain;
+                            }
+                            Text {
+                                x: 16px; y: 10px;
+                                width: 305px;
+                                height: 20px;
+                                text: root.draft-general-hour;
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 15px;
+                                font-weight: 500;
+                                vertical-alignment: center;
+                            }
+                            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); root.toggle-picker("general-hour"); } }
+                        }
+                        Rectangle {
+                            x: 506.359px; y: 0px;
+                            width: 357.641px;
+                            height: 42.5px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 357.641px;
+                                height: 40.5px;
+                                background: #ffffff1a;
+                                border-radius: 10px;
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -586.359px; y: -143.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                            }
+                            Image {
+                                x: 331.641px; y: 13.25px;
+                                width: 16px;
+                                height: 16px;
+                                source: @image-url("../assets/images/70t9b.png");
+                                image-fit: contain;
+                            }
+                            Text {
+                                x: 16px; y: 10px;
+                                width: 305px;
+                                height: 20px;
+                                text: root.draft-general-minute;
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 15px;
+                                font-weight: 500;
+                                vertical-alignment: center;
+                            }
+                            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); root.toggle-picker("general-minute"); } }
+                        }
+                    }
+                }
+                Rectangle {
+                    x: 0px; y: 124px;
+                    width: 904px;
+                    height: 108px;
+                    background: #ffffff0d;
+                    border-radius: 16px;
+                    Rectangle {
+                        x: 20px; y: 16px;
+                        width: 864px;
+                        height: 25.5px;
+                        background: #00000000;
+                        Image {
+                            x: 0px; y: 3.75px;
+                            width: 18px;
+                            height: 18px;
+                            source: @image-url("../assets/images/jBRXC.png");
+                            image-fit: contain;
+                        }
+                        Rectangle {
+                            x: 28px; y: 0px;
+                            width: 180px;
+                            height: 25.5px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                text: root.tr("date");
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 17px;
+                                font-weight: 500;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                    Rectangle {
+                        x: 20px; y: 51.5px;
+                        width: 864px;
+                        height: 40.5px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 0px;
+                            width: 281.328px;
+                            height: 40.5px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 281.328px;
+                                height: 40.5px;
+                                background: #ffffff1a;
+                                border-radius: 10px;
+                                Rectangle {
+                                    x: -80px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -80px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -80px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -80px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -80px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -80px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -80px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -80px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -80px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -80px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                            }
+                            Image {
+                                x: 255.328px; y: 12.25px;
+                                width: 16px;
+                                height: 16px;
+                                source: @image-url("../assets/images/70t9b.png");
+                                image-fit: contain;
+                            }
+                            Text {
+                                x: 16px; y: 10px;
+                                width: 229.328px;
+                                height: 20px;
+                                text: root.draft-general-year;
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 15px;
+                                font-weight: 500;
+                                vertical-alignment: center;
+                            }
+                            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); root.toggle-picker("general-year"); } }
+                        }
+                        Rectangle {
+                            x: 291.328px; y: 0px;
+                            width: 281.344px;
+                            height: 40.5px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 281.344px;
+                                height: 40.5px;
+                                background: #ffffff1a;
+                                border-radius: 10px;
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -371.328px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                            }
+                            Image {
+                                x: 255.344px; y: 12.25px;
+                                width: 16px;
+                                height: 16px;
+                                source: @image-url("../assets/images/70t9b.png");
+                                image-fit: contain;
+                            }
+                            Text {
+                                x: 16px; y: 10px;
+                                width: 229.344px;
+                                height: 20px;
+                                text: root.draft-general-month;
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 15px;
+                                font-weight: 500;
+                                vertical-alignment: center;
+                            }
+                            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); root.toggle-picker("general-month"); } }
+                        }
+                        Rectangle {
+                            x: 582.672px; y: 0px;
+                            width: 281.328px;
+                            height: 40.5px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 281.328px;
+                                height: 40.5px;
+                                background: #ffffff1a;
+                                border-radius: 10px;
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                                Rectangle {
+                                    x: -662.672px; y: -267.5px;
+                                    width: 0px;
+                                    height: 0px;
+                                    background: #314158ff;
+                                }
+                            }
+                            Image {
+                                x: 255.328px; y: 12.25px;
+                                width: 16px;
+                                height: 16px;
+                                source: @image-url("../assets/images/70t9b.png");
+                                image-fit: contain;
+                            }
+                            Text {
+                                x: 16px; y: 10px;
+                                width: 229.328px;
+                                height: 20px;
+                                text: root.draft-general-day;
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 15px;
+                                font-weight: 500;
+                                vertical-alignment: center;
+                            }
+                            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); root.toggle-picker("general-day"); } }
+                        }
+                    }
+                }
+                Rectangle {
+                    x: 0px; y: 246px;
+                    width: 904px;
+                    height: 155.5px;
+                    background: #ffffff0d;
+                    border-radius: 16px;
+                    Rectangle {
+                        x: 20px; y: 16px;
+                        width: 864px;
+                        height: 25.5px;
+                        background: #00000000;
+                        Image {
+                            x: 0px; y: 3.75px;
+                            width: 18px;
+                            height: 18px;
+                            source: @image-url("../assets/images/sHlGR.png");
+                            image-fit: contain;
+                        }
+                        Rectangle {
+                            x: 28px; y: 0px;
+                            width: 180px;
+                            height: 25.5px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                text: root.tr("language");
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 17px;
+                                font-weight: 500;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                    Rectangle {
+                        x: 20px; y: 51.5px;
+                        width: 864px;
+                        height: 88px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 0px;
+                            width: 284px;
+                            height: 41px;
+                            background: root.draft-language == "en" ? #155dfcff : #ffffff1a;
+                            border-radius: 10px;
+                            Rectangle {
+                                x: 14px; y: 10px;
+                                width: 256px;
+                                height: 21px;
+                                background: #00000000;
+                                Text {
+                                    x: 104.875px; y: 0px;
+                                    text: "English";
+                                    color: root.draft-language == "en" ? #ffffffff : #ffffffb2;
+                                    font-family: "Inter";
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    horizontal-alignment: center;
+                                }
+                            }
+                        }
+                        Rectangle {
+                            x: 290px; y: 0px;
+                            width: 284px;
+                            height: 41px;
+                            background: root.draft-language == "vi" ? #155dfcff : #ffffff1a;
+                            border-radius: 10px;
+                            Rectangle {
+                                x: 14px; y: 10px;
+                                width: 256px;
+                                height: 21px;
+                                background: #00000000;
+                                Text {
+                                    x: 95.359px; y: 0px;
+                                    text: "Tiếng Việt";
+                                    color: root.draft-language == "vi" ? #ffffffff : #ffffffb2;
+                                    font-family: "Inter";
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    horizontal-alignment: center;
+                                }
+                            }
+                        }
+                        Rectangle {
+                            x: 580px; y: 0px;
+                            width: 284px;
+                            height: 41px;
+                            background: root.draft-language == "es" ? #155dfcff : #ffffff1a;
+                            border-radius: 10px;
+                            Rectangle {
+                                x: 14px; y: 10px;
+                                width: 256px;
+                                height: 21px;
+                                background: #00000000;
+                                Text {
+                                    x: 101.625px; y: 0px;
+                                    text: "Español";
+                                    color: root.draft-language == "es" ? #ffffffff : #ffffffb2;
+                                    font-family: "Inter";
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    horizontal-alignment: center;
+                                }
+                            }
+                        }
+                        Rectangle {
+                            x: 0px; y: 47px;
+                            width: 284px;
+                            height: 41px;
+                            background: root.draft-language == "ja" ? #155dfcff : #ffffff1a;
+                            border-radius: 10px;
+                            Rectangle {
+                                x: 14px; y: 10px;
+                                width: 256px;
+                                height: 21px;
+                                background: #00000000;
+                                Text {
+                                    x: 107.281px; y: 0px;
+                                    text: "日本語";
+                                    color: root.draft-language == "ja" ? #ffffffff : #ffffffb2;
+                                    font-family: "Inter";
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    horizontal-alignment: center;
+                                }
+                            }
+                        }
+                        Rectangle {
+                            x: 290px; y: 47px;
+                            width: 284px;
+                            height: 41px;
+                            background: root.draft-language == "ko-KR" ? #155dfcff : #ffffff1a;
+                            border-radius: 10px;
+                            Rectangle {
+                                x: 14px; y: 10px;
+                                width: 256px;
+                                height: 21px;
+                                background: #00000000;
+                                Text {
+                                    x: 115.188px; y: 0px;
+                                    text: "한글";
+                                    color: root.draft-language == "ko-KR" ? #ffffffff : #ffffffb2;
+                                    font-family: "Inter";
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    horizontal-alignment: center;
+                                }
+                            }
+                        }
+                        Rectangle {
+                            x: 580px; y: 47px;
+                            width: 284px;
+                            height: 41px;
+                            background: root.draft-language == "ar" ? #155dfcff : #ffffff1a;
+                            border-radius: 10px;
+                            Rectangle {
+                                x: 14px; y: 10px;
+                                width: 256px;
+                                height: 21px;
+                                background: #00000000;
+                                Text {
+                                    x: 114.312px; y: 0px;
+                                    text: "عربية";
+                                    color: root.draft-language == "ar" ? #ffffffff : #ffffffb2;
+                                    font-family: "Inter";
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    horizontal-alignment: center;
+                                }
+                            }
+                        }
+                        TouchArea { x: 0px; y: 0px; width: 284px; height: 41px; clicked => { State.play-touch-sound(); root.draft-language = "en"; } }
+                        TouchArea { x: 290px; y: 0px; width: 284px; height: 41px; clicked => { State.play-touch-sound(); root.draft-language = "vi"; } }
+                        TouchArea { x: 580px; y: 0px; width: 284px; height: 41px; clicked => { State.play-touch-sound(); root.draft-language = "es"; } }
+                        TouchArea { x: 0px; y: 47px; width: 284px; height: 41px; clicked => { State.play-touch-sound(); root.draft-language = "ja"; } }
+                        TouchArea { x: 290px; y: 47px; width: 284px; height: 41px; clicked => { State.play-touch-sound(); root.draft-language = "ko-KR"; } }
+                        TouchArea { x: 580px; y: 47px; width: 284px; height: 41px; clicked => { State.play-touch-sound(); root.draft-language = "ar"; } }
+                    }
+                }
+            }
+            if State.active-picker != "": Rectangle {
+                x: 0px; y: 0px;
+                width: 1024px;
+                height: 600px;
+                background: #00000000;
+
+                TouchArea {
+                    width: parent.width;
+                    height: parent.height;
+                    clicked => { State.play-touch-sound();
+                        State.active-picker = "";
+                    }
+                }
+            }
+            if State.active-picker == "general-hour": PickerPopup {
+                x: 218.719px; y: 188px;
+                width: 357.641px;
+                height: 224px;
+                options: root.hour-options;
+                selected-value: root.draft-general-hour;
+                picked(value) => {
+                    root.pick-value("general-hour", value);
+                }
+            }
+            if State.active-picker == "general-minute": PickerPopup {
+                x: 586.359px; y: 188px;
+                width: 357.641px;
+                height: 224px;
+                options: root.minute-options;
+                selected-value: root.draft-general-minute;
+                picked(value) => {
+                    root.pick-value("general-minute", value);
+                }
+            }
+            if State.active-picker == "general-year": PickerPopup {
+                x: 80px; y: 312px;
+                width: 281.328px;
+                height: 224px;
+                options: root.year-options;
+                selected-value: root.draft-general-year;
+                picked(value) => {
+                    root.pick-value("general-year", value);
+                }
+            }
+            if State.active-picker == "general-month": PickerPopup {
+                x: 371.328px; y: 312px;
+                width: 281.344px;
+                height: 224px;
+                options: root.month-options;
+                selected-value: root.draft-general-month;
+                picked(value) => {
+                    root.pick-value("general-month", value);
+                }
+            }
+            if State.active-picker == "general-day": PickerPopup {
+                x: 662.672px; y: 312px;
+                width: 281.328px;
+                height: 224px;
+                options: root.day-options;
+                selected-value: root.draft-general-day;
+                picked(value) => {
+                    root.pick-value("general-day", value);
+                }
+            }
+            Rectangle {
+                x: 60px; y: 517px;
+                width: 904px;
+                height: 59px;
+                background: #00000000;
+                Rectangle {
+                    x: 388.719px; y: 8px;
+                    width: 126.547px;
+                    height: 51px;
+                    background: @linear-gradient(270.000deg, #155dfcff 0%, #1447e6ff 100%);
+                    border-radius: 16px;
+                    Text {
+                        x: 0px; y: 12px;
+                        width: parent.width;
+                        text: root.tr("save");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 18px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                    }
+                    TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); root.save-all(); } }
+                }
+            }
+        }
+    }
+}

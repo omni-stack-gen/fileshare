@@ -1,0 +1,26 @@
+import { I18n } from "shared.slint";
+
+export component ButtonEffectLkIXT inherits Rectangle {
+    width: 110px;
+    height: 252px;
+    clip: true;
+    border-radius: 14px;
+    background: #1dba25ff;
+    Rectangle {
+        x: 42.887px; y: 116px;
+        width: 24.227px;
+        height: 20px;
+        background: #00000000;
+        Text {
+            width: parent.width;
+            height: parent.height;
+            text: I18n.text("request");
+            color: #ffffffff;
+            font-family: "Inter";
+            font-size: 14px;
+            font-weight: 500;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+    }
+}

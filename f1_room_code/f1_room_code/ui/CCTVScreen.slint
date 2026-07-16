@@ -1,0 +1,434 @@
+import { State, I18n, InteractiveSlider } from "shared.slint";
+
+export component CCTVScreen inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: #00000000;
+    property <int> selected-camera: State.cctv-selected-camera;
+    in property <[string]> camera-options: State.cctv-camera-options;
+    init => {
+        State.cctv-open();
+    }
+    Rectangle {
+        x: 0px; y: 0px;
+        width: 1024px;
+        height: 46px;
+        background: @linear-gradient(225.000deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+    }
+    Rectangle {
+        x: 0px; y: 46px;
+        width: 24px;
+        height: 480px;
+        background: @linear-gradient(225.000deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+    }
+    Rectangle {
+        x: 824px; y: 46px;
+        width: 200px;
+        height: 480px;
+        background: @linear-gradient(225.000deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+    }
+    Rectangle {
+        x: 0px; y: 526px;
+        width: 1024px;
+        height: 74px;
+        background: @linear-gradient(225.000deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+    }
+    Rectangle {
+        x: 0px; y: 0px;
+        width: 1024px;
+        height: 60px;
+        background: #00000000;
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 52.625px;
+            height: 28px;
+            background: #00000000;
+            Text {
+                x: 0px; y: 0px;
+                text: I18n.text("cctv");
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 20px;
+                font-weight: 500;
+            }
+        }
+        Rectangle {
+            x: 964px; y: 7px;
+            width: 36px;
+            height: 36px;
+            background: #36415380;
+            border-radius: 14px;
+            Image {
+                x: 8px; y: 8px;
+                width: 20px;
+                height: 20px;
+                source: @image-url("../assets/images/6o4cI.png");
+                image-fit: contain;
+            }
+            TouchArea {
+                x: -12px;
+                y: -12px;
+                width: 60px;
+                height: 60px;
+                clicked => { State.play-touch-sound();
+                    State.cctv-stop();
+                    State.current-page = State.previous-page;
+                }
+            }
+        }
+    }
+    Rectangle {
+        x: 0px; y: 60px;
+        width: 1024px;
+        height: 480px;
+        background: #00000000;
+        Rectangle {
+            x: 24px; y: -14px;
+            width: 800px;
+            height: 480px;
+            background: #00000000;
+            border-radius: 0px;
+            border-color: #364153ff;
+            border-width: 2px;
+            clip: true;
+            Rectangle {
+                x: 2px; y: 2px;
+                width: 800px;
+                height: 480px;
+                background: #00000000;
+                clip: true;
+                Rectangle {
+                    x: 739px; y: 216px;
+                    width: 48px;
+                    height: 48px;
+                    background: #36415380;
+                    border-radius: 14px;
+                    Image {
+                        x: 12px; y: 12px;
+                        width: 24px;
+                        height: 24px;
+                        source: @image-url("../assets/images/GCQyL.png");
+                        image-fit: contain;
+                    }
+                }
+                Rectangle {
+                    x: 1px; y: -1px;
+                    width: 810px;
+                    height: 481px;
+                    background: #00000000;
+                    clip: true;
+                }
+            }
+            Rectangle {
+                x: 20px; y: 14px;
+                width: 144.578px;
+                height: 36px;
+                background: #00000099;
+                border-radius: 10px;
+                Rectangle {
+                    x: 16px; y: 8px;
+                    width: 112.578px;
+                    height: 20px;
+                    background: #00000000;
+                        Text {
+                            width: parent.width;
+                            height: parent.height;
+                            text: State.cctv-current-camera-label == ""
+                                ? I18n.text("camera_playground_2")
+                                : State.cctv-current-camera-label;
+                            color: #ffffffff;
+                            font-family: "Inter";
+                            font-size: 14px;
+                            font-weight: 500;
+                            vertical-alignment: center;
+                        }
+                }
+            }
+            Rectangle {
+                x: 709px; y: 17px;
+                width: 72px;
+                height: 29px;
+                background: #00000099;
+                border-radius: 10px;
+                Rectangle {
+                    x: 7px; y: 11px;
+                    width: 8px;
+                    height: 8px;
+                    background: State.cctv-monitor-online ? #1ff80bff : #ef4444ff;
+                    border-radius: 16777200px;
+                    opacity: 0.9999;
+                }
+                Rectangle {
+                    x: 27px; y: 7px;
+                    width: 48px;
+                    height: 16px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        width: parent.width;
+                        height: parent.height;
+                        text: State.cctv-monitor-online ? I18n.text("online") : I18n.text("connection_failed");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 12px;
+                        font-weight: 500;
+                        vertical-alignment: center;
+                    }
+                }
+            }
+        }
+        Rectangle {
+            x: 848px; y: -12px;
+            width: 120px;
+            height: 385px;
+            background: #00000000;
+            camera-scroll := Flickable {
+                width: parent.width;
+                height: parent.height;
+                viewport-height: root.camera-options.length == 0 ? 0px : root.camera-options.length * 85px - 17px;
+
+                for camera[index] in root.camera-options: Rectangle {
+                    x: root.selected-camera == index + 1 ? 0px : 3px;
+                    y: 85px * index;
+                    width: root.selected-camera == index + 1 ? 120px : 114px;
+                    height: 68px;
+                    background: root.selected-camera == index + 1
+                        ? @linear-gradient(225.000deg, #4f39f6ff 0%, #9810faff 100%)
+                        : @linear-gradient(225.000deg, #314158ff 0%, #1d293dff 100%);
+                    border-radius: 14px;
+                    opacity: root.selected-camera == index + 1 ? 1.0 : 0.8;
+
+                    Rectangle {
+                        x: 0px;
+                        y: 20px;
+                        width: parent.width;
+                        height: 28px;
+                        background: #00000000;
+                        Text {
+                            x: 0px;
+                            y: 0px;
+                            width: parent.width;
+                            height: parent.height;
+                            text: camera;
+                            color: #ffffffff;
+                            font-family: "Inter";
+                            font-size: 18px;
+                            font-weight: 600;
+                            horizontal-alignment: center;
+                            vertical-alignment: center;
+                        }
+                    }
+
+                    TouchArea {
+                        width: parent.width;
+                        height: parent.height;
+                        clicked => { State.play-touch-sound();
+                            State.cctv-selected-camera = index + 1;
+                            State.cctv-select-camera(index + 1);
+                        }
+                    }
+                }
+            }
+        }
+        Rectangle {
+            x: 992px;
+            y: 0px;
+            width: 4px;
+            height: 385px;
+            background: #374151ff;
+            border-radius: 16777200px;
+            Rectangle {
+                x: -3px;
+                y: camera-scroll.viewport-height <= camera-scroll.height
+                    ? 0px
+                    : -camera-scroll.viewport-y / (camera-scroll.viewport-height - camera-scroll.height) * (385px - 39px);
+                width: 9px;
+                height: 39px;
+                background: #dededeff;
+                border-radius: 10px;
+            }
+        }
+        Rectangle {
+            x: 36px; y: 218px;
+            width: 48px;
+            height: 48px;
+            background: #36415380;
+            border-radius: 14px;
+            Image {
+                x: 12px; y: 12px;
+                width: 24px;
+                height: 24px;
+                source: @image-url("../assets/images/6z0lE.png");
+                image-fit: contain;
+            }
+        }
+        Rectangle {
+            x: 848px; y: 373px;
+            width: 114px;
+            height: 93px;
+            background: #3fa64bff;
+            border-radius: 14px;
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    State.cctv-capture();
+                }
+            }
+        }
+        Image {
+            x: 884px; y: 396px;
+            width: 48px;
+            height: 48px;
+            source: @image-url("../assets/images/qlymb.png");
+            image-fit: contain;
+        }
+    }
+    Rectangle {
+        x: 0px; y: 540px;
+        width: 1024px;
+        height: 122px;
+        background: #00000000;
+        Rectangle {
+            x: 24px; y: 0px;
+            width: 976px;
+            height: 44px;
+            background: #1e293999;
+            border-radius: 14px;
+            Rectangle {
+                x: 24px; y: 12px;
+                width: 422.5px;
+                background: #00000000;
+                Image {
+                    x: 0px; y: 0px;
+                    width: 20px;
+                    height: 20px;
+                    source: @image-url("../assets/images/WrzoC.png");
+                    image-fit: contain;
+                }
+                Rectangle {
+                    x: 32px; y: 0px;
+                    width: 72px;
+                    height: 20px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        width: 80px;
+                        height: parent.height;
+                        text: I18n.text("brightness");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        font-weight: 500;
+                        vertical-alignment: center;
+                    }
+                }
+                InteractiveSlider {
+                    x: 112px; y: 0px;
+                    width: 266.5px;
+                    height: 20px;
+                    track-y: 6px;
+                    track-height: 8px;
+                    setting-key: "cctv.brightness";
+                    value <=> State.cctv-brightness-value;
+                }
+                Rectangle {
+                    x: 390.5px; y: 0px;
+                    width: 32px;
+                    height: 20px;
+                    background: #00000000;
+                    Text {
+                        width: parent.width;
+                        height: parent.height;
+                        text: round(State.cctv-brightness-value * 100) + "%";
+                        color: #d1d5dcff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        horizontal-alignment: right;
+                        vertical-alignment: center;
+                    }
+                }
+            }
+            Rectangle {
+                x: 136px + 266.5px * State.cctv-brightness-value - 17.5px; y: 4px;
+                width: 35px;
+                height: 35px;
+                background: #00000000;
+                clip: true;
+                Image {
+                    x: 0px; y: 0px; width: parent.width; height: parent.height;
+                    source: @image-url("../images/image-import.png");
+                    image-fit: cover;
+                }
+            }
+            Rectangle {
+                x: 529.5px; y: 12px;
+                width: 422.5px;
+                height: 20px;
+                background: #00000000;
+                Image {
+                    x: 0px; y: 0px;
+                    width: 20px;
+                    height: 20px;
+                    source: @image-url("../assets/images/3xNCy.png");
+                    image-fit: contain;
+                }
+                Rectangle {
+                    x: 32px; y: 0px;
+                    width: 72px;
+                    height: 20px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        width: parent.width;
+                        height: parent.height;
+                        text: I18n.text("volume");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        font-weight: 500;
+                        vertical-alignment: center;
+                    }
+                }
+                InteractiveSlider {
+                    x: 112px; y: 0px;
+                    width: 266.5px;
+                    height: 20px;
+                    track-y: 6px;
+                    track-height: 8px;
+                    setting-key: "cctv.volume";
+                    value <=> State.cctv-volume-value;
+                }
+                Rectangle {
+                    x: 390.5px; y: 0px;
+                    width: 32px;
+                    height: 20px;
+                    background: #00000000;
+                    Text {
+                        width: parent.width;
+                        height: parent.height;
+                        text: round(State.cctv-volume-value * 100) + "%";
+                        color: #d1d5dcff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        horizontal-alignment: right;
+                        vertical-alignment: center;
+                    }
+                }
+            }
+            Rectangle {
+                x: 641.5px + 266.5px * State.cctv-volume-value - 17.5px; y: 4px;
+                width: 35px;
+                height: 35px;
+                background: #00000000;
+                clip: true;
+                Image {
+                    x: 0px; y: 0px; width: parent.width; height: parent.height;
+                    source: @image-url("../images/image-import.png");
+                    image-fit: cover;
+                }
+            }
+        }
+    }
+}

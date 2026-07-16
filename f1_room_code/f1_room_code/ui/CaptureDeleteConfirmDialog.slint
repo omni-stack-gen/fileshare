@@ -1,0 +1,123 @@
+import { State, I18n } from "shared.slint";
+
+export component CaptureDeleteConfirmDialog inherits Rectangle {
+    in property <string> title-key;
+    in property <string> message-key;
+    callback confirm();
+
+    x: 0px;
+    y: 0px;
+    width: 1024px;
+    height: 600px;
+    background: #000000b2;
+
+    Rectangle {
+        x: 272px; y: 126px;
+        width: 480px;
+        height: 348px;
+        background: @linear-gradient(225.000deg, #314158ff 0%, #1d293dff 100%);
+        border-radius: 24px;
+
+        Rectangle {
+            x: 40px; y: 40px;
+            width: 400px;
+            height: 268px;
+            background: #00000000;
+
+            Rectangle {
+                x: 168px; y: 0px;
+                width: 64px;
+                height: 64px;
+                background: #e7000b33;
+                border-radius: 33554400px;
+                Image {
+                    x: 14px; y: 14px;
+                    width: 36px;
+                    height: 36px;
+                    source: @image-url("../assets/images/CS8VY.png");
+                    image-fit: contain;
+                }
+            }
+
+            Text {
+                x: 40px; y: 88px;
+                width: 320px;
+                height: 42px;
+                text: I18n.text(root.title-key);
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 28px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            Text {
+                x: 40px; y: 154px;
+                width: 320px;
+                height: 27px;
+                text: I18n.text(root.message-key);
+                color: #ffffffcc;
+                font-family: "Inter";
+                font-size: 18px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            Rectangle {
+                x: 0px; y: 213px;
+                width: 400px;
+                height: 55px;
+                background: #00000000;
+
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 192px;
+                    height: 55px;
+                    background: #ffffff1a;
+                    border-radius: 16px;
+                    Text {
+                        width: parent.width;
+                        height: parent.height;
+                        text: I18n.text("cancel");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 18px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+                    TouchArea {
+                        width: parent.width;
+                        height: parent.height;
+                        clicked => { State.play-touch-sound(); State.active-overlay = ""; }
+                    }
+                }
+
+                Rectangle {
+                    x: 208px; y: 0px;
+                    width: 192px;
+                    height: 55px;
+                    background: #e7000bff;
+                    border-radius: 16px;
+                    Text {
+                        width: parent.width;
+                        height: parent.height;
+                        text: I18n.text("confirm");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 18px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+                    TouchArea {
+                        width: parent.width;
+                        height: parent.height;
+                        clicked => { State.play-touch-sound(); root.confirm(); }
+                    }
+                }
+            }
+        }
+    }
+}

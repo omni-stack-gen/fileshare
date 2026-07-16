@@ -1,0 +1,36 @@
+import { State, SmallButton, KeyButton } from "shared.slint";
+
+export component KeyboardPanel inherits Rectangle {
+    width: 600px;
+    height: 390px;
+    background: #1d293d;
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: #ffffff26;
+
+    Text {
+        x: 28px; y: 22px; width: 400px;
+        text: State.active-overlay == "FmsBT" ? "Symbols keyboard" : (State.active-overlay == "xMjyH" ? "Caps ON keyboard" : "Password keyboard");
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 800;
+    }
+    SmallButton { x: 472px; y: 20px; width: 92px; height: 40px; label: "Back"; bg: #ffffff14; clicked => { State.play-touch-sound(); State.active-overlay = ""; State.keyboard-target = ""; } }
+
+    KeyButton { x: 48px; y: 88px; width: 72px; height: 48px; label: State.active-overlay == "FmsBT" ? "!" : "1"; clicked => { State.play-touch-sound(); if State.keyboard-target == "old-password" { State.old-password += (State.active-overlay == "FmsBT" ? "!" : "1"); } else if State.keyboard-target == "new-password" { State.new-password += (State.active-overlay == "FmsBT" ? "!" : "1"); } } }
+    KeyButton { x: 136px; y: 88px; width: 72px; height: 48px; label: State.active-overlay == "FmsBT" ? "@" : "2"; clicked => { State.play-touch-sound(); if State.keyboard-target == "old-password" { State.old-password += (State.active-overlay == "FmsBT" ? "@" : "2"); } else if State.keyboard-target == "new-password" { State.new-password += (State.active-overlay == "FmsBT" ? "@" : "2"); } } }
+    KeyButton { x: 224px; y: 88px; width: 72px; height: 48px; label: State.active-overlay == "FmsBT" ? "#" : "3"; clicked => { State.play-touch-sound(); if State.keyboard-target == "old-password" { State.old-password += (State.active-overlay == "FmsBT" ? "#" : "3"); } else if State.keyboard-target == "new-password" { State.new-password += (State.active-overlay == "FmsBT" ? "#" : "3"); } } }
+    KeyButton { x: 312px; y: 88px; width: 72px; height: 48px; label: State.active-overlay == "xMjyH" ? "A" : "4"; clicked => { State.play-touch-sound(); if State.keyboard-target == "old-password" { State.old-password += (State.active-overlay == "xMjyH" ? "A" : "4"); } else if State.keyboard-target == "new-password" { State.new-password += (State.active-overlay == "xMjyH" ? "A" : "4"); } } }
+    KeyButton { x: 400px; y: 88px; width: 72px; height: 48px; label: State.active-overlay == "xMjyH" ? "B" : "5"; clicked => { State.play-touch-sound(); if State.keyboard-target == "old-password" { State.old-password += (State.active-overlay == "xMjyH" ? "B" : "5"); } else if State.keyboard-target == "new-password" { State.new-password += (State.active-overlay == "xMjyH" ? "B" : "5"); } } }
+    KeyButton { x: 488px; y: 88px; width: 72px; height: 48px; label: State.active-overlay == "xMjyH" ? "C" : "6"; clicked => { State.play-touch-sound(); if State.keyboard-target == "old-password" { State.old-password += (State.active-overlay == "xMjyH" ? "C" : "6"); } else if State.keyboard-target == "new-password" { State.new-password += (State.active-overlay == "xMjyH" ? "C" : "6"); } } }
+    KeyButton { x: 48px; y: 152px; width: 72px; height: 48px; label: "7"; clicked => { State.play-touch-sound(); if State.keyboard-target == "old-password" { State.old-password += "7"; } else if State.keyboard-target == "new-password" { State.new-password += "7"; } } }
+    KeyButton { x: 136px; y: 152px; width: 72px; height: 48px; label: "8"; clicked => { State.play-touch-sound(); if State.keyboard-target == "old-password" { State.old-password += "8"; } else if State.keyboard-target == "new-password" { State.new-password += "8"; } } }
+    KeyButton { x: 224px; y: 152px; width: 72px; height: 48px; label: "9"; clicked => { State.play-touch-sound(); if State.keyboard-target == "old-password" { State.old-password += "9"; } else if State.keyboard-target == "new-password" { State.new-password += "9"; } } }
+    KeyButton { x: 312px; y: 152px; width: 72px; height: 48px; label: "0"; clicked => { State.play-touch-sound(); if State.keyboard-target == "old-password" { State.old-password += "0"; } else if State.keyboard-target == "new-password" { State.new-password += "0"; } } }
+    SmallButton { x: 400px; y: 152px; width: 72px; height: 48px; label: "Clear"; bg: #ffffff14; clicked => { State.play-touch-sound(); if State.keyboard-target == "old-password" { State.old-password = ""; } else if State.keyboard-target == "new-password" { State.new-password = ""; } } }
+    SmallButton { x: 488px; y: 152px; width: 72px; height: 48px; label: "OK"; bg: #155dfc; clicked => { State.play-touch-sound(); if State.keyboard-target == "wifi" { State.active-overlay = "de16y"; } else { State.active-overlay = ""; State.keyboard-target = ""; } } }
+    SmallButton { x: 48px; y: 232px; width: 116px; height: 42px; label: "!@#"; bg: State.active-overlay == "FmsBT" ? #155dfc : #ffffff14; clicked => { State.play-touch-sound(); State.active-overlay = "FmsBT"; } }
+    SmallButton { x: 184px; y: 232px; width: 116px; height: 42px; label: "ABC"; bg: #ffffff14; clicked => { State.play-touch-sound(); State.active-overlay = "jbQzr"; } }
+    SmallButton { x: 320px; y: 232px; width: 116px; height: 42px; label: "Caps"; bg: State.active-overlay == "xMjyH" ? #155dfc : #ffffff14; clicked => { State.play-touch-sound(); State.active-overlay = State.active-overlay == "xMjyH" ? "jbQzr" : "xMjyH"; } }
+}
+

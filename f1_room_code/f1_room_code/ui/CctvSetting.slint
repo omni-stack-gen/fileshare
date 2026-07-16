@@ -1,0 +1,228 @@
+import { State } from "shared.slint";
+
+component CctvInputBox inherits Rectangle {
+    in property <string> label: "";
+    in property <string> value: "";
+    in property <string> placeholder: "";
+    in property <bool> password: false;
+    in property <bool> interactive: true;
+    callback clicked();
+
+    height: 79.5px;
+    background: #00000000;
+
+    Text {
+        x: 0px; y: 1px;
+        height: 19.5px;
+        text: root.label;
+        color: #ffffff80;
+        font-family: "Inter";
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    Rectangle {
+        x: 0px; y: 27.5px;
+        width: parent.width;
+        height: 52px;
+        background: #ffffff0f;
+        border-radius: 12px;
+        border-color: #ffffff1a;
+        border-width: 1px;
+        clip: true;
+
+        Text {
+            x: 20px; y: 13px;
+            width: parent.width - 40px;
+            height: 24px;
+            text: root.value == "" ? root.placeholder : (root.password ? State.cctv-setting-password-mask : root.value);
+            color: root.value == "" ? #ffffff40 : #ffffffff;
+            font-family: "Inter";
+            font-size: 16px;
+            font-weight: root.value == "" ? 400 : 500;
+            vertical-alignment: center;
+        }
+
+        if root.interactive: TouchArea {
+            width: parent.width;
+            height: parent.height;
+            clicked => { State.play-touch-sound(); root.clicked(); }
+        }
+    }
+}
+
+export component CctvSetting inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: @linear-gradient(210.368deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+
+    function ready() -> bool {
+        return State.cctv-setting-ip != ""
+            && State.cctv-setting-port != ""
+            && State.cctv-setting-account != ""
+            && State.cctv-setting-password != "";
+    }
+
+    Rectangle {
+        x: 60px; y: 24px;
+        width: 904px;
+        height: 48px;
+        background: #00000000;
+
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 48px;
+            height: 48px;
+            background: #00000000;
+            border-radius: 16777200px;
+            Image {
+                x: 8px; y: 8px;
+                width: 32px;
+                height: 32px;
+                source: @image-url("../assets/images/1ZUDW.png");
+                image-fit: contain;
+            }
+            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.current-page = State.previous-page == "" ? "GUr03" : State.previous-page; } }
+        }
+
+        Text {
+            x: 60px; y: -0.5px;
+            width: 155px;
+            height: 48px;
+            text: "CCTV 설정";
+            color: #ffffffff;
+            font-family: "Inter";
+            font-size: 32px;
+            font-weight: 500;
+            vertical-alignment: center;
+        }
+    }
+
+    Rectangle {
+        x: 60px; y: 86px;
+        width: 341px;
+        height: 28px;
+        background: #00000000;
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 65px;
+            height: 28px;
+            background: #51a2ff26;
+            border-radius: 16777200px;
+            border-color: #51a2ff4d;
+            border-width: 1px;
+            Text {
+                width: parent.width;
+                height: parent.height;
+                text: "ONVIF";
+                color: #51a2ffff;
+                font-family: "Inter";
+                font-size: 12px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+        Text {
+            x: 75px; y: 4px;
+            width: 280px;
+            height: 20px;
+            text: "ONVIF 프로토콜을 지원하는 IP 카메라를 연결합니다";
+            color: #ffffff66;
+            font-family: "Inter";
+            font-size: 13px;
+            vertical-alignment: center;
+        }
+    }
+
+    CctvInputBox {
+        x: 60px; y: 229.5px;
+        width: 768px;
+        label: "IP 주소";
+        value: State.cctv-setting-ip;
+        placeholder: "192.168.1.100";
+        clicked => { State.play-touch-sound(); State.open-cctv-setting-input("ip", State.cctv-setting-ip); }
+    }
+
+    CctvInputBox {
+        x: 844px; y: 229.5px;
+        width: 120px;
+        label: "포트";
+        value: State.cctv-setting-port;
+        placeholder: "80";
+        interactive: false;
+        clicked => { State.play-touch-sound(); State.open-cctv-setting-input("port", State.cctv-setting-port); }
+    }
+
+    CctvInputBox {
+        x: 60px; y: 325px;
+        width: 444px;
+        label: "계정 (Account)";
+        value: State.cctv-setting-account;
+        placeholder: "admin";
+        clicked => { State.play-touch-sound(); State.open-cctv-setting-input("account", State.cctv-setting-account); }
+    }
+
+    CctvInputBox {
+        x: 520px; y: 325px;
+        width: 444px;
+        label: "비밀번호";
+        value: State.cctv-setting-password;
+        placeholder: "••••••••";
+        password: true;
+        clicked => { State.play-touch-sound(); State.open-cctv-setting-input("password", State.cctv-setting-password); }
+    }
+
+    Rectangle {
+        x: 60px; y: 428.5px;
+        width: 904px;
+        height: 52px;
+        background: #00000000;
+
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 143.64px;
+            height: 52px;
+            background: root.ready() ? #155dfcff : #51a2ff33;
+            border-radius: 14px;
+            Text {
+                x: 34px; y: 13px;
+                text: "연결 테스트";
+                color: root.ready() ? #ffffffff : #ffffff59;
+                font-family: "Inter";
+                font-size: 16px;
+                font-weight: 500;
+            }
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    if root.ready() {
+                        State.active-overlay = "E0zNY";
+                        State.test-cctv-setting();
+                    }
+                }
+            }
+        }
+
+        if State.cctv-setting-saved: Rectangle {
+            x: 159.64px; y: 0px;
+            width: 143.62px;
+            height: 52px;
+            background: #4ade801a;
+            border-radius: 14px;
+            border-color: #4ade804d;
+            border-width: 1px;
+            Text {
+                x: 24px; y: 14.5px;
+                width: 120px;
+                text: "CCTV 저장됨";
+                color: #4ade80ff;
+                font-family: "Inter";
+                font-size: 16px;
+                font-weight: 500;
+            }
+        }
+    }
+}

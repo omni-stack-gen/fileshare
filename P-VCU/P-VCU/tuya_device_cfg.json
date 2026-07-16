@@ -1,0 +1,10 @@
+{
+	"pid": "0gxolooveupioask",
+	"uuid": "bkdz9a581a76f4f30ff4",
+	"authkey": "LcDOINZcwLg2ff3oY2pHhIjHAvgciyIA",
+	"storage": "/mnt/Demo/tuya/V1/",
+	"media_path": "/mnt/Demo/tuya/V1/",
+	"sd_path": "/tmp/sdcard",
+	"upgrade_file": "/mnt/Demo/tuya/upgrade.file",
+	"app_version": "1.2.3"
+}

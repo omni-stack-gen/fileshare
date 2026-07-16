@@ -1,0 +1,183 @@
+import { State } from "shared.slint";
+
+component SettingRow inherits Rectangle {
+    in property <image> icon;
+    in property <image> chevron: @image-url("../assets/images/190uK.png");
+    in property <string> title: "";
+    in property <string> description: "";
+    in property <bool> danger: false;
+    callback clicked();
+
+    width: 904px;
+    height: 86.5px;
+    background: root.danger ? #e7000b1a : #ffffff0d;
+    border-radius: 16px;
+    border-color: root.danger ? #fb2c364d : #ffffff1a;
+    border-width: 1px;
+
+    Rectangle {
+        x: 24px; y: 19px;
+        width: 44px;
+        height: 44px;
+        background: root.danger ? #e7000b33 : #ffffff1a;
+        border-radius: 12px;
+        Image {
+            x: 10px; y: 10px;
+            width: 24px;
+            height: 24px;
+            source: root.icon;
+            image-fit: contain;
+        }
+    }
+
+    Text {
+        x: 84px; y: 19.5px;
+        width: 300px;
+        height: 27px;
+        text: root.title;
+        color: root.danger ? #ff6467ff : #ffffffff;
+        font-family: "Inter";
+        font-size: 18px;
+        font-weight: 500;
+        vertical-alignment: center;
+    }
+
+    Text {
+        x: 84px; y: 48px;
+        width: 360px;
+        height: 19.5px;
+        text: root.description;
+        color: #ffffff99;
+        font-family: "Inter";
+        font-size: 13px;
+        font-weight: 500;
+        vertical-alignment: center;
+    }
+
+    Image {
+        x: 856px; y: 31.25px;
+        width: 24px;
+        height: 24px;
+        source: root.chevron;
+        image-fit: contain;
+    }
+
+    TouchArea {
+        width: parent.width;
+        height: parent.height;
+        clicked => { State.play-touch-sound(); root.clicked(); }
+    }
+}
+
+export component EtcSetting inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: @linear-gradient(210.368deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+
+    Rectangle {
+        x: 60px; y: 24px;
+        width: 904px;
+        height: 48px;
+        background: #00000000;
+
+        Rectangle {
+            x: 24px; y: 0px;
+            width: 48px;
+            height: 48px;
+            background: #00000000;
+            border-radius: 16777200px;
+            Image {
+                x: 8px; y: 8px;
+                width: 32px;
+                height: 32px;
+                source: @image-url("../assets/images/1ZUDW.png");
+                image-fit: contain;
+            }
+            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.current-page = "kKrEC"; } }
+        }
+
+        Text {
+            x: 397.641px; y: -0.5px;
+            width: 108.727px;
+            height: 48px;
+            text: "기타설정";
+            color: #ffffffff;
+            font-family: "Inter";
+            font-size: 32px;
+            font-weight: 500;
+            vertical-alignment: center;
+        }
+    }
+
+    Rectangle {
+        x: 60px; y: 96px;
+        width: 904px;
+        height: 480px;
+        background: #00000000;
+
+        SettingRow {
+            x: 0px; y: 3.75px;
+            icon: @image-url("../assets/images/HXwdj.png");
+            title: "비밀번호 변경";
+            description: "도어 개폐 비밀번호 변경";
+            clicked => { State.play-touch-sound();
+                State.old-password = "";
+                State.old-password-length = 0;
+                State.old-password-mask = "";
+                State.old-password-visible = false;
+                State.new-password = "";
+                State.new-password-length = 0;
+                State.new-password-mask = "";
+                State.password-visible = false;
+                State.keyboard-target = "";
+                State.previous-page = State.current-page;
+                State.current-page = "ITtGQ";
+            }
+        }
+
+        SettingRow {
+            x: 0px; y: 100.25px;
+            icon: @image-url("../assets/images/Dl001.png");
+            title: "시스템 정보";
+            description: "기기 정보 및 버전 확인";
+            clicked => { State.play-touch-sound(); State.refresh-system-info(); State.active-overlay = "uvgmF"; }
+        }
+
+        SettingRow {
+            x: 0px; y: 196.75px;
+            icon: @image-url("../assets/images/SzVXr.png");
+            chevron: @image-url("../assets/images/8dSFL.png");
+            title: "초기화";
+            description: "모든 설정을 공장 초기값으로 복원";
+            danger: true;
+            clicked => { State.play-touch-sound(); State.active-overlay = "RFIGR"; }
+        }
+
+        SettingRow {
+            x: 0px; y: 293.25px;
+            icon: @image-url("../assets/images/skpja.png");
+            title: "세대 정보 입력";
+            description: "우리집 세대 동호수 입력";
+            clicked => { State.play-touch-sound();
+                State.site-building-draft = State.site-building-number;
+                State.site-room-draft = State.site-room-number;
+                State.site-info-input-target = "";
+                State.site-info-input-buffer = "";
+                State.previous-page = State.current-page;
+                State.current-page = "kPRcM";
+            }
+        }
+
+        SettingRow {
+            x: 0px; y: 389.75px;
+            icon: @image-url("../assets/images/UBaad.png");
+            title: "CCTV 설정";
+            description: "카메라 연결 설정";
+            clicked => { State.play-touch-sound();
+                State.previous-page = State.current-page;
+                State.current-page = "GUr03";
+            }
+        }
+    }
+}

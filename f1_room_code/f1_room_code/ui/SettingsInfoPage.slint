@@ -1,0 +1,304 @@
+import { State, I18n } from "shared.slint";
+
+export component SettingsInfoPage inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: #ffffffff;
+
+    function live-building() -> string {
+        return State.active-overlay == "FMNpj" && State.site-info-input-target == "building"
+            ? State.site-info-input-buffer
+            : State.site-building-draft;
+    }
+
+    function live-room() -> string {
+        return State.active-overlay == "FMNpj" && State.site-info-input-target == "room"
+            ? State.site-info-input-buffer
+            : State.site-room-draft;
+    }
+
+    private property <bool> can-save: root.live-building() != "" && root.live-room() != "";
+
+    Rectangle {
+        x: 0px; y: 0px;
+        width: 1024px;
+        height: 600px;
+        background: #ffffffff;
+
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 1024px;
+            height: 600px;
+            background: @linear-gradient(210.368deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+
+            Rectangle {
+                x: 60px; y: 24px;
+                width: 904px;
+                height: 48px;
+                background: #00000000;
+
+                Rectangle {
+                    x: 24px; y: 0px;
+                    width: 48px;
+                    height: 48px;
+                    background: #00000000;
+                    border-radius: 16777200px;
+
+                    Image {
+                        x: 8px; y: 8px;
+                        width: 32px;
+                        height: 32px;
+                        source: @image-url("../assets/images/1ZUDW.png");
+                        image-fit: contain;
+                    }
+
+                    TouchArea {
+                        width: parent.width;
+                        height: parent.height;
+                        clicked => { State.play-touch-sound();
+                            State.active-overlay = "";
+                            State.current-page = "gzCRD";
+                        }
+                    }
+                }
+
+                Text {
+                    x: 0px; y: -0.5px;
+                    width: parent.width;
+                    height: 48px;
+                    text: I18n.text("setting_info");
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 32px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+
+            Rectangle {
+                x: 262px; y: 96px;
+                width: 500px;
+                height: 480px;
+                background: #00000000;
+
+                Rectangle {
+                    x: 0px; y: 85.75px;
+                    width: 500px;
+                    height: 94px;
+                    background: #00000000;
+
+                    Rectangle {
+                        x: 0px; y: 0px;
+                        width: 500px;
+                        height: 24px;
+                        background: #00000000;
+
+                        if State.language != "ko-KR": Text {
+                            x: 0px; y: -1px;
+                            width: parent.width;
+                            height: parent.height;
+                            text: I18n.text("building_number");
+                            color: #ffffffff;
+                            font-family: "Inter";
+                            font-size: 16px;
+                            font-weight: 500;
+                            vertical-alignment: center;
+                        }
+                    }
+
+                    Rectangle {
+                        x: 0px; y: 36px;
+                        width: 500px;
+                        height: 58px;
+                        background: #ffffff0d;
+                        border-radius: 14px;
+                        border-color: #ffffff1a;
+                        border-width: 1px;
+
+                        Text {
+                            x: 20px; y: 17px;
+                            width: State.language == "ko-KR" ? 423px : 404px;
+                            height: 24px;
+                            text: root.live-building() == "" ? I18n.text("enter_building_number") : root.live-building();
+                            color: #ffffffff;
+                            font-family: "Inter";
+                            font-size: 16px;
+                            font-weight: 500;
+                            vertical-alignment: center;
+                        }
+
+                        if State.language != "ko-KR": Rectangle {
+                            x: 452px; y: 11px;
+                            width: 36px;
+                            height: 36px;
+                            background: #00000000;
+                            border-radius: 8px;
+
+                            Image {
+                                x: 12px; y: 6px;
+                                width: 12px;
+                                height: 24px;
+                                source: @image-url("../assets/images/190uK.png");
+                                image-fit: contain;
+                            }
+                        }
+
+                        if State.language == "ko-KR": Text {
+                            x: 455px; y: 18.25px;
+                            width: 27.0546875px;
+                            height: 19.5px;
+                            text: "동";
+                            color: #ffffffff;
+                            font-family: "Inter";
+                            font-size: 20px;
+                            font-weight: 500;
+                            vertical-alignment: center;
+                        }
+                    }
+
+                    TouchArea {
+                        width: parent.width;
+                        height: parent.height;
+                        clicked => { State.play-touch-sound();
+                            State.open-setting-info-input("building", State.site-building-draft);
+                        }
+                    }
+                }
+
+                Rectangle {
+                    x: 0px; y: 203.75px;
+                    width: 500px;
+                    height: 94px;
+                    background: #00000000;
+
+                    Rectangle {
+                        x: 0px; y: 0px;
+                        width: 500px;
+                        height: 24px;
+                        background: #00000000;
+
+                        if State.language != "ko-KR": Text {
+                            x: 0px; y: -1px;
+                            width: parent.width;
+                            height: parent.height;
+                            text: I18n.text("room_number");
+                            color: #ffffffff;
+                            font-family: "Inter";
+                            font-size: 16px;
+                            font-weight: 500;
+                            vertical-alignment: center;
+                        }
+                    }
+
+                    Rectangle {
+                        x: 0px; y: 36px;
+                        width: 500px;
+                        height: 58px;
+                        background: #ffffff0d;
+                        border-radius: 14px;
+                        border-color: #ffffff1a;
+                        border-width: 1px;
+
+                        Text {
+                            x: 20px; y: 17px;
+                            width: State.language == "ko-KR" ? 423px : 404px;
+                            height: 24px;
+                            text: root.live-room() == "" ? I18n.text("enter_room_number") : root.live-room();
+                            color: #ffffffff;
+                            font-family: "Inter";
+                            font-size: 16px;
+                            font-weight: 500;
+                            vertical-alignment: center;
+                        }
+
+                        if State.language != "ko-KR": Rectangle {
+                            x: 452px; y: 11px;
+                            width: 36px;
+                            height: 36px;
+                            background: #00000000;
+                            border-radius: 8px;
+
+                            Image {
+                                x: 12px; y: 6px;
+                                width: 12px;
+                                height: 24px;
+                                source: @image-url("../assets/images/190uK.png");
+                                image-fit: contain;
+                            }
+                        }
+
+                        if State.language == "ko-KR": Text {
+                            x: 455px; y: 18.25px;
+                            width: 27.0546875px;
+                            height: 19.5px;
+                            text: "호";
+                            color: #ffffffff;
+                            font-family: "Inter";
+                            font-size: 20px;
+                            font-weight: 500;
+                            vertical-alignment: center;
+                        }
+                    }
+
+                    TouchArea {
+                        width: parent.width;
+                        height: parent.height;
+                        clicked => { State.play-touch-sound();
+                            State.open-setting-info-input("room", State.site-room-draft);
+                        }
+                    }
+                }
+
+                if !root.can-save: Rectangle {
+                    x: 0px; y: 337.75px;
+                    width: 500px;
+                    height: 56.5px;
+                    background: #ffffff0d;
+                    border-radius: 14px;
+
+                    Text {
+                        width: parent.width;
+                        height: parent.height;
+                        text: I18n.text("setting_info_save_action");
+                        color: #ffffff4d;
+                        font-family: "Inter";
+                        font-size: 20px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+                }
+
+                if root.can-save: Rectangle {
+                    x: 0px; y: 337.75px;
+                    width: 500px;
+                    height: 56.5px;
+                    background: #155dfcff;
+                    border-radius: 14px;
+
+                    Text {
+                        width: parent.width;
+                        height: parent.height;
+                        text: I18n.text("setting_info_save_action");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 20px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        width: parent.width;
+                        height: parent.height;
+                        clicked => { State.play-touch-sound();
+                            State.submit-setting-info(State.site-building-draft, State.site-room-draft);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

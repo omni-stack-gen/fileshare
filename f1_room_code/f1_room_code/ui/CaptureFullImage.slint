@@ -1,0 +1,269 @@
+import { State, I18n } from "shared.slint";
+
+export component CaptureFullImage inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: @linear-gradient(210.368deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+
+    Rectangle {
+        x: 80px;
+        y: 40px;
+        width: 864px;
+        height: 48px;
+        background: #00000000;
+
+        Rectangle {
+            x: 24px;
+            y: 0px;
+            width: 48px;
+            height: 48px;
+            background: #00000000;
+            border-radius: 16777200px;
+            Image {
+                x: 8px;
+                y: 8px;
+                width: 32px;
+                height: 32px;
+                source: @image-url("../assets/images/1ZUDW.png");
+                image-fit: contain;
+            }
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    State.current-page = "NeeP0";
+                }
+            }
+        }
+
+        Text {
+            x: 0px;
+            y: 4px;
+            width: parent.width;
+            height: 40px;
+            text: I18n.text("capture_records_title");
+            color: #ffffffff;
+            font-family: "Inter";
+            font-size: 32px;
+            font-weight: 600;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+
+        Rectangle {
+            x: 738px;
+            y: 2px;
+            width: 126px;
+            height: 44px;
+            background: #c10007ff;
+            border-radius: 12px;
+            opacity: State.capture-full-position-text != "0 / 0" ? 1.0 : 0.45;
+            Image {
+                x: 20px;
+                y: 12px;
+                width: 20px;
+                height: 20px;
+                source: @image-url("../assets/images/2p2JY.png");
+                image-fit: contain;
+            }
+            Text {
+                x: 48px;
+                y: 10px;
+                width: 58px;
+                height: 24px;
+                text: I18n.text("delete");
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 16px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    if State.capture-full-position-text != "0 / 0" {
+                        State.capture-records-full-delete();
+                    }
+                }
+            }
+        }
+    }
+
+    view := Rectangle {
+        x: 80px;
+        y: 104px;
+        width: 864px;
+        height: 432px;
+        background: #0f172acc;
+        border-radius: 24px;
+        clip: true;
+
+        Image {
+            width: parent.width;
+            height: parent.height;
+            source: State.capture-full-image;
+            image-fit: contain;
+        }
+
+        Rectangle {
+            x: 12px;
+            y: 12px;
+            width: 88px;
+            height: 33px;
+            background: #364153e6;
+            border-radius: 8px;
+            Text {
+                width: parent.width;
+                height: parent.height;
+                text: State.capture-full-label;
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 14px;
+                font-weight: 600;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+
+        if State.capture-full-unread: Rectangle {
+            x: 775px;
+            y: 12px;
+            width: 72px;
+            height: 30px;
+            background: #e7000bff;
+            border-radius: 8px;
+            Image {
+                x: 10px;
+                y: 8px;
+                width: 14px;
+                height: 14px;
+                source: @image-url("../assets/images/CcKkn.png");
+                image-fit: contain;
+            }
+            Text {
+                x: 28px;
+                y: 6px;
+                width: 32px;
+                height: 18px;
+                text: I18n.text("new");
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 12px;
+                font-weight: 600;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+
+        Rectangle {
+            x: 0px;
+            y: 363px;
+            width: parent.width;
+            height: 69px;
+            background: #00000099;
+            Text {
+                x: 16px;
+                y: 12px;
+                width: parent.width - 32px;
+                height: 24px;
+                text: State.capture-full-date-text;
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 16px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+            Text {
+                x: 16px;
+                y: 36px;
+                width: parent.width - 32px;
+                height: 21px;
+                text: State.capture-full-time-text;
+                color: #ffffffcc;
+                font-family: "Inter";
+                font-size: 14px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+    }
+
+    Rectangle {
+        x: 20px;
+        y: 296px;
+        width: 48px;
+        height: 48px;
+        background: #364153ff;
+        border-radius: 16777200px;
+        opacity: State.capture-full-can-prev ? 1.0 : 0.35;
+        Image {
+            x: 8px;
+            y: 8px;
+            width: 32px;
+            height: 32px;
+            source: @image-url("../assets/images/1ZUDW.png");
+            image-fit: contain;
+        }
+        TouchArea {
+            width: parent.width;
+            height: parent.height;
+            clicked => { State.play-touch-sound();
+                if State.capture-full-can-prev {
+                    State.capture-records-full-prev();
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        x: 956px;
+        y: 296px;
+        width: 48px;
+        height: 48px;
+        background: #364153ff;
+        border-radius: 16777200px;
+        opacity: State.capture-full-can-next ? 1.0 : 0.35;
+        Image {
+            x: 8px;
+            y: 8px;
+            width: 32px;
+            height: 32px;
+            source: @image-url("../assets/images/Aua4x.png");
+            image-fit: contain;
+        }
+        TouchArea {
+            width: parent.width;
+            height: parent.height;
+            clicked => { State.play-touch-sound();
+                if State.capture-full-can-next {
+                    State.capture-records-full-next();
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        x: 474px;
+        y: 547px;
+        width: 76px;
+        height: 43px;
+        background: #ffffff1a;
+        border-radius: 12px;
+        Text {
+            width: parent.width;
+            height: parent.height;
+            text: State.capture-full-position-text;
+            color: #ffffffff;
+            font-family: "Inter";
+            font-size: 18px;
+            font-weight: 500;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+    }
+}

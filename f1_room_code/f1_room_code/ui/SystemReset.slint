@@ -1,0 +1,135 @@
+import { State, I18n } from "shared.slint";
+
+export component SystemReset inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    background: #00000000;
+
+    Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: #00000099;
+        TouchArea { width: parent.width; height: parent.height; clicked => { } }
+    }
+
+    Rectangle {
+        x: 312px; y: 142px;
+        width: 400px;
+        height: 315px;
+        background: @linear-gradient(225deg, #1d293dff 0%, #0f172bff 100%);
+        border-radius: 20px;
+        border-color: #ffffff1a;
+        border-width: 1px;
+        drop-shadow-color: #00000040;
+        drop-shadow-offset-y: 25px;
+        drop-shadow-blur: 43.75px;
+
+        Rectangle {
+            x: 33px; y: 33px;
+            width: 334px;
+            height: 249px;
+            background: #00000000;
+
+            Rectangle {
+                x: 135px; y: 0px;
+                width: 64px;
+                height: 64px;
+                background: #e7000b33;
+                border-radius: 16777200px;
+
+                Image {
+                    x: 16px; y: 16px;
+                    width: 32px;
+                    height: 32px;
+                    source: @image-url("../assets/images/QLDrV.png");
+                    image-fit: contain;
+                }
+            }
+
+            Text {
+                x: 0px; y: 84px;
+                width: 334px;
+                height: 33px;
+                text: I18n.text("system_reset");
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 22px;
+                font-weight: 600;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            Text {
+                x: 0px; y: 125px;
+                width: 334px;
+                height: 21px;
+                text: I18n.text("system_reset_desc");
+                color: #ffffffb2;
+                font-family: "Inter";
+                font-size: 14px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            Text {
+                x: 0px; y: 146px;
+                width: 334px;
+                height: 21px;
+                text: I18n.text("system_reset_desc_2");
+                color: #ffffffb2;
+                font-family: "Inter";
+                font-size: 14px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            Rectangle {
+                x: 0px; y: 195px;
+                width: 161px;
+                height: 54px;
+                background: #ffffff1a;
+                border-radius: 12px;
+                border-color: #ffffff1a;
+                border-width: 1px;
+
+                Text {
+                    width: parent.width;
+                    height: parent.height;
+                    text: I18n.text("cancel");
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 15px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                TouchArea {
+                    width: parent.width;
+                    height: parent.height;
+                    clicked => { State.play-touch-sound(); State.active-overlay = ""; }
+                }
+            }
+
+            Rectangle {
+                x: 173px; y: 195px;
+                width: 161px;
+                height: 54px;
+                background: #e7000bff;
+                border-radius: 12px;
+
+                Text {
+                    width: parent.width;
+                    height: parent.height;
+                    text: I18n.text("reset");
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 15px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+        }
+    }
+}

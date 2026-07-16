@@ -1,0 +1,281 @@
+import { State } from "shared.slint";
+
+component StepRow inherits Rectangle {
+    in property <string> title: "";
+    in property <string> subtitle: "";
+    in property <string> status: "완료";
+    in property <string> phase: "done";
+
+    height: 52px;
+    background: root.phase == "failed" ? #ff64670d : (root.phase == "running" ? #51a2ff0f : #ffffff08);
+    border-radius: 12px;
+    border-color: root.phase == "failed" ? #ff646726 : (root.phase == "running" ? #51a2ff33 : #00000000);
+    border-width: 1px;
+
+    if root.phase == "done": Rectangle {
+        x: 14px; y: 16px;
+        width: 20px;
+        height: 20px;
+        background: #4ade8033;
+        border-radius: 10px;
+        border-color: #4ade80ff;
+        border-width: 1.5px;
+        Image {
+            x: 5px; y: 6px;
+            width: 10px;
+            height: 8px;
+            source: @image-url("../assets/images/SHJ1B.png");
+            image-fit: contain;
+        }
+    }
+
+    if root.phase == "running": Image {
+        x: 14px; y: 16px;
+        width: 20px;
+        height: 20px;
+        source: @image-url("../assets/images/YQjMO.png");
+        image-fit: contain;
+    }
+
+    if root.phase == "pending": Rectangle {
+        x: 14px; y: 16px;
+        width: 20px;
+        height: 20px;
+        background: #00000000;
+        border-radius: 10px;
+        border-color: #ffffff33;
+        border-width: 1.5px;
+    }
+
+    if root.phase == "failed": Rectangle {
+        x: 14px; y: 16px;
+        width: 20px;
+        height: 20px;
+        background: #e7000b33;
+        border-radius: 10px;
+        border-color: #ff6467ff;
+        border-width: 1.5px;
+    }
+
+    Text {
+        x: 48px; y: 8px;
+        width: root.phase == "running" ? 398px : (root.phase == "pending" ? 432px : 411px);
+        height: 21px;
+        text: root.title;
+        color: root.phase == "pending" ? #ffffff66 : #ffffffff;
+        font-family: "Inter";
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    Text {
+        x: 48px; y: 29.5px;
+        width: root.phase == "running" ? 398px : (root.phase == "pending" ? 432px : 411px);
+        height: 18px;
+        text: root.subtitle;
+        color: #ffffff4d;
+        font-family: "Inter";
+        font-size: 12px;
+    }
+
+    Text {
+        x: 444px; y: 17px;
+        width: 52px;
+        height: 18px;
+        text: root.status;
+        color: root.phase == "failed" ? #ff6467ff : (root.phase == "running" ? #51a2ffff : (root.phase == "done" ? #4ade80ff : #ffffff4d));
+        font-family: "Inter";
+        font-size: 12px;
+        font-weight: 500;
+        horizontal-alignment: right;
+    }
+}
+
+export component CctvConnectionTestDialog inherits Rectangle {
+    in property <bool> success: false;
+
+    width: 1024px;
+    height: 600px;
+    background: #000000b2;
+
+    function step-phase(step: int) -> string {
+        if root.success || State.cctv-setting-test-step > step {
+            return "done";
+        }
+        if State.cctv-setting-test-step == step && State.cctv-setting-test-running {
+            return "running";
+        }
+        if State.cctv-setting-test-step == step && State.cctv-setting-test-error != "" {
+            return "failed";
+        }
+        return "pending";
+    }
+
+    function step-status(step: int) -> string {
+        if root.success || State.cctv-setting-test-step > step {
+            return "완료";
+        }
+        if State.cctv-setting-test-step == step && State.cctv-setting-test-running {
+            return "진행 중";
+        }
+        if State.cctv-setting-test-step == step && State.cctv-setting-test-error != "" {
+            return "실패";
+        }
+        return "";
+    }
+
+    Rectangle {
+        x: 232px; y: root.success ? 23.5px : (State.cctv-setting-test-running ? 78.25px : 34.5px);
+        width: 560px;
+        height: root.success ? 553px : (State.cctv-setting-test-running ? 443.5px : 531px);
+        background: @linear-gradient(225deg, #1d293dff 0%, #0f172bff 100%);
+        border-radius: 20px;
+        border-color: #ffffff1a;
+        border-width: 1px;
+        clip: true;
+        drop-shadow-color: #00000099;
+        drop-shadow-offset-y: 32px;
+        drop-shadow-blur: 56px;
+
+        Rectangle {
+            x: 1px; y: 1px;
+            width: 558px;
+            height: 65.5px;
+            background: #00000000;
+            border-color: #ffffff14;
+            border-width: 1px;
+
+            Text {
+                x: 24px; y: 19px;
+                text: "연결 테스트";
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 16px;
+                font-weight: 500;
+            }
+
+            Rectangle {
+                x: 108px; y: 20px;
+                width: 57.95px;
+                height: 24.5px;
+                background: #51a2ff26;
+                border-radius: 16777200px;
+                border-color: #51a2ff4d;
+                border-width: 1px;
+                Text {
+                    width: parent.width;
+                    height: parent.height;
+                    text: "ONVIF";
+                    color: #51a2ffff;
+                    font-family: "Inter";
+                    font-size: 11px;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+
+            Text {
+                x: 433px; y: 24px;
+                width: 101px;
+                text: State.cctv-setting-ip == "" ? "192.80.100.1" : State.cctv-setting-ip;
+                color: #ffffff66;
+                font-family: "Inter";
+                font-size: 13px;
+                horizontal-alignment: right;
+            }
+        }
+
+        Rectangle {
+            x: 25px; y: 81.5px;
+            width: 510px;
+            height: 294px;
+            background: #00000000;
+
+            StepRow { x: 0px; y: 0px; width: 510px; title: "IP 연결 확인"; subtitle: (State.cctv-setting-ip == "" ? "192.80.100.1" : State.cctv-setting-ip) + " 응답 확인"; phase: root.step-phase(1); status: root.step-status(1); }
+            StepRow { x: 0px; y: 56px; width: 510px; title: "ONVIF 서비스 탐색"; subtitle: "ONVIF 프로토콜 지원 여부 확인"; phase: root.step-phase(2); status: root.step-status(2); }
+            StepRow { x: 0px; y: 112px; width: 510px; title: "인증 확인"; subtitle: "계정 및 비밀번호 검증"; phase: root.step-phase(3); status: root.step-status(3); }
+            StepRow { x: 0px; y: 168px; width: 510px; title: "카메라 정보 수신"; subtitle: "모델명 및 스펙 정보 조회"; phase: root.step-phase(4); status: root.step-status(4); }
+            StepRow { x: 0px; y: 224px; width: 510px; title: "스트림 URL 확인"; subtitle: "RTSP 영상 스트림 연결 확인"; phase: root.step-phase(5); status: root.step-status(5); }
+        }
+
+        if !root.success && !State.cctv-setting-test-running: Rectangle {
+            x: 25px; y: 374.5px;
+            width: 510px;
+            height: 71.5px;
+            background: #ff646714;
+            border-radius: 14px;
+            border-color: #ff646740;
+            border-width: 1px;
+            Text { x: 19px; y: 14.5px; text: State.cctv-setting-test-error == "" ? "ONVIF 서비스 탐색에서 오류 발생" : State.cctv-setting-test-error; color: #ff6467ff; font-family: "Inter"; font-size: 13px; font-weight: 500; }
+            Text { x: 19px; y: 37px; text: "카메라가 ONVIF를 지원하는지 확인하세요. 포트 번호를 확인하세요."; color: #ffffff80; font-family: "Inter"; font-size: 12px; }
+        }
+
+        if root.success: Rectangle {
+            x: 25px; y: 374.5px;
+            width: 510px;
+            height: 93.5px;
+            background: #4ade8014;
+            border-radius: 14px;
+            border-color: #4ade8040;
+            border-width: 1px;
+            Text { x: 19px; y: 14.5px; text: "카메라 연결 성공"; color: #4ade80ff; font-family: "Inter"; font-size: 13px; font-weight: 500; }
+            Text { x: 19px; y: 47px; text: "모델"; color: #ffffff66; font-family: "Inter"; font-size: 12px; }
+            Text { x: 19px; y: 66px; text: State.cctv-setting-test-model; color: #ffffffff; font-family: "Inter"; font-size: 12px; }
+            Text { x: 154px; y: 47px; text: "해상도"; color: #ffffff66; font-family: "Inter"; font-size: 12px; }
+            Text { x: 154px; y: 66px; text: State.cctv-setting-test-resolution; color: #ffffffff; font-family: "Inter"; font-size: 12px; }
+            Text { x: 259px; y: 47px; text: "프레임"; color: #ffffff66; font-family: "Inter"; font-size: 12px; }
+            Text { x: 259px; y: 66px; text: State.cctv-setting-test-frame; color: #ffffffff; font-family: "Inter"; font-size: 12px; }
+        }
+
+        Rectangle {
+            x: 25px; y: root.success ? 484px : (State.cctv-setting-test-running ? 375.5px : 462px);
+            width: 510px;
+            height: 68px;
+            background: #00000000;
+
+            Rectangle {
+                x: 0px; y: 0px;
+                width: State.cctv-setting-test-running ? 249px : 224px;
+                height: 48px;
+                background: #ffffff14;
+                border-radius: 12px;
+                border-color: #ffffff1a;
+                border-width: 1px;
+                Text { width: parent.width; height: parent.height; text: "닫기"; color: #ffffffff; font-family: "Inter"; font-size: 15px; font-weight: 500; horizontal-alignment: center; vertical-alignment: center; }
+                TouchArea {
+                    width: parent.width;
+                    height: parent.height;
+                    clicked => { State.play-touch-sound();
+                        if State.cctv-setting-test-running {
+                            State.cctv-setting-test-running = false;
+                            State.cctv-stop();
+                        }
+                        State.active-overlay = "";
+                    }
+                }
+            }
+
+            Rectangle {
+                x: State.cctv-setting-test-running ? 261px : 236px; y: 0px;
+                width: State.cctv-setting-test-running ? 249px : 274px;
+                height: 48px;
+                background: root.success ? #155dfcff : (State.cctv-setting-test-running ? #51a2ff1f : #51a2ff26);
+                border-radius: 12px;
+                border-color: root.success ? #00000000 : (State.cctv-setting-test-running ? #51a2ff26 : #51a2ff4d);
+                border-width: 1px;
+                Text { width: parent.width; height: parent.height; text: root.success ? "저장" : (State.cctv-setting-test-running ? "테스트 중..." : "재시도"); color: root.success ? #ffffffff : (State.cctv-setting-test-running ? #ffffff4d : #51a2ffff); font-family: "Inter"; font-size: 15px; font-weight: 500; horizontal-alignment: center; vertical-alignment: center; }
+                TouchArea {
+                    width: parent.width;
+                    height: parent.height;
+                    clicked => { State.play-touch-sound();
+                        if root.success {
+                            State.save-cctv-setting();
+                        } else if !State.cctv-setting-test-running {
+                            State.test-cctv-setting();
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

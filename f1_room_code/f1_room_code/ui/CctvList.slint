@@ -1,0 +1,213 @@
+import { State } from "shared.slint";
+
+component CctvListRow inherits Rectangle {
+    in property <string> title: "";
+    in property <string> detail: "";
+    in property <int> row-index: 0;
+
+    width: 904px;
+    height: 86.5px;
+    background: #ffffff0d;
+    border-radius: 16px;
+    border-color: #ffffff1a;
+    border-width: 1px;
+
+    Rectangle {
+        x: 25px; y: 22px;
+        width: 44px;
+        height: 44px;
+        background: #51a2ff33;
+        border-radius: 12px;
+        Image {
+            x: 10px; y: 10px;
+            width: 24px;
+            height: 24px;
+            source: @image-url("../assets/images/o0SioU.png");
+            image-fit: contain;
+        }
+    }
+
+    Text {
+        x: 85px; y: 20.5px;
+        width: 720px;
+        height: 27px;
+        text: root.title;
+        color: #ffffffff;
+        font-family: "Inter";
+        font-size: 18px;
+        font-weight: 500;
+        vertical-alignment: center;
+    }
+
+    Text {
+        x: 85px; y: 49px;
+        width: 720px;
+        height: 19.5px;
+        text: root.detail;
+        color: #ffffff80;
+        font-family: "Inter";
+        font-size: 13px;
+        font-weight: 500;
+        vertical-alignment: center;
+    }
+
+    TouchArea {
+        x: 1px; y: 1px;
+        width: 779px;
+        height: 84.5px;
+        clicked => { State.play-touch-sound();
+            State.cctv-select-setting-camera(root.row-index);
+            State.previous-page = "GUr03";
+            State.current-page = "foYV2";
+        }
+    }
+
+    Rectangle {
+        x: 806px; y: 25.25px;
+        width: 36px;
+        height: 36px;
+        background: #ff64671a;
+        border-radius: 10px;
+        border-color: #ff646733;
+        border-width: 1px;
+        Image {
+            x: 10px; y: 10px;
+            width: 16px;
+            height: 16px;
+            source: @image-url("../assets/images/HrM48.png");
+            image-fit: contain;
+        }
+        TouchArea {
+            width: parent.width;
+            height: parent.height;
+            clicked => { State.play-touch-sound();
+                State.cctv-setting-delete-index = root.row-index;
+                State.active-overlay = "Dr8p5";
+            }
+        }
+    }
+
+    Image {
+        x: 868px; y: 31.25px;
+        width: 24px;
+        height: 24px;
+        source: @image-url("../assets/images/190uK.png");
+        image-fit: contain;
+    }
+}
+
+export component CctvList inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: @linear-gradient(210.368deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+
+    Rectangle {
+        x: 60px; y: 24px;
+        width: 904px;
+        height: 48px;
+        background: #00000000;
+
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 48px;
+            height: 48px;
+            background: #00000000;
+            border-radius: 16777200px;
+            Image {
+                x: 8px; y: 8px;
+                width: 32px;
+                height: 32px;
+                source: @image-url("../assets/images/1ZUDW.png");
+                image-fit: contain;
+            }
+            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.current-page = "gzCRD"; } }
+        }
+
+        Text {
+            x: 60px; y: -0.5px;
+            width: 155px;
+            height: 48px;
+            text: "CCTV 설정";
+            color: #ffffffff;
+            font-family: "Inter";
+            font-size: 32px;
+            font-weight: 500;
+            vertical-alignment: center;
+        }
+    }
+
+    Text {
+        x: 60px; y: 90.25px;
+        width: 240px;
+        height: 19.5px;
+        text: "등록된 카메라 목록을 관리합니다";
+        color: #ffffff66;
+        font-family: "Inter";
+        font-size: 16px;
+        vertical-alignment: center;
+    }
+
+    Flickable {
+        x: 60px; y: 134px;
+        width: 904px;
+        height: 366px;
+        viewport-height: State.cctv-camera-options.length == 0 ? 0px : State.cctv-camera-options.length * 97.5px - 11px;
+
+        for camera[index] in State.cctv-camera-options: CctvListRow {
+            x: 0px;
+            y: index * 97.5px;
+            title: camera;
+            detail: index < State.cctv-camera-details.length ? State.cctv-camera-details[index] : "";
+            row-index: index + 1;
+        }
+    }
+
+    Rectangle {
+        x: 60px; y: 520px;
+        width: 904px;
+        height: 56px;
+        background: add-button-touch.pressed ? #155dfcff : #51a2ff1f;
+        border-radius: 14px;
+        border-color: add-button-touch.pressed ? #155dfcff : #51a2ff66;
+        border-width: 1.5px;
+
+        add-button-touch := TouchArea {
+            width: parent.width;
+            height: parent.height;
+            clicked => { State.play-touch-sound();
+                State.cctv-setting-ip = "";
+                State.cctv-setting-account = "";
+                State.cctv-setting-password = "";
+                State.cctv-setting-password-mask = "";
+                State.cctv-setting-tested = false;
+                State.cctv-setting-saved = false;
+                State.cctv-setting-test-running = false;
+                State.cctv-setting-test-step = 0;
+                State.cctv-setting-test-error = "";
+                State.cctv-selected-camera = 0;
+                State.previous-page = "GUr03";
+                State.current-page = "UGcOs";
+            }
+        }
+
+        Image {
+            x: 393.5px; y: 18px;
+            width: 20px;
+            height: 20px;
+            source: add-button-touch.pressed ? @image-url("../assets/images/P2HYqf.png") : @image-url("../assets/images/E0G49.png");
+            image-fit: contain;
+        }
+
+        Text {
+            x: 419.5px; y: 20px;
+            width: 120px;
+            height: 24px;
+            text: "새 카메라 추가";
+            color: add-button-touch.pressed ? #ffffffff : #51a2ffff;
+            font-family: "Inter";
+            font-size: 16px;
+            font-weight: 500;
+        }
+    }
+}

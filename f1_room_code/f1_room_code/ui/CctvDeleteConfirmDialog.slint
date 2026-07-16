@@ -1,0 +1,128 @@
+import { State } from "shared.slint";
+
+export component CctvDeleteConfirmDialog inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    background: #000000b2;
+
+    Rectangle {
+        x: 292px; y: 177.5px;
+        width: 440px;
+        height: 245px;
+        clip: true;
+        background: @linear-gradient(212.619deg, #1d293dff 0%, #0f172bff 100%);
+        border-radius: 20px;
+        border-color: #ffffff1a;
+        border-width: 1px;
+
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 438px;
+            height: 77px;
+            background: #00000000;
+
+            Rectangle {
+                x: 24px; y: 20px;
+                width: 36px;
+                height: 36px;
+                background: #ff646726;
+                border-radius: 10px;
+                border-color: #ff64674d;
+                border-width: 1px;
+                Image {
+                    x: 10px; y: 10px;
+                    width: 16px;
+                    height: 16px;
+                    source: @image-url("../assets/images/NIcwn.png");
+                    image-fit: contain;
+                }
+            }
+
+            Text {
+                x: 72px; y: 26px;
+                width: 120px;
+                height: 24px;
+                text: "카메라 삭제";
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 20px;
+                font-weight: 500;
+            }
+
+            Rectangle { x: 0px; y: 76px; width: parent.width; height: 1px; background: #ffffff14; }
+        }
+
+        Text {
+            x: 24px; y: 101.5px;
+            width: 390px;
+            height: 22px;
+            text: (State.cctv-setting-delete-index > 0 && State.cctv-setting-delete-index <= State.cctv-camera-options.length ? State.cctv-camera-options[State.cctv-setting-delete-index - 1] : "CCTV1") + "을(를) 삭제하시겠습니까?";
+            color: #51a2ffff;
+            font-family: "Inter";
+            font-size: 20px;
+            font-weight: 500;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+
+        Text {
+            x: 24px; y: 131.5px;
+            width: 390px;
+            height: 20px;
+            text: "삭제된 카메라 정보는 복구할 수 없습니다.";
+            color: #ffffff73;
+            font-family: "Inter";
+            font-size: 16px;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+
+        Rectangle {
+            x: 24px; y: 177px;
+            width: 189px;
+            height: 48px;
+            background: #ffffff14;
+            border-radius: 12px;
+            border-color: #ffffff1a;
+            border-width: 1px;
+            Text {
+                width: parent.width;
+                height: parent.height;
+                text: "취소";
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 15px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.active-overlay = ""; } }
+        }
+
+        Rectangle {
+            x: 225px; y: 177px;
+            width: 189px;
+            height: 48px;
+            background: #ff646726;
+            border-radius: 12px;
+            border-color: #ff64674d;
+            border-width: 1px;
+            Text {
+                width: parent.width;
+                height: parent.height;
+                text: "삭제";
+                color: #ff6467ff;
+                font-family: "Inter";
+                font-size: 15px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound(); State.cctv-delete-setting-camera(State.cctv-setting-delete-index); }
+            }
+        }
+    }
+}

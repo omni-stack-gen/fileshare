@@ -1,0 +1,265 @@
+import { State, I18n, InteractiveSlider } from "shared.slint";
+
+component MelodySelector inherits Rectangle {
+    in property <string> title-key;
+    in property <int> selected-value;
+    callback selected(int);
+
+    width: 864px;
+    height: 142px;
+    background: #ffffff0d;
+    border-radius: 20px;
+
+    Rectangle {
+        x: 32px; y: 24px;
+        width: 800px;
+        height: 30px;
+        background: #00000000;
+        Image {
+            x: 0px; y: 3px;
+            width: 24px;
+            height: 24px;
+            source: @image-url("../assets/images/w2pu1.png");
+            image-fit: contain;
+        }
+        Text {
+            x: 36px; y: 0px;
+            width: 180px;
+            height: 30px;
+            text: I18n.text(root.title-key);
+            color: #ffffffff;
+            font-family: "Inter";
+            font-size: 20px;
+            font-weight: 500;
+            vertical-alignment: center;
+        }
+    }
+
+    Rectangle {
+        x: 32px; y: 70px;
+        width: 800px;
+        height: 48px;
+        background: #00000000;
+
+        for value[index] in [1, 2, 3, 4, 5]: Rectangle {
+            x: 162.4px * index; y: 0px;
+            width: 150.4px;
+            height: 48px;
+            background: root.selected-value == value ? #155dfcff : #ffffff1a;
+            border-radius: 12px;
+
+            Text {
+                x: 16px; y: 12px;
+                width: 118.4px;
+                height: 24px;
+                text: I18n.melody_label(value);
+                color: root.selected-value == value ? #ffffffff : #ffffffb2;
+                font-family: "Inter";
+                font-size: 16px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound(); root.selected(value); }
+            }
+        }
+    }
+}
+
+component SettingSliderRow inherits Rectangle {
+    in property <string> title-key;
+    in property <string> setting-key;
+    in-out property <float> value;
+
+    width: 864px;
+    height: 115px;
+    background: #ffffff0d;
+    border-radius: 20px;
+
+    Rectangle {
+        x: 32px; y: 24px;
+        width: 800px;
+        height: 39px;
+        background: #00000000;
+
+        Rectangle {
+            x: 0px; y: 4.5px;
+            width: 220px;
+            height: 30px;
+            background: #00000000;
+            Image {
+                x: 0px; y: 3px;
+                width: 24px;
+                height: 24px;
+                source: @image-url("../assets/images/OEFcG.png");
+                image-fit: contain;
+            }
+            Text {
+                x: 36px; y: 0px;
+                width: 184px;
+                height: 30px;
+                text: I18n.text(root.title-key);
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 20px;
+                font-weight: 500;
+                vertical-alignment: center;
+            }
+        }
+
+        Rectangle {
+            x: 730px; y: 0px;
+            width: 70px;
+            height: 39px;
+            background: #155dfc4d;
+            border-radius: 10px;
+            Text {
+                width: parent.width;
+                height: parent.height;
+                text: round(root.value * 100) + "%";
+                color: #8ec5ffff;
+                font-family: "Inter";
+                font-size: 18px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+    }
+
+    InteractiveSlider {
+        x: 32px; y: 73px;
+        width: 800px;
+        height: 24px;
+        track-y: 6px;
+        track-height: 12px;
+        track-color: #ffffff1a;
+        fill-color: @linear-gradient(270.000deg, #2b7fffff 0%, #155dfcff 100%);
+        knob-color: #ffffffff;
+        knob-size: 24px;
+        knob-y: 0px;
+        setting-key: root.setting-key;
+        value <=> root.value;
+    }
+}
+
+export component SoundSetting inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: #ffffffff;
+
+    Rectangle {
+        x: 0px; y: 0px;
+        width: 1024px;
+        height: 600px;
+        background: #1e2939ff;
+
+        Rectangle {
+            x: 80px; y: 40px;
+            width: 864px;
+            height: 48px;
+            background: #00000000;
+
+            Rectangle {
+                x: 24px; y: 0px;
+                width: 48px;
+                height: 48px;
+                background: #00000000;
+                border-radius: 33554400px;
+                Image {
+                    x: 8px; y: 8px;
+                    width: 32px;
+                    height: 32px;
+                    source: @image-url("../assets/images/1ZUDW.png");
+                    image-fit: contain;
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.current-page = "kKrEC"; } }
+            }
+
+            Rectangle {
+                x: 360.062px; y: 0px;
+                width: 143.875px;
+                height: 48px;
+                background: #00000000;
+                Text {
+                    width: parent.width;
+                    height: parent.height;
+                    text: I18n.text("sound_setting");
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 32px;
+                    font-weight: 500;
+                    vertical-alignment: center;
+                }
+            }
+        }
+
+        sound-scroll := Flickable {
+            x: 80px; y: 120px;
+            width: 864px;
+            height: 480px;
+            viewport-height: 709px;
+
+            MelodySelector {
+                x: 0px; y: 0px;
+                title-key: "door_call_sound";
+                selected-value: State.door-call-melody;
+                selected(value) => {
+                    State.door-call-melody = value;
+                    State.save-int-setting("sound.door_call_melody", value);
+                }
+            }
+
+            MelodySelector {
+                x: 0px; y: 162px;
+                title-key: "guard_call_sound";
+                selected-value: State.guard-call-melody;
+                selected(value) => {
+                    State.guard-call-melody = value;
+                    State.save-int-setting("sound.guard_call_melody", value);
+                }
+            }
+
+            SettingSliderRow {
+                x: 0px; y: 324px;
+                title-key: "ring_volume";
+                setting-key: "sound.ring_volume";
+                value <=> State.sound-call-volume-value;
+            }
+
+            SettingSliderRow {
+                x: 0px; y: 459px;
+                title-key: "talk_volume";
+                setting-key: "sound.talk_volume";
+                value <=> State.sound-talk-volume-value;
+            }
+
+            SettingSliderRow {
+                x: 0px; y: 594px;
+                title-key: "mic_sensitivity";
+                setting-key: "sound.mic_sensitivity";
+                value <=> State.sound-mic-volume-value;
+            }
+        }
+
+        Rectangle {
+            x: 982px; y: 191px;
+            width: 7px;
+            height: 376px;
+            background: #374151ff;
+            border-radius: 16777200px;
+            Rectangle {
+                x: -1px; y: -sound-scroll.viewport-y / (709px - 480px) * (376px - 39px);
+                width: 9px;
+                height: 39px;
+                background: #dededeff;
+                border-radius: 10px;
+            }
+        }
+    }
+}

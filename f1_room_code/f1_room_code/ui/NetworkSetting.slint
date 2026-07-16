@@ -1,0 +1,404 @@
+import { State, I18n } from "shared.slint";
+
+component WifiListRow inherits Rectangle {
+    in property <string> ssid: "";
+    in property <bool> open-network: false;
+
+    width: 896px;
+    height: 56px;
+    background: #263241ff;
+    border-radius: 12px;
+
+    function open-dialog() {
+        if !State.wifi-enabled || State.wifi-dialog-locked {
+            return;
+        }
+        State.wifi-target-ssid = root.ssid;
+        State.wifi-target-open = root.open-network;
+        State.wifi-password = "";
+        State.wifi-password-mask = "";
+        State.wifi-password-length = 0;
+        State.password-visible = false;
+        State.keyboard-target = "wifi";
+        State.keyboard-mode = "lower";
+        State.active-overlay = "wifi-password";
+    }
+
+    Rectangle {
+        x: 20px;
+        y: 16px;
+        width: 810px;
+        height: 24px;
+        background: #00000000;
+        Image {
+            x: 0px;
+            y: 1px;
+            width: 20px;
+            height: 20px;
+            source: @image-url("../assets/images/1fikV.png");
+            image-fit: contain;
+        }
+        Text {
+            x: 34px;
+            y: 0px;
+            width: 520px;
+            height: 24px;
+            text: root.ssid;
+            color: #ffffffff;
+            font-family: "Inter";
+            font-size: 16px;
+            font-weight: 500;
+            vertical-alignment: center;
+        }
+    }
+
+    Rectangle {
+        x: 830px;
+        y: 19px;
+        width: root.open-network ? 16px : 46px;
+        height: 18px;
+        background: #00000000;
+        Image {
+            x: 0px;
+            y: 1px;
+            width: 16px;
+            height: 16px;
+            source: @image-url("../assets/images/0VJlb.png");
+            image-fit: contain;
+        }
+        if !root.open-network: Image {
+            x: 28px;
+            y: 0px;
+            width: 18px;
+            height: 18px;
+            source: @image-url("../assets/images/2Rkbr.png");
+            image-fit: contain;
+        }
+    }
+
+    TouchArea {
+        width: parent.width;
+        height: parent.height;
+        clicked => { State.play-touch-sound();
+            root.open-dialog();
+        }
+    }
+}
+
+export component NetworkSetting inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: #ffffffff;
+
+    function status-label() -> string {
+        if !State.wifi-enabled {
+            return I18n.text("wifi_off");
+        }
+        if State.wifi-status == "connected" {
+            return I18n.text("connected");
+        }
+        if State.wifi-status == "connecting" {
+            return I18n.text("connect");
+        }
+        if State.wifi-status == "scanning" {
+            return I18n.text("refresh");
+        }
+        return I18n.text("wifi_on");
+    }
+
+    Rectangle {
+        x: 0px;
+        y: 0px;
+        width: 1024px;
+        height: 600px;
+        background: @linear-gradient(210.368deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+
+        Rectangle {
+            x: 60px;
+            y: 24px;
+            width: 904px;
+            height: 48px;
+            background: #00000000;
+            Rectangle {
+                x: 24px;
+                y: 0px;
+                width: 48px;
+                height: 48px;
+                background: #00000000;
+                border-radius: 33554400px;
+                Image {
+                    x: 8px;
+                    y: 8px;
+                    width: 32px;
+                    height: 32px;
+                    source: @image-url("../assets/images/1ZUDW.png");
+                    image-fit: contain;
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.current-page = "kKrEC"; } }
+            }
+            Text {
+                x: 397.641px;
+                y: 0px;
+                width: 108.734px;
+                height: 48px;
+                text: I18n.text("network");
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 32px;
+                font-weight: 500;
+                vertical-alignment: center;
+            }
+        }
+
+        Rectangle {
+            x: 60px;
+            y: 92px;
+            width: 904px;
+            height: 508px;
+            background: #00000000;
+
+            Rectangle {
+                x: 0px;
+                y: 0px;
+                width: 904px;
+                height: 90.5px;
+                background: #ffffff0d;
+                border-radius: 16px;
+                border-color: #ffffff1a;
+                border-width: 1px;
+                Rectangle {
+                    x: 25px;
+                    y: 21px;
+                    width: 180px;
+                    height: 48.5px;
+                    background: #00000000;
+                    Image {
+                        x: 0px;
+                        y: 12.25px;
+                        width: 24px;
+                        height: 24px;
+                        source: @image-url("../assets/images/H0Tqu.png");
+                        image-fit: contain;
+                    }
+                    Text {
+                        x: 40px;
+                        y: 0px;
+                        width: 120px;
+                        height: 27px;
+                        text: "Wi-Fi";
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 18px;
+                        font-weight: 500;
+                        vertical-alignment: center;
+                    }
+                    Text {
+                        x: 40px;
+                        y: 29px;
+                        width: 140px;
+                        height: 19.5px;
+                        text: root.status-label();
+                        color: #ffffff99;
+                        font-family: "Inter";
+                        font-size: 13px;
+                        vertical-alignment: center;
+                    }
+                }
+                Rectangle {
+                    x: 819px;
+                    y: 29.25px;
+                    width: 60px;
+                    height: 32px;
+                    background: State.wifi-enabled ? #155dfcff : #ffffff33;
+                    border-radius: 33554400px;
+                    Rectangle {
+                        x: State.wifi-enabled ? 31px : 3px;
+                        y: 3px;
+                        width: 26px;
+                        height: 26px;
+                        background: #ffffffff;
+                        border-radius: 33554400px;
+                    }
+                    TouchArea {
+                        width: parent.width;
+                        height: parent.height;
+                        clicked => { State.play-touch-sound();
+                            State.wifi-set-enabled(!State.wifi-enabled);
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                x: 0px;
+                y: 106.5px;
+                width: 904px;
+                height: 36px;
+                background: #00000000;
+                Text {
+                    x: 8px;
+                    y: 6.75px;
+                    width: 200px;
+                    height: 22.5px;
+                    text: I18n.text("available_networks");
+                    color: #ffffffb2;
+                    font-family: "Inter";
+                    font-size: 15px;
+                    font-weight: 500;
+                    vertical-alignment: center;
+                }
+                Rectangle {
+                    x: 819.812px;
+                    y: 0px;
+                    width: 76.188px;
+                    height: 36px;
+                    background: #ffffff1a;
+                    border-radius: 8px;
+                    Text {
+                        width: parent.width;
+                        height: parent.height;
+                        text: I18n.text("refresh");
+                        color: #ffffffcc;
+                        font-family: "Inter";
+                        font-size: 13px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+                    TouchArea {
+                        width: parent.width;
+                        height: parent.height;
+                        clicked => { State.play-touch-sound();
+                            State.refresh-wifi();
+                        }
+                    }
+                }
+            }
+
+            network-scroll := Flickable {
+                x: 0px;
+                y: 158.5px;
+                width: 904px;
+                height: 349.5px;
+                viewport-height: 86px + State.wifi-scan-ssids.length * 64px;
+
+                Rectangle {
+                    x: 0px;
+                    y: 0px;
+                    width: 904px;
+                    height: 86px + State.wifi-scan-ssids.length * 64px;
+                    background: #00000000;
+                    clip: true;
+
+                    Rectangle {
+                        x: 0px;
+                        y: 0px;
+                        width: 896px;
+                        height: 78px;
+                        background: State.connected-ssid == "" ? #263241ff : #1d3768ff;
+                        border-radius: 12px;
+                        border-color: State.connected-ssid == "" ? #ffffff14 : #2b7fff4d;
+                        border-width: 1px;
+                        Rectangle {
+                            x: 20px;
+                            y: 17px;
+                            width: 780px;
+                            height: 44px;
+                            background: #00000000;
+                            Image {
+                                x: 0px;
+                                y: 12px;
+                                width: 20px;
+                                height: 20px;
+                                source: @image-url("../assets/images/5HbN6.png");
+                                image-fit: contain;
+                            }
+                            Text {
+                                x: 34px;
+                                y: 0px;
+                                width: 240px;
+                                height: 24px;
+                                text: State.connected-ssid == "" ? "--" : State.connected-ssid;
+                                color: State.connected-ssid == "" ? #ffffffff : #51a2ffff;
+                                font-family: "Inter";
+                                font-size: 16px;
+                                font-weight: 500;
+                                vertical-alignment: center;
+                            }
+                            Text {
+                                x: 34px;
+                                y: 26px;
+                                width: 140px;
+                                height: 18px;
+                                text: State.connected-ssid == "" ? root.status-label() : I18n.text("connected");
+                                color: State.connected-ssid == "" ? #ffffff99 : #51a2ffb2;
+                                font-family: "Inter";
+                                font-size: 12px;
+                                font-weight: 500;
+                                vertical-alignment: center;
+                            }
+                        }
+                        if State.connected-ssid != "": Rectangle {
+                            x: 800px;
+                            y: 30px;
+                            width: 76px;
+                            height: 18px;
+                            background: #00000000;
+                            Image {
+                                x: 0px;
+                                y: 1px;
+                                width: 16px;
+                                height: 16px;
+                                source: @image-url("../assets/images/0VJlb.png");
+                                image-fit: contain;
+                            }
+                            Image {
+                                x: 28px;
+                                y: 0px;
+                                width: 18px;
+                                height: 18px;
+                                source: @image-url("../assets/images/7DjyJ.png");
+                                image-fit: contain;
+                            }
+                            Image {
+                                x: 58px;
+                                y: 0px;
+                                width: 18px;
+                                height: 18px;
+                                source: @image-url("../assets/images/7s90R.png");
+                                image-fit: contain;
+                            }
+                        }
+                    }
+
+                    for ssid[index] in State.wifi-scan-ssids: WifiListRow {
+                        x: 0px;
+                        y: 86px + 64px * index;
+                        ssid: ssid;
+                        open-network: index < State.wifi-scan-open-flags.length && State.wifi-scan-open-flags[index];
+                    }
+                }
+            }
+
+            Rectangle {
+                x: 980px;
+                y: 252px;
+                width: 7px;
+                height: 348px;
+                background: #374151ff;
+                border-radius: 16777200px;
+                Rectangle {
+                    x: -1px;
+                    y: network-scroll.viewport-height <= network-scroll.height
+                        ? 0px
+                        : -network-scroll.viewport-y / (network-scroll.viewport-height - network-scroll.height) * (348px - 39px);
+                    width: 9px;
+                    height: 39px;
+                    background: #dededeff;
+                    border-radius: 10px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,795 @@
+import { State, I18n } from "shared.slint";
+
+component PickerPopup inherits Rectangle {
+    in property <bool> second-unit: false;
+    in property <int> selected-value: 1;
+    callback picked(int);
+
+    background: #2d394cff;
+    border-radius: 12px;
+    border-width: 1px;
+    border-color: #ffffff14;
+    clip: true;
+
+    picker-scroll := Flickable {
+        width: parent.width;
+        height: parent.height;
+        viewport-height: 5 * 36px;
+
+        for value[index] in [1, 2, 3, 4, 5]: Rectangle {
+            x: 0px;
+            y: 36px * index;
+            width: parent.width;
+            height: 36px;
+            background: value == root.selected-value ? #155dfc66 : #00000000;
+
+            Text {
+                x: 16px;
+                y: 8px;
+                width: parent.width - 32px;
+                height: 20px;
+                text: root.second-unit ? I18n.second_label(value) : I18n.minute_label(value);
+                color: value == root.selected-value ? #ffffffff : #ffffffcc;
+                font-family: "Inter";
+                font-size: 14px;
+                font-weight: value == root.selected-value ? 500 : 400;
+                vertical-alignment: center;
+            }
+
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    root.picked(value);
+                }
+            }
+        }
+    }
+}
+
+component CallTimeoutPickerPopup inherits Rectangle {
+    in property <int> selected-value: 30;
+    callback picked(int);
+
+    background: #2d394cff;
+    border-radius: 12px;
+    border-width: 1px;
+    border-color: #ffffff14;
+    clip: true;
+
+    for value[index] in [30, 60, 90]: Rectangle {
+        x: 0px;
+        y: 36px * index;
+        width: parent.width;
+        height: 36px;
+        background: value == root.selected-value ? #155dfc66 : #00000000;
+
+        Text {
+            x: 16px;
+            y: 8px;
+            width: parent.width - 32px;
+            height: 20px;
+            text: I18n.second_label(value);
+            color: value == root.selected-value ? #ffffffff : #ffffffcc;
+            font-family: "Inter";
+            font-size: 14px;
+            font-weight: value == root.selected-value ? 500 : 400;
+            vertical-alignment: center;
+        }
+
+        TouchArea {
+            width: parent.width;
+            height: parent.height;
+            clicked => { State.play-touch-sound();
+                root.picked(value);
+            }
+        }
+    }
+}
+
+export component ModeSetting inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: #ffffffff;
+    function toggle-picker(name: string) {
+        State.active-picker = State.active-picker == name ? "" : name;
+    }
+
+    function pick-value(name: string, value: int) {
+        if name == "mode-absent" {
+            State.absent-mode-minutes = value;
+            State.absent-mode-time = I18n.minute_label(value);
+            State.save-int-setting("mode.absent_timeout_min", value);
+        } else if name == "mode-communication" {
+            State.communication-minutes = value;
+            State.communication-time = I18n.minute_label(value);
+            State.save-int-setting("mode.communication_timeout_min", value);
+        } else if name == "mode-call-timeout" {
+            State.call-timeout-seconds = value;
+            State.call-timeout-value = I18n.second_label(value);
+            State.save-int-setting("mode.call_ring_timeout_sec", value);
+        } else if name == "mode-door-open" {
+            State.door-open-seconds = value;
+            State.second-level-value = I18n.second_label(value);
+            State.save-int-setting("mode.door_open_duration_sec", value);
+        }
+        State.active-picker = "";
+    }
+
+    Rectangle {
+        x: 0px; y: 0px;
+        width: 1024px;
+        height: 600px;
+        background: #ffffffff;
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 1024px;
+            height: 600px;
+            background: @linear-gradient(210.368deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+            Rectangle {
+                x: 60px; y: 24px;
+                width: 904px;
+                height: 48px;
+                background: #00000000;
+                Rectangle {
+                    x: 24px; y: 0px;
+                    width: 48px;
+                    height: 48px;
+                    background: #00000000;
+                    border-radius: 33554400px;
+                    Image {
+                        x: 8px; y: 8px;
+                        width: 32px;
+                        height: 32px;
+                        source: @image-url("../assets/images/1ZUDW.png");
+                        image-fit: contain;
+                    }
+                    TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.active-overlay = ""; State.active-picker = ""; State.current-page = "kKrEC"; } }
+                }
+                Rectangle {
+                    x: 397.641px; y: 0px;
+                    width: 108.734px;
+                    height: 48px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: -1px;
+                        text: I18n.text("mode_setting");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 32px;
+                        font-weight: 500;
+                    }
+                }
+            }
+            Rectangle {
+                x: 60px; y: 92px;
+                width: 904px;
+                height: 484px;
+                background: #00000000;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 904px;
+                    height: 74px;
+                    background: #ffffff0d;
+                    border-radius: 14px;
+                    border-color: #ffffff1a;
+                    border-width: 1px;
+                    Rectangle {
+                        x: 21px; y: 15px;
+                        width: 150.5px;
+                        height: 44px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 4px;
+                            width: 36px;
+                            height: 36px;
+                            background: #ffffff1a;
+                            border-radius: 10px;
+                            Image {
+                                x: 8px; y: 8px;
+                                width: 20px;
+                                height: 20px;
+                                source: @image-url("../assets/images/lFBuT.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 50px; y: 0px;
+                            width: 100.5px;
+                            height: 44px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 100.5px;
+                                height: 24px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    width: parent.width;
+                                    height: parent.height;
+                                    text: I18n.text("clock_screen");
+                                    color: #ffffffff;
+                                    font-family: "Inter";
+                                    font-size: 16px;
+                                    font-weight: 500;
+                                    vertical-alignment: center;
+                                }
+                            }
+                            Rectangle {
+                                x: 0px; y: 26px;
+                                width: 100.5px;
+                                height: 18px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    text: I18n.text("clock_screen_desc");
+                                    color: #ffffff99;
+                                    font-family: "Inter";
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+                    Rectangle {
+                        x: 823px; y: 21px;
+                        width: 60px;
+                        height: 32px;
+                        background: State.clock-screen-enabled ? #155dfcff : #ffffff33;
+                        border-radius: 33554400px;
+                        Rectangle {
+                            x: State.clock-screen-enabled ? 31px : 3px; y: 3px;
+                            width: 26px;
+                            height: 26px;
+                            background: #ffffffff;
+                            border-radius: 33554400px;
+                        }
+                        TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound();
+                            State.clock-screen-enabled = !State.clock-screen-enabled;
+                            State.save-bool-setting("mode.clock_screen_enabled", State.clock-screen-enabled);
+                        } }
+                    }
+                }
+                Rectangle {
+                    x: 0px; y: 84px;
+                    width: 904px;
+                    height: 74px;
+                    background: #ffffff0d;
+                    border-radius: 14px;
+                    border-color: #ffffff1a;
+                    border-width: 1px;
+                    Rectangle {
+                        x: 21px; y: 15px;
+                        width: 150.5px;
+                        height: 44px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 4px;
+                            width: 36px;
+                            height: 36px;
+                            background: #ffffff1a;
+                            border-radius: 10px;
+                            Image {
+                                x: 8px; y: 8px;
+                                width: 20px;
+                                height: 20px;
+                                source: @image-url("../assets/images/1EPjf.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 50px; y: 0px;
+                            width: 100.5px;
+                            height: 44px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 100.5px;
+                                height: 24px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    width: parent.width;
+                                    height: parent.height;
+                                    text: I18n.text("auto_capture");
+                                    color: #ffffffff;
+                                    font-family: "Inter";
+                                    font-size: 16px;
+                                    font-weight: 500;
+                                    vertical-alignment: center;
+                                }
+                            }
+                            Rectangle {
+                                x: 0px; y: 26px;
+                                width: 100.5px;
+                                height: 18px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    text: I18n.text("auto_capture_desc");
+                                    color: #ffffff99;
+                                    font-family: "Inter";
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+                    Rectangle {
+                        x: 823px; y: 21px;
+                        width: 60px;
+                        height: 32px;
+                        background: State.auto-capture-enabled ? #155dfcff : #ffffff33;
+                        border-radius: 33554400px;
+                        Rectangle {
+                            x: State.auto-capture-enabled ? 31px : 3px; y: 3px;
+                            width: 26px;
+                            height: 26px;
+                            background: #ffffffff;
+                            border-radius: 33554400px;
+                        }
+                        TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound();
+                            State.auto-capture-enabled = !State.auto-capture-enabled;
+                            State.save-bool-setting("mode.auto_capture_enabled", State.auto-capture-enabled);
+                        } }
+                    }
+                }
+                Rectangle {
+                    x: 0px; y: 168px;
+                    width: 904px;
+                    height: 74.5px;
+                    background: #ffffff0d;
+                    border-radius: 14px;
+                    border-color: #ffffff1a;
+                    border-width: 1px;
+                    Rectangle {
+                        x: 20px; y: 15.25px;
+                        width: 170.859px;
+                        height: 44px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 4px;
+                            width: 36px;
+                            height: 36px;
+                            background: #ffffff1a;
+                            border-radius: 10px;
+                            Image {
+                                x: 8px; y: 8px;
+                                width: 20px;
+                                height: 20px;
+                                source: @image-url("../assets/images/o0fr8.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 50px; y: 0px;
+                            width: 120.859px;
+                            height: 44px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 120.859px;
+                                height: 24px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    width: parent.width;
+                                    height: parent.height;
+                                    text: I18n.text("absent_mode_setting");
+                                    color: #ffffffff;
+                                    font-family: "Inter";
+                                    font-size: 16px;
+                                    font-weight: 500;
+                                    vertical-alignment: center;
+                                }
+                            }
+                            Rectangle {
+                                x: 0px; y: 26px;
+                                width: 120.859px;
+                                height: 18px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    text: I18n.text("absent_mode_desc");
+                                    color: #ffffff99;
+                                    font-family: "Inter";
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+                    Rectangle {
+                        x: 764px; y: 15px;
+                        width: 120px;
+                        height: 44.5px;
+                        background: #ffffff1a;
+                        border-radius: 10px;
+                        border-color: #ffffff1a;
+                        border-width: 1px;
+                        Rectangle {
+                            x: 16px; y: 11px;
+                            width: 21.703px;
+                            height: 22.5px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.minute_label(State.absent-mode-minutes);
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 15px;
+                                font-weight: 500;
+                                horizontal-alignment: center;
+                                vertical-alignment: center;
+                            }
+                        }
+                        Image {
+                            x: 86px; y: 13.25px;
+                            width: 18px;
+                            height: 18px;
+                            source: @image-url("../assets/images/0mC8Q.png");
+                            image-fit: contain;
+                        }
+                    }
+                    TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); root.toggle-picker("mode-absent"); } }
+                }
+                Rectangle {
+                    x: 0px; y: 252.5px;
+                    width: 904px;
+                    height: 74.5px;
+                    background: #ffffff0d;
+                    border-radius: 14px;
+                    border-color: #ffffff1a;
+                    border-width: 1px;
+                    Rectangle {
+                        x: 20px; y: 15.25px;
+                        width: 140.312px;
+                        height: 44px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 4px;
+                            width: 36px;
+                            height: 36px;
+                            background: #ffffff1a;
+                            border-radius: 10px;
+                            Image {
+                                x: 8px; y: 8px;
+                                width: 20px;
+                                height: 20px;
+                                source: @image-url("../assets/images/nRbuR.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 50px; y: 0px;
+                            width: 90.312px;
+                            height: 44px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 90.312px;
+                                height: 24px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    width: parent.width;
+                                    height: parent.height;
+                                    text: I18n.text("call_time_setting");
+                                    color: #ffffffff;
+                                    font-family: "Inter";
+                                    font-size: 16px;
+                                    font-weight: 500;
+                                    vertical-alignment: center;
+                                }
+                            }
+                            Rectangle {
+                                x: 0px; y: 26px;
+                                width: 90.312px;
+                                height: 18px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    text: I18n.text("call_time_desc");
+                                    color: #ffffff99;
+                                    font-family: "Inter";
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+                    Rectangle {
+                        x: 764px; y: 15px;
+                        width: 120px;
+                        height: 44.5px;
+                        background: #ffffff1a;
+                        border-radius: 10px;
+                        border-color: #ffffff1a;
+                        border-width: 1px;
+                        Rectangle {
+                            x: 16px; y: 11px;
+                            width: 22.062px;
+                            height: 22.5px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.minute_label(State.communication-minutes);
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 15px;
+                                font-weight: 500;
+                                horizontal-alignment: center;
+                                vertical-alignment: center;
+                            }
+                        }
+                        Image {
+                            x: 86px; y: 13.25px;
+                            width: 18px;
+                            height: 18px;
+                            source: @image-url("../assets/images/0mC8Q.png");
+                            image-fit: contain;
+                        }
+                    }
+                    TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); root.toggle-picker("mode-communication"); } }
+                }
+                Rectangle {
+                    x: 0px; y: 337px;
+                    width: 904px;
+                    height: 74.5px;
+                    background: #ffffff0d;
+                    border-radius: 14px;
+                    border-color: #ffffff1a;
+                    border-width: 1px;
+                    Rectangle {
+                        x: 20px; y: 15.25px;
+                        width: 150.5px;
+                        height: 44px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 4px;
+                            width: 36px;
+                            height: 36px;
+                            background: #ffffff1a;
+                            border-radius: 10px;
+                            Image {
+                                x: 8px; y: 8px;
+                                width: 20px;
+                                height: 20px;
+                                source: @image-url("../assets/images/d7ecR.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 50px; y: 0px;
+                            width: 100.5px;
+                            height: 44px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 100.5px;
+                                height: 24px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    width: parent.width;
+                                    height: parent.height;
+                                    text: I18n.text("door_open_time");
+                                    color: #ffffffff;
+                                    font-family: "Inter";
+                                    font-size: 16px;
+                                    font-weight: 500;
+                                    vertical-alignment: center;
+                                }
+                            }
+                            Rectangle {
+                                x: 0px; y: 26px;
+                                width: 100.5px;
+                                height: 18px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    text: I18n.text("door_open_time_desc");
+                                    color: #ffffff99;
+                                    font-family: "Inter";
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+                    Rectangle {
+                        x: 764px; y: 15px;
+                        width: 120px;
+                        height: 44.5px;
+                        background: #ffffff1a;
+                        border-radius: 10px;
+                        border-color: #ffffff1a;
+                        border-width: 1px;
+                        Rectangle {
+                            x: 16px; y: 11px;
+                            width: 22.062px;
+                            height: 22.5px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.second_label(State.door-open-seconds);
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 15px;
+                                font-weight: 500;
+                                horizontal-alignment: center;
+                                vertical-alignment: center;
+                            }
+                        }
+                        Image {
+                            x: 86px; y: 13.25px;
+                            width: 18px;
+                            height: 18px;
+                            source: @image-url("../assets/images/0mC8Q.png");
+                            image-fit: contain;
+                        }
+                    }
+                    TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); root.toggle-picker("mode-door-open"); } }
+                }
+                Rectangle {
+                    x: 0px; y: 421.5px;
+                    width: 904px;
+                    height: 74.5px;
+                    background: #ffffff0d;
+                    border-radius: 14px;
+                    border-color: #ffffff1a;
+                    border-width: 1px;
+                    Rectangle {
+                        x: 20px; y: 15.25px;
+                        width: 170px;
+                        height: 44px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 4px;
+                            width: 36px;
+                            height: 36px;
+                            background: #ffffff1a;
+                            border-radius: 10px;
+                            Image {
+                                x: 8px; y: 8px;
+                                width: 20px;
+                                height: 20px;
+                                source: @image-url("../assets/images/nRbuR.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 50px; y: 0px;
+                            width: 120px;
+                            height: 44px;
+                            background: #00000000;
+                            Rectangle {
+                                x: 0px; y: 0px;
+                                width: 120px;
+                                height: 24px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    width: parent.width;
+                                    height: parent.height;
+                                    text: I18n.text("call_timeout_setting");
+                                    color: #ffffffff;
+                                    font-family: "Inter";
+                                    font-size: 16px;
+                                    font-weight: 500;
+                                    vertical-alignment: center;
+                                }
+                            }
+                            Rectangle {
+                                x: 0px; y: 26px;
+                                width: 120px;
+                                height: 18px;
+                                background: #00000000;
+                                Text {
+                                    x: 0px; y: 0px;
+                                    text: I18n.text("call_timeout_desc");
+                                    color: #ffffff99;
+                                    font-family: "Inter";
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+                    Rectangle {
+                        x: 764px; y: 15px;
+                        width: 120px;
+                        height: 44.5px;
+                        background: #ffffff1a;
+                        border-radius: 10px;
+                        border-color: #ffffff1a;
+                        border-width: 1px;
+                        Rectangle {
+                            x: 16px; y: 11px;
+                            width: 52px;
+                            height: 22.5px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.second_label(State.call-timeout-seconds);
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 15px;
+                                font-weight: 500;
+                                horizontal-alignment: center;
+                                vertical-alignment: center;
+                            }
+                        }
+                        Image {
+                            x: 86px; y: 13.25px;
+                            width: 18px;
+                            height: 18px;
+                            source: @image-url("../assets/images/0mC8Q.png");
+                            image-fit: contain;
+                        }
+                    }
+                    TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); root.toggle-picker("mode-call-timeout"); } }
+                }
+            }
+            if State.active-picker != "": Rectangle {
+                x: 0px;
+                y: 0px;
+                width: 1024px;
+                height: 600px;
+                background: #00000000;
+
+                TouchArea {
+                    width: parent.width;
+                    height: parent.height;
+                    clicked => { State.play-touch-sound();
+                        State.active-picker = "";
+                    }
+                }
+            }
+            if State.active-picker == "mode-absent": PickerPopup {
+                x: 804px;
+                y: 324px;
+                width: 140px;
+                height: 180px;
+                selected-value: State.absent-mode-minutes;
+                picked(value) => {
+                    root.pick-value("mode-absent", value);
+                }
+            }
+            if State.active-picker == "mode-communication": PickerPopup {
+                x: 804px;
+                y: 408px;
+                width: 140px;
+                height: 180px;
+                selected-value: State.communication-minutes;
+                picked(value) => {
+                    root.pick-value("mode-communication", value);
+                }
+            }
+            if State.active-picker == "mode-door-open": PickerPopup {
+                x: 804px;
+                y: 304px;
+                width: 140px;
+                height: 180px;
+                second-unit: true;
+                selected-value: State.door-open-seconds;
+                picked(value) => {
+                    root.pick-value("mode-door-open", value);
+                }
+            }
+            if State.active-picker == "mode-call-timeout": CallTimeoutPickerPopup {
+                x: 804px;
+                y: 388px;
+                width: 140px;
+                height: 108px;
+                selected-value: State.call-timeout-seconds;
+                picked(value) => {
+                    root.pick-value("mode-call-timeout", value);
+                }
+            }
+        }
+    }
+}

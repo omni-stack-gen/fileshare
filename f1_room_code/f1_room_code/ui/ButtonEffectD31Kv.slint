@@ -1,0 +1,33 @@
+import { I18n } from "shared.slint";
+
+export component ButtonEffectD31Kv inherits Rectangle {
+    width: 110px;
+    height: 132px;
+    clip: true;
+    border-radius: 14px;
+    background: #bebbb9ff;
+    Image {
+        x: 39px; y: 36px;
+        width: 32px;
+        height: 32px;
+        source: @image-url("../assets/images/IugYF.png");
+        image-fit: contain;
+    }
+    Rectangle {
+        x: 42.887px; y: 76px;
+        width: 24.227px;
+        height: 20px;
+        background: #00000000;
+        Text {
+            width: parent.width;
+            height: parent.height;
+            text: I18n.text("end");
+            color: #ff0505ff;
+            font-family: "Inter";
+            font-size: 14px;
+            font-weight: 500;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+    }
+}

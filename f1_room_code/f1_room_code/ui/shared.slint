@@ -1,0 +1,647 @@
+export global State {
+    in-out property <string> current-page: "LCvek";
+    in-out property <string> previous-page: "LCvek";
+    in-out property <string> active-overlay: "";
+    in-out property <string> pressed-effect: "";
+    in-out property <bool> call-effect-locked: false;
+    in-out property <bool> call-enabled: true;
+    in-out property <string> call-session-state: "idle";
+    in-out property <string> call-peer-id: "";
+    in-out property <bool> call-video-active: false;
+    in-out property <bool> call-audio-active: false;
+    in-out property <string> call-last-error: "";
+    in-out property <bool> call-snapshot-visible: false;
+    in-out property <image> call-snapshot-image;
+    in-out property <bool> call-bridge-prompt-visible: false;
+    in-out property <string> call-bridge-prompt-text: "";
+    in-out property <string> incoming-call-page: "Bu0fW";
+    in-out property <bool> door-call-effect-active: false;
+    in-out property <bool> door-open-effect-active: false;
+    in-out property <bool> lobby-call-effect-active: false;
+    in-out property <bool> lobby-open-effect-active: false;
+    in-out property <bool> lobby-end-effect-active: false;
+    in-out property <bool> guard-call-effect-active: false;
+    in-out property <bool> ev-call-effect-active: false;
+    in-out property <bool> ev-cancel-effect-active: false;
+    in-out property <image> ev-image;
+    in-out property <bool> absent-mode-active: false;
+    in-out property <bool> password-visible: false;
+    in-out property <bool> old-password-visible: false;
+    in-out property <string> keyboard-target: "";
+    in-out property <string> old-password: "";
+    in-out property <int> old-password-length: 0;
+    in-out property <string> old-password-mask: "";
+    in-out property <string> new-password: "";
+    in-out property <int> new-password-length: 0;
+    in-out property <string> new-password-mask: "";
+    in-out property <string> wifi-password: "";
+    in-out property <string> wifi-password-mask: "";
+    in-out property <int> wifi-password-length: 0;
+    in-out property <string> wifi-target-ssid: "";
+    in-out property <bool> wifi-target-open: false;
+    in-out property <[string]> wifi-scan-ssids: [];
+    in-out property <[bool]> wifi-scan-open-flags: [];
+    in-out property <string> wifi-status: "idle";
+    in-out property <bool> server-online: false;
+    in-out property <string> wifi-connecting-ssid: "";
+    in-out property <bool> wifi-dialog-locked: false;
+    in-out property <string> wifi-ipv4: "";
+    in-out property <string> keyboard-mode: "lower";
+    in-out property <string> active-picker: "";
+    in-out property <string> language: "ko-KR";
+    in-out property <string> time-period: "PM";
+    in-out property <string> general-hour: "12";
+    in-out property <string> general-minute: "00";
+    in-out property <string> system-time-text: "00:00";
+    in-out property <string> system-date-text: "2026.01.01";
+    in-out property <string> system-info-mac-address: "--";
+    in-out property <string> system-info-ip-address: "--";
+    in-out property <image> system-info-qr-image;
+    in-out property <bool> system-info-qr-available: false;
+    in-out property <string> general-year: "2026";
+    in-out property <string> general-month: "04";
+    in-out property <string> general-day: "23";
+    in-out property <string> site-building-number: "";
+    in-out property <string> site-room-number: "";
+    in-out property <string> site-building-draft: "";
+    in-out property <string> site-room-draft: "";
+    in-out property <string> site-info-input-target: "";
+    in-out property <string> site-info-input-buffer: "";
+    in-out property <int> site-info-input-length: 0;
+    in-out property <int> door-call-melody: 1;
+    in-out property <int> guard-call-melody: 3;
+    in-out property <bool> wifi-enabled: true;
+    in-out property <string> connected-ssid: "HomeNetwork_5G";
+    in-out property <bool> clock-screen-enabled: true;
+    in-out property <string> clock-background-effect: "VnIoT";
+    in-out property <int> idle-clock-timeout-sec: 60;
+    in-out property <bool> auto-capture-enabled: false;
+    in-out property <int> absent-mode-minutes: 5;
+    in-out property <int> communication-minutes: 3;
+    in-out property <int> call-timeout-seconds: 30;
+    in-out property <int> door-open-seconds: 3;
+    in-out property <string> absent-mode-time: "5분";
+    in-out property <string> communication-time: "3분";
+    in-out property <string> call-timeout-value: "30초";
+    in-out property <string> second-level-value: "3초";
+    in-out property <float> door-brightness-value: 0.77;
+    in-out property <float> door-volume-value: 0.70;
+    in-out property <float> lobby-brightness-value: 0.77;
+    in-out property <float> lobby-volume-value: 0.70;
+    in-out property <float> guard-brightness-value: 0.0;
+    in-out property <float> guard-volume-value: 0.70;
+    in-out property <float> ev-brightness-value: 0.0;
+    in-out property <float> ev-volume-value: 0.0;
+    in-out property <float> cctv-brightness-value: 0.77;
+    in-out property <float> cctv-volume-value: 0.70;
+    in-out property <[string]> cctv-camera-options: ["CCTV1", "CCTV2"];
+    in-out property <[string]> cctv-camera-details: ["192.80.2.80:80 • admin", "192.80.2.100:80 • ad"];
+    in-out property <int> cctv-selected-camera: 0;
+    in-out property <int> cctv-setting-delete-index: 0;
+    in-out property <string> cctv-current-camera-label: "";
+    in-out property <bool> cctv-monitor-online: false;
+    in-out property <string> cctv-last-error: "";
+    in-out property <string> cctv-last-capture-path: "";
+    in-out property <string> cctv-setting-ip: "";
+    in-out property <string> cctv-setting-port: "80";
+    in-out property <string> cctv-setting-account: "";
+    in-out property <string> cctv-setting-password: "";
+    in-out property <string> cctv-setting-password-mask: "";
+    in-out property <string> cctv-setting-input-target: "";
+    in-out property <string> cctv-setting-input-buffer: "";
+    in-out property <string> cctv-setting-input-mask: "";
+    in-out property <int> cctv-setting-input-length: 0;
+    in-out property <string> cctv-setting-ip-part1: "";
+    in-out property <string> cctv-setting-ip-part2: "0";
+    in-out property <string> cctv-setting-ip-part3: "0";
+    in-out property <string> cctv-setting-ip-part4: "0";
+    in-out property <int> cctv-setting-ip-part-index: 1;
+    in-out property <bool> cctv-setting-tested: false;
+    in-out property <bool> cctv-setting-saved: false;
+    in-out property <bool> cctv-setting-test-running: false;
+    in-out property <int> cctv-setting-test-step: 0;
+    in-out property <string> cctv-setting-test-error: "";
+    in-out property <string> cctv-setting-test-model: "ONVIF IP Camera HD";
+    in-out property <string> cctv-setting-test-resolution: "1920 x 1080";
+    in-out property <string> cctv-setting-test-frame: "25fps";
+    in-out property <[image]> capture-record-images: [];
+    in-out property <[string]> capture-record-date-texts: [];
+    in-out property <[string]> capture-record-time-texts: [];
+    in-out property <[string]> capture-record-labels: [];
+    in-out property <[bool]> capture-record-unread-flags: [];
+    in-out property <[bool]> capture-record-selected-flags: [];
+    in-out property <string> capture-record-page-text: "0 / 0";
+    in-out property <bool> capture-record-has-prev-page: false;
+    in-out property <bool> capture-record-has-next-page: false;
+    in-out property <bool> capture-record-has-selection: false;
+    in-out property <image> capture-full-image;
+    in-out property <string> capture-full-date-text: "";
+    in-out property <string> capture-full-time-text: "";
+    in-out property <string> capture-full-label: "";
+    in-out property <bool> capture-full-unread: false;
+    in-out property <string> capture-full-position-text: "0 / 0";
+    in-out property <bool> capture-full-can-prev: false;
+    in-out property <bool> capture-full-can-next: false;
+    in-out property <float> display-brightness-value: 0.66;
+    in-out property <float> display-color-value: 0.0;
+    in-out property <float> display-contrast-value: 0.67;
+    in-out property <float> display-saturation-value: 0.45;
+    in-out property <float> sound-call-volume-value: 0.80;
+    in-out property <float> sound-talk-volume-value: 0.70;
+    in-out property <float> sound-mic-volume-value: 0.65;
+
+    callback save-float-setting(string, float);
+    callback float-setting-live-changed(string, float);
+    callback save-int-setting(string, int);
+    callback save-string-setting(string, string);
+    callback save-bool-setting(string, bool);
+    callback set-system-time(string, string, string, string, string, string);
+    callback refresh-general-setting-time();
+    callback refresh-wifi();
+    callback wifi-set-enabled(bool);
+    callback connect-wifi(string, string);
+    callback change-password(string, string);
+    callback submit-setting-info(string, string);
+    callback open-setting-info-input(string, string);
+    callback append-setting-info-input(string);
+    callback backspace-setting-info-input();
+    callback clear-setting-info-input();
+    callback append-password-digit(string);
+    callback backspace-password-input();
+    callback clear-password-input();
+    callback refresh-system-info();
+    callback call-accept();
+    callback call-reject();
+    callback call-hangup();
+    callback call-start(string);
+    callback call-monitor-start();
+    callback call-open-door();
+    callback play-touch-sound();
+    callback cctv-open();
+    callback cctv-select-camera(int);
+    callback cctv-stop();
+    callback cctv-capture();
+    callback cctv-select-setting-camera(int);
+    callback cctv-delete-setting-camera(int);
+    callback open-cctv-setting-input(string, string);
+    callback append-cctv-setting-input(string);
+    callback backspace-cctv-setting-input();
+    callback clear-cctv-setting-input();
+    callback submit-cctv-setting-input();
+    callback test-cctv-setting();
+    callback save-cctv-setting();
+    callback capture-records-refresh();
+    callback capture-records-open(int);
+    callback capture-records-select(int);
+    callback capture-records-delete-selected();
+    callback capture-records-delete-all();
+    callback capture-records-prev-page();
+    callback capture-records-next-page();
+    callback capture-records-full-prev();
+    callback capture-records-full-next();
+    callback capture-records-full-delete();
+    callback page-changed(string);
+    pure callback translate(string, string) -> string;
+}
+
+export global I18n {
+    public pure function text(key: string) -> string {
+        return State.translate(State.language, key);
+    }
+
+    public pure function minute_label(value: int) -> string {
+        if State.language == "en" { return value + " min"; }
+        if State.language == "vi" { return value + " phut"; }
+        if State.language == "es" { return value + " min"; }
+        if State.language == "ja" { return value + "分"; }
+        if State.language == "ar" { return value + " د"; }
+        return value + "분";
+    }
+
+    public pure function second_label(value: int) -> string {
+        if State.language == "en" { return value + " sec"; }
+        if State.language == "vi" { return value + " giay"; }
+        if State.language == "es" { return value + " s"; }
+        if State.language == "ja" { return value + "秒"; }
+        if State.language == "ar" { return value + " ث"; }
+        return value + "초";
+    }
+
+    public pure function melody_label(value: int) -> string {
+        if State.language == "en" { return "Melody " + value; }
+        if State.language == "vi" { return "Giai dieu " + value; }
+        if State.language == "es" { return "Melodia " + value; }
+        if State.language == "ja" { return "メロディ " + value; }
+        if State.language == "ar" { return "لحن " + value; }
+        return "멜로디 " + value;
+    }
+
+    public pure function char_count_label(value: int) -> string {
+        if State.language == "en" { return "(" + value + " chars)"; }
+        if State.language == "vi" { return "(" + value + " ky tu)"; }
+        if State.language == "es" { return "(" + value + " car.)"; }
+        if State.language == "ja" { return "(" + value + "文字)"; }
+        if State.language == "ar" { return "(" + value + " أحرف)"; }
+        return "(" + value + "자)";
+    }
+
+    public pure function wifi_success_message(ssid: string) -> string {
+        if State.language == "en" { return "Connected to " + ssid + " successfully."; }
+        if State.language == "vi" { return "Da ket noi thanh cong voi mang " + ssid + "."; }
+        if State.language == "es" { return "Conexion correcta con la red " + ssid + "."; }
+        if State.language == "ja" { return ssid + " ネットワークに正常に接続されました。"; }
+        if State.language == "ar" { return "تم الاتصال بنجاح بالشبكة " + ssid + "."; }
+        return ssid + " 네트워크에 성공적으로 연결되었습니다.";
+    }
+
+    public pure function wifi_fail_message(ssid: string) -> string {
+        if State.language == "en" { return "Failed to connect to " + ssid + "."; }
+        if State.language == "vi" { return "Ket noi voi mang " + ssid + " that bai."; }
+        if State.language == "es" { return "No se pudo conectar a " + ssid + "."; }
+        if State.language == "ja" { return ssid + " ネットワーク接続に失敗しました。"; }
+        if State.language == "ar" { return "فشل الاتصال بالشبكة " + ssid + "."; }
+        return ssid + " 네트워크 연결에 실패했습니다.";
+    }
+}
+
+export component InteractiveSlider inherits Rectangle {
+    in-out property <float> value: 0.0;
+    in property <string> setting-key: "";
+    in property <brush> track-color: #374151ff;
+    in property <brush> fill-color: #4f39f6ff;
+    in property <color> knob-color: #00000000;
+    in property <length> track-y: 0px;
+    in property <length> track-height: 8px;
+    in property <length> knob-size: 0px;
+    in property <length> knob-y: 0px;
+
+    background: #00000000;
+
+    function set-value(v: float) {
+        if (v < 0) {
+            root.value = 0;
+        } else if (v > 1) {
+            root.value = 1;
+        } else {
+            root.value = v;
+        }
+        if root.setting-key != "" {
+            State.float-setting-live-changed(root.setting-key, root.value);
+        }
+    }
+
+    function save-value() {
+        if root.setting-key != "" {
+            State.save-float-setting(root.setting-key, root.value);
+        }
+    }
+
+    Rectangle {
+        x: 0px; y: root.track-y;
+        width: parent.width;
+        height: root.track-height;
+        background: root.track-color;
+        border-radius: 16777200px;
+        clip: true;
+
+        Rectangle {
+            x: 0px; y: 0px;
+            width: parent.width * root.value;
+            height: parent.height;
+            background: root.fill-color;
+            border-radius: 16777200px;
+        }
+    }
+
+    if root.knob-size > 0px: Rectangle {
+        x: (parent.width - root.knob-size) * root.value;
+        y: root.knob-y;
+        width: root.knob-size;
+        height: root.knob-size;
+        background: root.knob-color;
+        border-radius: 33554400px;
+    }
+
+    TouchArea {
+        width: parent.width;
+        height: parent.height;
+
+        moved => {
+            root.set-value(self.mouse-x / parent.width);
+        }
+
+        pointer-event(event) => {
+            if event.kind == PointerEventKind.down && event.button == PointerEventButton.left {
+                State.play-touch-sound();
+                root.set-value(self.mouse-x / parent.width);
+            } else if event.kind == PointerEventKind.up || event.kind == PointerEventKind.cancel {
+                root.save-value();
+            }
+        }
+    }
+}
+
+export component DialogActionButton inherits Rectangle {
+    in property <string> label: "";
+    in property <brush> fill: #155dfcff;
+    in property <color> label-color: #ffffffff;
+    in property <length> label-size: 16px;
+    callback clicked();
+
+    private property <bool> armed: false;
+
+    background: root.fill;
+    border-radius: 12px;
+
+    Text {
+        width: parent.width;
+        height: parent.height;
+        text: root.label;
+        color: root.label-color;
+        font-family: "Inter";
+        font-size: root.label-size;
+        font-weight: 500;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+
+    TouchArea {
+        x: -8px;
+        y: -8px;
+        width: parent.width + 16px;
+        height: parent.height + 16px;
+
+        pointer-event(event) => {
+            if event.kind == PointerEventKind.down && event.button == PointerEventButton.left {
+                root.armed = true;
+            } else if event.kind == PointerEventKind.up {
+                if root.armed {
+                    root.clicked();
+                }
+                root.armed = false;
+            } else if event.kind == PointerEventKind.cancel {
+                root.armed = false;
+            }
+        }
+    }
+}
+
+export component SmallStatusDialog inherits Rectangle {
+    in property <brush> scrim: #00000099;
+    in property <length> panel-y: 154px;
+    in property <length> panel-height: 292px;
+    in property <image> icon-source;
+    in property <color> icon-circle-color: #00a63e33;
+    in property <string> title: "";
+    in property <string> message1: "";
+    in property <string> message2: "";
+    in property <color> message1-color: #ffffffb2;
+    in property <color> message2-color: #ffffffb2;
+    in property <string> button-label: "";
+    in property <brush> button-fill: #00a63eff;
+    in property <length> button-y: 174px;
+    callback confirmed();
+
+    width: 1024px;
+    height: 600px;
+    background: #00000000;
+
+    Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: root.scrim;
+
+        TouchArea {
+            width: parent.width;
+            height: parent.height;
+            clicked => { }
+        }
+
+        Rectangle {
+            x: 322px;
+            y: root.panel-y;
+            width: 380px;
+            height: root.panel-height;
+            background: @linear-gradient(225.000deg, #1d293dff 0%, #0f172bff 100%);
+            border-radius: 20px;
+            border-color: #ffffff1a;
+            border-width: 1px;
+
+            Rectangle {
+                x: 33px;
+                y: 33px;
+                width: 314px;
+                height: root.panel-height - 66px;
+                background: #00000000;
+
+                Rectangle {
+                    x: 125px;
+                    y: 0px;
+                    width: 64px;
+                    height: 64px;
+                    background: root.icon-circle-color;
+                    border-radius: 16777200px;
+
+                    Image {
+                        x: 16px;
+                        y: 16px;
+                        width: 32px;
+                        height: 32px;
+                        source: root.icon-source;
+                        image-fit: contain;
+                    }
+                }
+
+                Text {
+                    x: 0px;
+                    y: 84px;
+                    width: 314px;
+                    height: 33px;
+                    text: root.title;
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 22px;
+                    font-weight: 600;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                Text {
+                    x: 0px;
+                    y: 125px;
+                    width: 314px;
+                    height: 21px;
+                    text: root.message1;
+                    color: root.message1-color;
+                    font-family: "Inter";
+                    font-size: 14px;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                if root.message2 != "": Text {
+                    x: 0px;
+                    y: 146px;
+                    width: 314px;
+                    height: 21px;
+                    text: root.message2;
+                    color: root.message2-color;
+                    font-family: "Inter";
+                    font-size: 14px;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                DialogActionButton {
+                    x: 0px;
+                    y: root.button-y;
+                    width: 314px;
+                    height: 52px;
+                    label: root.button-label;
+                    fill: root.button-fill;
+                    clicked => { State.play-touch-sound(); root.confirmed(); }
+                }
+            }
+        }
+    }
+}
+
+export component WifiStatusDialog inherits Rectangle {
+    in property <brush> scrim: #000000cc;
+    in property <length> panel-y: 139.75px;
+    in property <length> panel-height: 320.5px;
+    in property <image> icon-source;
+    in property <color> icon-circle-color: #00a63e33;
+    in property <string> title: "";
+    in property <string> message1: "";
+    in property <string> message2: "";
+    in property <color> message1-color: #ffffffb2;
+    in property <color> message2-color: #ffffffb2;
+    in property <string> primary-label: "";
+    in property <brush> primary-fill: #155dfcff;
+    in property <length> primary-y: 226.5px;
+    in property <string> secondary-label: "";
+    in property <brush> secondary-fill: #ffffff1a;
+    in property <color> secondary-label-color: #ffffffff;
+    in property <length> secondary-y: 288.5px;
+    callback primary();
+    callback secondary();
+
+    width: 1024px;
+    height: 600px;
+    background: #00000000;
+
+    Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: root.scrim;
+
+        TouchArea {
+            width: parent.width;
+            height: parent.height;
+            clicked => { }
+        }
+
+        Rectangle {
+            x: 312px;
+            y: root.panel-y;
+            width: 400px;
+            height: root.panel-height;
+            background: @linear-gradient(225.000deg, #1d293dff 0%, #0f172bff 100%);
+            border-radius: 20px;
+            border-color: #ffffff1a;
+            border-width: 1px;
+            clip: true;
+
+            Rectangle {
+                x: 1px;
+                y: 1px;
+                width: 398px;
+                height: root.panel-height - 2px;
+                background: #00000000;
+
+                Rectangle {
+                    x: 159px;
+                    y: 40px;
+                    width: 80px;
+                    height: 80px;
+                    background: root.icon-circle-color;
+                    border-radius: 33554400px;
+
+                    Image {
+                        x: 16px;
+                        y: 16px;
+                        width: 48px;
+                        height: 48px;
+                        source: root.icon-source;
+                        image-fit: contain;
+                    }
+                }
+
+                Text {
+                    x: 32px;
+                    y: 140px;
+                    width: 334px;
+                    height: 36px;
+                    text: root.title;
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 24px;
+                    font-weight: 600;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                Text {
+                    x: 32px;
+                    y: 184px;
+                    width: 334px;
+                    height: 22px;
+                    text: root.message1;
+                    color: root.message1-color;
+                    font-family: "Inter";
+                    font-size: 15px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                if root.message2 != "": Text {
+                    x: 32px;
+                    y: 206.5px;
+                    width: 334px;
+                    height: 22px;
+                    text: root.message2;
+                    color: root.message2-color;
+                    font-family: "Inter";
+                    font-size: 15px;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                DialogActionButton {
+                    x: 32px;
+                    y: root.primary-y;
+                    width: 334px;
+                    height: 52px;
+                    label: root.primary-label;
+                    fill: root.primary-fill;
+                    label-size: 16px;
+                    clicked => { State.play-touch-sound(); root.primary(); }
+                }
+
+                if root.secondary-label != "": DialogActionButton {
+                    x: 32px;
+                    y: root.secondary-y;
+                    width: 334px;
+                    height: 52px;
+                    label: root.secondary-label;
+                    fill: root.secondary-fill;
+                    label-color: root.secondary-label-color;
+                    label-size: 16px;
+                    clicked => { State.play-touch-sound(); root.secondary(); }
+                }
+            }
+        }
+    }
+}

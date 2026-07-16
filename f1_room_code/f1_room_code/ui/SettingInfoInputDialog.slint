@@ -1,0 +1,208 @@
+import { State, I18n } from "shared.slint";
+
+component DigitKey inherits Rectangle {
+    in property <string> label: "";
+    callback clicked;
+
+    touch := TouchArea {
+        width: parent.width;
+        height: parent.height;
+        clicked => { State.play-touch-sound(); root.clicked(); }
+    }
+
+    background: touch.pressed ? #155dfcff : #ffffff1a;
+    border-radius: 12px;
+    border-color: #ffffff1a;
+    border-width: 1px;
+
+    Text {
+        width: parent.width;
+        height: parent.height;
+        text: root.label;
+        color: #ffffffff;
+        font-family: "Inter";
+        font-size: 20px;
+        font-weight: 600;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+}
+
+export component SettingInfoInputDialog inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    background: #00000000;
+
+    function input-title() -> string {
+        if State.site-info-input-buffer != "" {
+            return State.site-info-input-buffer;
+        }
+        return State.site-info-input-target == "building"
+            ? I18n.text("enter_building_number")
+            : I18n.text("enter_room_number");
+    }
+
+    function close-dialog() {
+        State.active-overlay = "";
+        State.site-info-input-target = "";
+        State.site-info-input-buffer = "";
+        State.site-info-input-length = 0;
+    }
+
+    function apply-input() {
+        if State.site-info-input-target == "building" {
+            State.site-building-draft = State.site-info-input-buffer;
+        } else if State.site-info-input-target == "room" {
+            State.site-room-draft = State.site-info-input-buffer;
+        }
+        root.close-dialog();
+    }
+
+    Rectangle {
+        x: 0px; y: 0px;
+        width: 1024px;
+        height: 600px;
+        background: #00000099;
+
+        Rectangle {
+            x: 312px; y: 85px;
+            width: 400px;
+            height: 430px;
+            background: @linear-gradient(225.000deg, #1d293dff 0%, #0f172bff 100%);
+            border-radius: 20px;
+            border-color: #ffffff1a;
+            border-width: 1px;
+
+            Rectangle {
+                x: 25px; y: 25px;
+                width: 350px;
+                height: 380px;
+                background: #00000000;
+
+                Text {
+                    x: 0px; y: 0px;
+                    width: parent.width;
+                    height: 30px;
+                    text: root.input-title();
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 20px;
+                    font-weight: 600;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                Rectangle {
+                    x: 0px; y: 54px;
+                    width: 350px;
+                    height: 254px;
+                    background: #00000000;
+
+                    DigitKey { x: 0px; y: 0px; width: 110px; height: 56px; label: "1"; clicked => { State.play-touch-sound(); State.append-setting-info-input("1"); } }
+                    DigitKey { x: 120px; y: 0px; width: 110px; height: 56px; label: "2"; clicked => { State.play-touch-sound(); State.append-setting-info-input("2"); } }
+                    DigitKey { x: 240px; y: 0px; width: 110px; height: 56px; label: "3"; clicked => { State.play-touch-sound(); State.append-setting-info-input("3"); } }
+                    DigitKey { x: 0px; y: 66px; width: 110px; height: 56px; label: "4"; clicked => { State.play-touch-sound(); State.append-setting-info-input("4"); } }
+                    DigitKey { x: 120px; y: 66px; width: 110px; height: 56px; label: "5"; clicked => { State.play-touch-sound(); State.append-setting-info-input("5"); } }
+                    DigitKey { x: 240px; y: 66px; width: 110px; height: 56px; label: "6"; clicked => { State.play-touch-sound(); State.append-setting-info-input("6"); } }
+                    DigitKey { x: 0px; y: 132px; width: 110px; height: 56px; label: "7"; clicked => { State.play-touch-sound(); State.append-setting-info-input("7"); } }
+                    DigitKey { x: 120px; y: 132px; width: 110px; height: 56px; label: "8"; clicked => { State.play-touch-sound(); State.append-setting-info-input("8"); } }
+                    DigitKey { x: 240px; y: 132px; width: 110px; height: 56px; label: "9"; clicked => { State.play-touch-sound(); State.append-setting-info-input("9"); } }
+                    DigitKey { x: 120px; y: 198px; width: 110px; height: 56px; label: "0"; clicked => { State.play-touch-sound(); State.append-setting-info-input("0"); } }
+
+                    Rectangle {
+                        x: 240px; y: 198px;
+                        width: 110px;
+                        height: 56px;
+                        background: #e7000b33;
+                        border-radius: 12px;
+                        border-color: #fb2c364d;
+                        border-width: 1px;
+
+                        Image {
+                            x: 45px; y: 18px;
+                            width: 20px;
+                            height: 20px;
+                            source: @image-url("../assets/images/4tP65.png");
+                            image-fit: contain;
+                        }
+
+                        TouchArea {
+                            width: parent.width;
+                            height: parent.height;
+                            clicked => { State.play-touch-sound(); State.backspace-setting-info-input(); }
+                        }
+                    }
+                }
+
+                Rectangle {
+                    x: 0px; y: 332px;
+                    width: 350px;
+                    height: 48px;
+                    background: #00000000;
+
+                    Rectangle {
+                        x: 0px; y: 0px;
+                        width: 170px;
+                        height: 48px;
+                        background: #ffffff1a;
+                        border-radius: 12px;
+                        border-color: #ffffff1a;
+                        border-width: 1px;
+
+                        Text {
+                            width: parent.width;
+                            height: parent.height;
+                            text: I18n.text("cancel");
+                            color: #ffffffff;
+                            font-family: "Inter";
+                            font-size: 15px;
+                            font-weight: 500;
+                            horizontal-alignment: center;
+                            vertical-alignment: center;
+                        }
+
+                        TouchArea {
+                            width: parent.width;
+                            height: parent.height;
+                            clicked => { State.play-touch-sound(); root.close-dialog(); }
+                        }
+                    }
+
+                    Rectangle {
+                        x: 180px; y: 0px;
+                        width: 170px;
+                        height: 48px;
+                        background: #155dfcff;
+                        border-radius: 12px;
+
+                        Image {
+                            x: 60px; y: 15px;
+                            width: 18px;
+                            height: 18px;
+                            source: @image-url("../assets/images/Y90sB.png");
+                            image-fit: contain;
+                        }
+
+                        Text {
+                            x: 84px; y: 12px;
+                            width: 36px;
+                            height: 24px;
+                            text: I18n.text("confirm");
+                            color: #ffffffff;
+                            font-family: "Inter";
+                            font-size: 15px;
+                            font-weight: 500;
+                            vertical-alignment: center;
+                        }
+
+                        TouchArea {
+                            width: parent.width;
+                            height: parent.height;
+                            clicked => { State.play-touch-sound(); root.apply-input(); }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,216 @@
+import { State } from "shared.slint";
+
+component NumKey inherits Rectangle {
+    in property <string> label: "";
+    in property <string> value: label;
+    callback pressed();
+
+    background: touch.pressed ? #155dfcff : #ffffff12;
+    border-radius: 12px;
+    border-color: #ffffff14;
+    border-width: 1px;
+
+    Text {
+        width: parent.width;
+        height: parent.height;
+        text: root.label;
+        color: #ffffffff;
+        font-family: "Inter";
+        font-size: 20px;
+        font-weight: 500;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+
+    touch := TouchArea {
+        width: parent.width;
+        height: parent.height;
+        clicked => { State.play-touch-sound(); root.pressed(); }
+    }
+}
+
+component IpPartBox inherits Rectangle {
+    in property <string> value: "";
+    in property <bool> active: false;
+
+    width: 68px;
+    height: 52px;
+    background: active ? #51a2ff1f : #ffffff0d;
+    border-radius: 10px;
+    border-color: active ? #51a2ff99 : #ffffff1a;
+    border-width: active ? 1.5px : 1px;
+
+    Text {
+        width: parent.width;
+        height: parent.height;
+        text: root.value == "" ? (root.active ? "|" : "0") : root.value;
+        color: root.value == "" && !root.active ? #ffffff4d : #ffffffff;
+        font-family: "Inter";
+        font-size: 22px;
+        font-weight: 500;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+}
+
+export component CctvNumpadDialog inherits Rectangle {
+    in property <bool> ip-mode: true;
+
+    width: 1024px;
+    height: 600px;
+    background: #0000008c;
+
+    TouchArea {
+        width: parent.width;
+        height: parent.height;
+        clicked => { State.play-touch-sound();
+            State.active-overlay = "";
+            State.cctv-setting-input-target = "";
+            State.cctv-setting-input-buffer = "";
+            State.cctv-setting-input-length = 0;
+        }
+    }
+
+    function can-confirm() -> bool {
+        if root.ip-mode {
+            return State.cctv-setting-ip-part1 != ""
+                && State.cctv-setting-ip-part2 != ""
+                && State.cctv-setting-ip-part3 != ""
+                && State.cctv-setting-ip-part4 != "";
+        }
+        return State.cctv-setting-input-buffer != "";
+    }
+
+    Rectangle {
+        x: 322px; y: root.ip-mode ? 57px : 55px;
+        width: 380px;
+        height: root.ip-mode ? 486px : 490px;
+        background: #121c2cff;
+        border-radius: 24px;
+        border-color: #ffffff1f;
+        border-width: 1px;
+        clip: true;
+
+        TouchArea {
+            width: parent.width;
+            height: parent.height;
+        }
+
+        Text {
+            x: 28px; y: 24px;
+            width: 322px;
+            height: 21px;
+            text: root.ip-mode ? "IP 주소 입력" : "포트 입력 1 - 65535";
+            color: #ffffff73;
+            font-family: "Inter";
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        Rectangle {
+            x: 28px; y: 61px;
+            width: 322px;
+            height: root.ip-mode ? 52px : 56px;
+            background: root.ip-mode ? #00000000 : #51a2ff1f;
+            border-radius: 10px;
+            border-color: #51a2ff99;
+            border-width: root.ip-mode ? 0px : 1.5px;
+
+            if root.ip-mode: Rectangle {
+                x: 0px; y: 0px;
+                width: parent.width;
+                height: 52px;
+                background: #00000000;
+
+                IpPartBox { x: 0px; y: 0px; value: State.cctv-setting-ip-part1; active: State.cctv-setting-ip-part-index == 1; }
+                Text { x: 74px; y: 11px; text: "."; color: #ffffff4d; font-family: "Inter"; font-size: 20px; font-weight: 600; }
+                IpPartBox { x: 85.7px; y: 0px; value: State.cctv-setting-ip-part2; active: State.cctv-setting-ip-part-index == 2; }
+                Text { x: 159.7px; y: 11px; text: "."; color: #ffffff4d; font-family: "Inter"; font-size: 20px; font-weight: 600; }
+                IpPartBox { x: 171.4px; y: 0px; value: State.cctv-setting-ip-part3; active: State.cctv-setting-ip-part-index == 3; }
+                Text { x: 245.4px; y: 11px; text: "."; color: #ffffff4d; font-family: "Inter"; font-size: 20px; font-weight: 600; }
+                IpPartBox { x: 257.1px; y: 0px; value: State.cctv-setting-ip-part4; active: State.cctv-setting-ip-part-index == 4; }
+            }
+
+            if !root.ip-mode: Text {
+                x: 16px; y: 0px;
+                width: parent.width - 32px;
+                height: parent.height;
+                text: State.cctv-setting-input-buffer == "" ? "|" : State.cctv-setting-input-buffer;
+                color: State.cctv-setting-input-buffer == "" ? #51a2ffff : #ffffffff;
+                font-family: "Inter";
+                font-size: 22px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+
+        Rectangle { x: 0px; y: root.ip-mode ? 133px : 137px; width: 378px; height: 1px; background: #ffffff12; }
+
+        Rectangle {
+            x: 20px; y: root.ip-mode ? 154px : 158px;
+            width: 338px;
+            height: 280px;
+            background: #00000000;
+
+            NumKey { x: 0px; y: 0px; width: 106px; height: 52px; label: "1"; pressed => { State.append-cctv-setting-input("1"); } }
+            NumKey { x: 116px; y: 0px; width: 106px; height: 52px; label: "2"; pressed => { State.append-cctv-setting-input("2"); } }
+            NumKey { x: 232px; y: 0px; width: 106px; height: 52px; label: "3"; pressed => { State.append-cctv-setting-input("3"); } }
+            NumKey { x: 0px; y: 62px; width: 106px; height: 52px; label: "4"; pressed => { State.append-cctv-setting-input("4"); } }
+            NumKey { x: 116px; y: 62px; width: 106px; height: 52px; label: "5"; pressed => { State.append-cctv-setting-input("5"); } }
+            NumKey { x: 232px; y: 62px; width: 106px; height: 52px; label: "6"; pressed => { State.append-cctv-setting-input("6"); } }
+            NumKey { x: 0px; y: 124px; width: 106px; height: 52px; label: "7"; pressed => { State.append-cctv-setting-input("7"); } }
+            NumKey { x: 116px; y: 124px; width: 106px; height: 52px; label: "8"; pressed => { State.append-cctv-setting-input("8"); } }
+            NumKey { x: 232px; y: 124px; width: 106px; height: 52px; label: "9"; pressed => { State.append-cctv-setting-input("9"); } }
+            NumKey { x: 0px; y: 186px; width: 106px; height: 52px; label: root.ip-mode ? "." : "C"; pressed => { if root.ip-mode { State.append-cctv-setting-input("."); } else { State.clear-cctv-setting-input(); } } }
+            NumKey { x: 116px; y: 186px; width: 106px; height: 52px; label: "0"; pressed => { State.append-cctv-setting-input("0"); } }
+
+            Rectangle {
+                x: 232px; y: 186px;
+                width: 106px;
+                height: 52px;
+                background: #e7000b33;
+                border-radius: 12px;
+                border-color: #fb2c364d;
+                border-width: 1px;
+                Image {
+                    x: 43px; y: 16px;
+                    width: 20px;
+                    height: 20px;
+                    source: @image-url("../assets/images/4tP65.png");
+                    image-fit: contain;
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.backspace-cctv-setting-input(); } }
+            }
+        }
+
+        Rectangle {
+            x: 20px; y: root.ip-mode ? 414px : 438px;
+            width: 338px;
+            height: 52px;
+            background: root.can-confirm() ? #155dfc99 : #155dfc4d;
+            border-radius: 12px;
+            Text {
+                width: parent.width;
+                height: parent.height;
+                text: "확인";
+                color: root.can-confirm() ? #ffffffff : #ffffff59;
+                font-family: "Inter";
+                font-size: 15px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => {
+                    if root.can-confirm() {
+                        State.play-touch-sound();
+                        State.submit-cctv-setting-input();
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+import { State } from "shared.slint";
+import { CaptureDeleteConfirmDialog } from "CaptureDeleteConfirmDialog.slint";
+
+export component CaptureImageClearDialog inherits Rectangle {
+    in property <bool> delete-selected: false;
+
+    width: 1024px;
+    height: 600px;
+    background: #00000000;
+
+    CaptureDeleteConfirmDialog {
+        title-key: root.delete-selected ? "delete_selected_title" : "delete_all_title";
+        message-key: root.delete-selected ? "delete_selected_confirm" : "delete_all_confirm";
+        confirm => {
+            if root.delete-selected {
+                State.capture-records-delete-selected();
+            } else {
+                State.capture-records-delete-all();
+            }
+            State.active-overlay = "";
+        }
+    }
+}

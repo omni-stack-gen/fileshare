@@ -1,0 +1,14 @@
+import { State, I18n } from "shared.slint";
+import { NumberOptionPicker } from "NumberOptionPicker.slint";
+
+export component CommunicationTimePicker inherits NumberOptionPicker {
+    selected-value: State.communication-minutes;
+    second-unit: false;
+
+    picked(value) => {
+        State.communication-minutes = value;
+        State.communication-time = I18n.minute_label(value);
+        State.save-int-setting("mode.communication_timeout_min", value);
+        State.active-overlay = "";
+    }
+}

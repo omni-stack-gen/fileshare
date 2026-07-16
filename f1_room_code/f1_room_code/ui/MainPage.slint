@@ -1,0 +1,298 @@
+import { State, I18n } from "shared.slint";
+
+export component MainPage inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: #ffffffff;
+    Rectangle {
+        x: 0px; y: 0px;
+        width: 1024px;
+        height: 600px;
+        background: @linear-gradient(225.000deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+        Rectangle {
+            x: 282px; y: 48px;
+            width: 460px;
+            height: 164px;
+            background: #00000000;
+            Rectangle {
+                x: 0px; y: 0px;
+                width: 460px;
+                height: 120px;
+                background: #00000000;
+                Text {
+                    x: 0px; y: 67px;
+                    width: 78px;
+                    text: "";
+                    color: #d1d5dcff;
+                    font-family: "Inter";
+                    font-size: 32px;
+                    font-weight: 600;
+                    horizontal-alignment: right;
+                }
+                Text {
+                    x: 0px; y: 1px;
+                    width: 460px;
+                    text: State.system-time-text;
+                    color: #ffffffff;
+                    font-family: "Istok Web";
+                    font-size: 120px;
+                    letter-spacing: 6px;
+                    horizontal-alignment: center;
+                }
+            }
+            Rectangle {
+                x: 131px; y: 132px;
+                width: 197.719px;
+                height: 32px;
+                background: #00000000;
+                Text {
+                    x: 0px; y: 0px;
+                    text: State.system-date-text;
+                    color: #d1d5dcff;
+                    font-family: "Inter";
+                    font-size: 24px;
+                    font-weight: 500;
+                    letter-spacing: 0.67px;
+                }
+            }
+        }
+        Rectangle {
+            x: 152px; y: 222px;
+            width: 720px;
+            height: 296px;
+            background: #00000000;
+            Rectangle {
+                x: 0px; y: 0px;
+                width: 224px;
+                height: 136px;
+                background: @linear-gradient(225.000deg, #2b7fffff 0%, #155dfcff 100%);
+                border-radius: 16px;
+                Image {
+                    x: 88px; y: 24px;
+                    width: 48px;
+                    height: 48px;
+                    source: @image-url("../assets/images/gLgF0.png");
+                    image-fit: contain;
+                }
+                Rectangle {
+                    x: 24px; y: 84px;
+                    width: 176px;
+                    height: 28px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        width: parent.width;
+                        text: I18n.text("door");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 18px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                    }
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.previous-page = State.current-page; State.current-page = "MwoLv"; State.pressed-effect = ""; State.call-effect-locked = false; State.door-call-effect-active = false; State.door-open-effect-active = false; State.call-monitor-start(); } }
+            }
+            Rectangle {
+                x: 248px; y: 0px;
+                width: 224px;
+                height: 136px;
+                background: @linear-gradient(225.000deg, #2b7fffff 0%, #155dfcff 100%);
+                border-radius: 16px;
+                Image {
+                    x: 88px; y: 24px;
+                    width: 48px;
+                    height: 48px;
+                    source: @image-url("../assets/images/TuY4Q.png");
+                    image-fit: contain;
+                }
+                Rectangle {
+                    x: 24px; y: 84px;
+                    width: 176px;
+                    height: 28px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        width: parent.width;
+                        text: I18n.text("communication_room");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 18px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                    }
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.previous-page = State.current-page; State.current-page = "EJDbm"; State.pressed-effect = ""; State.call-effect-locked = false; State.guard-call-effect-active = false; State.call-start("aiot:manager"); } }
+            }
+            Rectangle {
+                x: 496px; y: 0px;
+                width: 224px;
+                height: 136px;
+                background: @linear-gradient(225.000deg, #2b7fffff 0%, #155dfcff 100%);
+                border-radius: 16px;
+                Rectangle {
+                    x: 24px; y: 84px;
+                    width: 176px;
+                    height: 28px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        width: parent.width;
+                        text: I18n.text("cctv");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 18px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                    }
+                }
+                Image {
+                    x: 88px; y: 20px;
+                    width: 48px;
+                    height: 48px;
+                    source: @image-url("../assets/images/qY2S2.png");
+                    image-fit: contain;
+                }
+                TouchArea {
+                    width: parent.width;
+                    height: parent.height;
+                    clicked => { State.play-touch-sound();
+                        State.previous-page = State.current-page;
+                        State.current-page = "JVRSN";
+                    }
+                }
+            }
+            Rectangle {
+                x: 0px; y: 160px;
+                width: 224px;
+                height: 136px;
+                background: @linear-gradient(225.000deg, #4a5565ff 0%, #364153ff 100%);
+                border-radius: 16px;
+                Image {
+                    x: 88px; y: 24px;
+                    width: 48px;
+                    height: 48px;
+                    source: State.absent-mode-active ? @image-url("../assets/images/x1tVq_red.png") : @image-url("../assets/images/x1tVq.png");
+                    image-fit: contain;
+                }
+                Rectangle {
+                    x: 24px; y: 84px;
+                    width: 176px;
+                    height: 28px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        width: parent.width;
+                        text: I18n.text("absent_mode");
+                        color: State.absent-mode-active ? #ef4444ff : #ffffffff;
+                        font-family: "Inter";
+                        font-size: 18px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                    }
+                }
+                TouchArea {
+                    width: parent.width;
+                    height: parent.height;
+                    clicked => {
+                        State.play-touch-sound();
+                        State.absent-mode-active = !State.absent-mode-active;
+                        State.save-bool-setting("mode.absent_active", State.absent-mode-active);
+                    }
+                }
+            }
+            Rectangle {
+                x: 248px; y: 160px;
+                width: 224px;
+                height: 136px;
+                background: @linear-gradient(225.000deg, #4a5565ff 0%, #364153ff 100%);
+                border-radius: 16px;
+                Rectangle {
+                    x: 24px; y: 84px;
+                    width: 176px;
+                    height: 28px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        width: parent.width;
+                        text: I18n.text("elevator");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 18px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                    }
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.previous-page = State.current-page; State.current-page = "hcEj1"; State.pressed-effect = ""; State.call-effect-locked = false; State.ev-call-effect-active = false; State.ev-cancel-effect-active = false; } }
+            }
+            Rectangle {
+                x: 496px; y: 160px;
+                width: 224px;
+                height: 136px;
+                background: @linear-gradient(225.000deg, #4a5565ff 0%, #364153ff 100%);
+                border-radius: 16px;
+                Image {
+                    x: 88px; y: 24px;
+                    width: 48px;
+                    height: 48px;
+                    source: @image-url("../assets/images/pOg5p.png");
+                    image-fit: contain;
+                }
+                Rectangle {
+                    x: 24px; y: 84px;
+                    width: 176px;
+                    height: 28px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        width: parent.width;
+                        text: I18n.text("app_settings");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 18px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                    }
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.previous-page = State.current-page; State.current-page = "kKrEC"; } }
+            }
+            Image {
+                x: 336px; y: 186px;
+                width: 48px;
+                height: 46px;
+                source: @image-url("../assets/images/pga03.png");
+                image-fit: contain;
+            }
+        }
+        Rectangle {
+            x: 945px; y: 12px;
+            width: 24px;
+            height: 24px;
+            background: #00000000;
+            Image {
+                x: 0px; y: 0px;
+                width: 24px;
+                height: 24px;
+                source: @image-url("../assets/images/JPh5M.png");
+                image-fit: contain;
+                opacity: State.server-online ? 0.8000 : 0.2500;
+            }
+        }
+        Rectangle {
+            x: 981px; y: 12px;
+            width: 24px;
+            height: 24px;
+            background: #00000000;
+            Image {
+                x: 0px; y: 0px;
+                width: 24px;
+                height: 24px;
+                source: State.wifi-status == "connected" && State.connected-ssid != ""
+                    ? @image-url("../assets/images/R6kxF.png")
+                    : @image-url("../assets/images/q2luO.png");
+                image-fit: contain;
+                opacity: 0.8000;
+            }
+        }
+    }
+}

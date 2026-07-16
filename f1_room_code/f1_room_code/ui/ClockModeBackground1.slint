@@ -1,0 +1,89 @@
+import { State, I18n } from "shared.slint";
+
+export component ClockModeBackground1 inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: #00000000;
+    private property <string> background-id:
+        State.current-page == "ZIuRY" || State.current-page == "7K5Lz" || State.current-page == "vc3r5" || State.current-page == "eZ1L3"
+        ? State.current-page
+        : (
+            State.clock-background-effect == "ZIuRY" || State.clock-background-effect == "7K5Lz" || State.clock-background-effect == "vc3r5" || State.clock-background-effect == "eZ1L3"
+            ? State.clock-background-effect
+            : "VnIoT"
+        );
+
+    if root.background-id == "VnIoT": Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: @linear-gradient(200.000deg, #0c1423ff 0%, #192332ff 50%, #0c1423ff 100%);
+    }
+    if root.background-id == "ZIuRY": Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: @linear-gradient(205.000deg, #0e1626ff 0%, #1c2a3cff 50%, #0e1626ff 100%);
+    }
+    if root.background-id == "7K5Lz": Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: @linear-gradient(200.000deg, #0f2323ff 0%, #193c37ff 50%, #0f2323ff 100%);
+    }
+    if root.background-id == "vc3r5": Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: @linear-gradient(225.000deg, #281432ff 0%, #462855ff 50%, #281432ff 100%);
+    }
+    if root.background-id == "eZ1L3": Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: @linear-gradient(215.000deg, #2d121eff 0%, #4b2337ff 50%, #2d121eff 100%);
+    }
+    Rectangle {
+        x: 0px; y: 0px;
+        width: parent.width;
+        height: 600px;
+        background: #00000000;
+        Rectangle {
+            x: 0px; y: 100px;
+            width: parent.width;
+            height: 390px;
+            background: #00000000;
+            Rectangle {
+                x: 0px; y: 0px;
+                width: parent.width;
+                height: 300px;
+                background: #00000000;
+                Text {
+                    x: 0px; y: -8px;
+                    width: parent.width;
+                    text: State.system-time-text;
+                    color: #ffffffe5;
+                    font-family: "Istok Web";
+                    font-size: 240px;
+                    font-weight: 400;
+                    letter-spacing: 10px;
+                    horizontal-alignment: center;
+                }
+            }
+            Rectangle {
+                x: 0px; y: 320px;
+                width: parent.width;
+                height: 54px;
+                background: #00000000;
+                Text {
+                    x: 0px; y: 0px;
+                    width: parent.width;
+                    text: State.system-date-text;
+                    color: #d1d5dcff;
+                    font-family: "Inter";
+                    font-size: 36px;
+                    font-weight: 500;
+                    letter-spacing: 1.8px;
+                    horizontal-alignment: center;
+                }
+            }
+        }
+    }
+    TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.current-page = "LCvek"; } }
+}

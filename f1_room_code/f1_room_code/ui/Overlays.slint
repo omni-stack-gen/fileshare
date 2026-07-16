@@ -1,0 +1,62 @@
+import { State } from "shared.slint";
+import { CaptureImageAllClear } from "CaptureImageAllClear.slint";
+import { CaptureImageSelectClear } from "CaptureImageSelectClear.slint";
+import { WifiPasswordDialog } from "WifiPasswordDialog.slint";
+import { WifiConnectSuccess } from "WifiConnectSuccess.slint";
+import { WifiConnectFail } from "WifiConnectFail.slint";
+import { AbsentModeTimePicker } from "AbsentModeTimePicker.slint";
+import { CommunicationTimePicker } from "CommunicationTimePicker.slint";
+import { DoorOpenSecondPicker } from "DoorOpenSecondPicker.slint";
+import { SystemInformation } from "SystemInformation.slint";
+import { SystemReset } from "SystemReset.slint";
+import { PasswordOldInput } from "PasswordOldInput.slint";
+import { PasswordNewInput } from "PasswordNewInput.slint";
+import { PasswordOk } from "PasswordOk.slint";
+import { PasswordNg } from "PasswordNg.slint";
+import { SettingInfoInputDialog } from "SettingInfoInputDialog.slint";
+import { SettingInfoSuccess } from "SettingInfoSuccess.slint";
+import { SettingInfoFail } from "SettingInfoFail.slint";
+import { CctvNumpadDialog } from "CctvNumpadDialog.slint";
+import { CctvTextInputDialog } from "CctvTextInputDialog.slint";
+import { CctvConnectionTestDialog } from "CctvConnectionTestDialog.slint";
+import { CctvDeleteConfirmDialog } from "CctvDeleteConfirmDialog.slint";
+
+export component OverlayLayer inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    background: #00000000;
+    if State.active-overlay != "rIvrD": Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: #00000000;
+        TouchArea {
+            width: parent.width;
+            height: parent.height;
+            clicked => { }
+        }
+    }
+    if State.active-overlay == "pHxTH": CaptureImageAllClear { x: 0px; y: 0px; }
+    if State.active-overlay == "1Negp": CaptureImageSelectClear { x: 0px; y: 0px; }
+    if State.active-overlay == "wifi-password" || State.active-overlay == "jbQzr" || State.active-overlay == "FmsBT" || State.active-overlay == "xMjyH": WifiPasswordDialog { x: 0px; y: 0px; }
+    if State.active-overlay == "de16y": WifiConnectSuccess { x: 0px; y: 0px; }
+    if State.active-overlay == "HZltp": WifiConnectFail { x: 0px; y: 0px; }
+    if State.active-overlay == "iOfBD": AbsentModeTimePicker { x: 452px; y: 236px; }
+    if State.active-overlay == "qH43a": CommunicationTimePicker { x: 452px; y: 236px; }
+    if State.active-overlay == "tJvPk": DoorOpenSecondPicker { x: 452px; y: 236px; }
+    if State.active-overlay == "uvgmF": SystemInformation { x: 0px; y: 0px; }
+    if State.active-overlay == "RFIGR": SystemReset { x: 0px; y: 0px; }
+    if State.active-overlay == "Q7BQ4": PasswordOldInput { x: 0px; y: 0px; }
+    if State.active-overlay == "Siq8B": PasswordNewInput { x: 0px; y: 0px; }
+    if State.active-overlay == "rIvrD": PasswordOk { x: 0px; y: 0px; }
+    if State.active-overlay == "CMf10": PasswordNg { x: 0px; y: 0px; }
+    if State.active-overlay == "FMNpj": SettingInfoInputDialog { x: 0px; y: 0px; }
+    if State.active-overlay == "cqURy": SettingInfoSuccess { x: 0px; y: 0px; }
+    if State.active-overlay == "vVqV2": SettingInfoFail { x: 0px; y: 0px; }
+    if State.active-overlay == "pJGE2": CctvNumpadDialog { x: 0px; y: 0px; ip-mode: true; }
+    if State.active-overlay == "YBsES": CctvNumpadDialog { x: 0px; y: 0px; ip-mode: false; }
+    if State.active-overlay == "KCRfp": CctvTextInputDialog { x: 0px; y: 0px; password-field: false; }
+    if State.active-overlay == "vfuIh": CctvTextInputDialog { x: 0px; y: 0px; password-field: true; }
+    if State.active-overlay == "E0zNY": CctvConnectionTestDialog { x: 0px; y: 0px; success: false; }
+    if State.active-overlay == "hMGBM": CctvConnectionTestDialog { x: 0px; y: 0px; success: true; }
+    if State.active-overlay == "Dr8p5": CctvDeleteConfirmDialog { x: 0px; y: 0px; }
+}

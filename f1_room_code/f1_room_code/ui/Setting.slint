@@ -1,0 +1,508 @@
+import { State, I18n } from "shared.slint";
+
+export component Setting inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: @linear-gradient(210.368deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+    Rectangle {
+        x: 80px; y: 40px;
+        width: 864px;
+        height: 48px;
+        background: #00000000;
+        Rectangle {
+            x: 24px; y: 0px;
+            width: 48px;
+            height: 48px;
+            background: #00000000;
+            border-radius: 16777200px;
+            Image {
+                x: 8px; y: 8px;
+                width: 32px;
+                height: 32px;
+                source: @image-url("../assets/images/1ZUDW.png");
+                image-fit: contain;
+            }
+            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.current-page = "LCvek"; } }
+        }
+        Rectangle {
+            x: 0px; y: 0px;
+            width: parent.width;
+            height: 48px;
+            background: #00000000;
+            Text {
+                width: parent.width;
+                height: parent.height;
+                text: I18n.text("app_settings");
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 32px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+    }
+    Rectangle {
+        x: 80px; y: 121px;
+        width: 864px;
+        height: 838px;
+        background: #00000000;
+        clip: true;
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 864px;
+            height: 117px;
+            background: @linear-gradient(225.000deg, #2563ebff 0%, #3b82f6ff 100%);
+            border-radius: 24px;
+            Rectangle {
+                x: 0px; y: 0px;
+                width: 864px;
+                height: 117px;
+                background: #00000000;
+                Rectangle {
+                    x: 40px; y: 28px;
+                    width: 300px;
+                    height: 61px;
+                    background: #00000000;
+                    Rectangle {
+                        x: 0px; y: 6.5px;
+                        width: 48px;
+                        height: 48px;
+                        background: #ffffff33;
+                        border-radius: 16777200px;
+                        Image {
+                            x: 10px; y: 10px;
+                            width: 28px;
+                            height: 28px;
+                            source: @image-url("../assets/images/L55SK.png");
+                            image-fit: contain;
+                        }
+                    }
+                    Rectangle {
+                        x: 72px; y: 0px;
+                        width: 240px;
+                        height: 61px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 0px;
+                            width: 180px;
+                            height: 36px;
+                            background: #00000000;
+                            Text {
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.text("captures");
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 24px;
+                                font-weight: 500;
+                                horizontal-alignment: left;
+                                vertical-alignment: center;
+                            }
+                        }
+                        Rectangle {
+                            x: 0px; y: 40px;
+                            width: 228px;
+                            height: 21px;
+                            background: #00000000;
+                            Text {
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.text("capture_records_desc");
+                                color: #ffffffb2;
+                                font-family: "Inter";
+                                font-size: 14px;
+                                font-weight: 500;
+                                horizontal-alignment: left;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                }
+                Image {
+                    x: 788px; y: 40.5px;
+                    width: 36px;
+                    height: 36px;
+                    source: @image-url("../assets/images/6NoL9.png");
+                    image-fit: contain;
+                }
+            }
+            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.previous-page = State.current-page; State.current-page = "NeeP0"; } }
+        }
+        Rectangle {
+            x: 0px; y: 145px;
+            width: 864px;
+            height: 0px;
+            background: #ffffff1a;
+        }
+        settings-list := Flickable {
+            x: 0px; y: 173px;
+            width: 864px;
+            height: 295px;
+            viewport-height: 608px;
+            Rectangle {
+                x: 0px; y: 0px;
+                width: 864px;
+                height: 88px;
+                background: #3d4b5fff;
+                border-radius: 20px;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 864px;
+                    height: 88px;
+                    background: #00000000;
+                    Rectangle {
+                        x: 32px; y: 24px;
+                        width: 180px;
+                        height: 40px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 0px;
+                            width: 40px;
+                            height: 40px;
+                            background: #00000000;
+                            Image {
+                                x: 0px; y: 0px;
+                                width: 40px;
+                                height: 40px;
+                                source: @image-url("../assets/images/Mjruw.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 60px; y: 0px;
+                            width: 240px;
+                            height: 40px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.text("general");
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 22px;
+                                font-weight: 500;
+                                horizontal-alignment: left;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                    Image {
+                        x: 800px; y: 28px;
+                        width: 32px;
+                        height: 32px;
+                        source: @image-url("../assets/images/IBOw4.png");
+                        image-fit: contain;
+                    }
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.refresh-general-setting-time(); State.previous-page = State.current-page; State.current-page = "BqdKn"; } }
+            }
+            Rectangle {
+                x: 0px; y: 104px;
+                width: 864px;
+                height: 88px;
+                background: #3d4b5fff;
+                border-radius: 20px;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 864px;
+                    height: 88px;
+                    background: #00000000;
+                    Rectangle {
+                        x: 32px; y: 24px;
+                        width: 190px;
+                        height: 40px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 0px;
+                            width: 40px;
+                            height: 40px;
+                            background: #00000000;
+                            Image {
+                                x: 0px; y: 0px;
+                                width: 40px;
+                                height: 40px;
+                                source: @image-url("../assets/images/XbnQf.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 60px; y: 0px;
+                            width: 240px;
+                            height: 40px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.text("display");
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 22px;
+                                font-weight: 500;
+                                horizontal-alignment: left;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                    Image {
+                        x: 800px; y: 28px;
+                        width: 32px;
+                        height: 32px;
+                        source: @image-url("../assets/images/IBOw4.png");
+                        image-fit: contain;
+                    }
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.previous-page = State.current-page; State.current-page = "NKtaE"; } }
+            }
+            Rectangle {
+                x: 0px; y: 208px;
+                width: 864px;
+                height: 88px;
+                background: #3d4b5fff;
+                border-radius: 20px;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 864px;
+                    height: 88px;
+                    background: #00000000;
+                    Rectangle {
+                        x: 32px; y: 24px;
+                        width: 170px;
+                        height: 40px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 0px;
+                            width: 40px;
+                            height: 40px;
+                            background: #00000000;
+                            Image {
+                                x: 0px; y: 0px;
+                                width: 40px;
+                                height: 40px;
+                                source: @image-url("../assets/images/Fjjww.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 60px; y: 0px;
+                            width: 240px;
+                            height: 40px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.text("sound");
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 22px;
+                                font-weight: 500;
+                                horizontal-alignment: left;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                    Image {
+                        x: 800px; y: 28px;
+                        width: 32px;
+                        height: 32px;
+                        source: @image-url("../assets/images/IBOw4.png");
+                        image-fit: contain;
+                    }
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.previous-page = State.current-page; State.current-page = "HODTk"; } }
+            }
+            Rectangle {
+                x: 0px; y: 312px;
+                width: 864px;
+                height: 88px;
+                background: #3d4b5fff;
+                border-radius: 20px;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 864px;
+                    height: 88px;
+                    background: #00000000;
+                    Rectangle {
+                        x: 32px; y: 24px;
+                        width: 170px;
+                        height: 40px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 0px;
+                            width: 40px;
+                            height: 40px;
+                            background: #00000000;
+                            Image {
+                                x: 0px; y: 0px;
+                                width: 40px;
+                                height: 40px;
+                                source: @image-url("../assets/images/pnAfc.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 60px; y: 0px;
+                            width: 240px;
+                            height: 40px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.text("network");
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 22px;
+                                font-weight: 500;
+                                horizontal-alignment: left;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                    Image {
+                        x: 800px; y: 28px;
+                        width: 32px;
+                        height: 32px;
+                        source: @image-url("../assets/images/IBOw4.png");
+                        image-fit: contain;
+                    }
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.previous-page = State.current-page; State.current-page = "mcVw9"; } }
+            }
+            Rectangle {
+                x: 0px; y: 416px;
+                width: 864px;
+                height: 88px;
+                background: #3d4b5fff;
+                border-radius: 20px;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 864px;
+                    height: 88px;
+                    background: #00000000;
+                    Rectangle {
+                        x: 32px; y: 24px;
+                        width: 170px;
+                        height: 40px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 0px;
+                            width: 40px;
+                            height: 40px;
+                            background: #00000000;
+                            Image {
+                                x: 0px; y: 0px;
+                                width: 40px;
+                                height: 40px;
+                                source: @image-url("../assets/images/HXrCm.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 60px; y: 0px;
+                            width: 240px;
+                            height: 40px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.text("mode");
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 22px;
+                                font-weight: 500;
+                                horizontal-alignment: left;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                    Image {
+                        x: 800px; y: 28px;
+                        width: 32px;
+                        height: 32px;
+                        source: @image-url("../assets/images/IBOw4.png");
+                        image-fit: contain;
+                    }
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.previous-page = State.current-page; State.current-page = "FpPpi"; } }
+            }
+            Rectangle {
+                x: 0px; y: 520px;
+                width: 864px;
+                height: 88px;
+                background: #3d4b5fff;
+                border-radius: 20px;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 864px;
+                    height: 88px;
+                    background: #00000000;
+                    Rectangle {
+                        x: 32px; y: 24px;
+                        width: 134.523px;
+                        height: 40px;
+                        background: #00000000;
+                        Rectangle {
+                            x: 0px; y: 0px;
+                            width: 40px;
+                            height: 40px;
+                            background: #00000000;
+                            Image {
+                                x: 0px; y: 0px;
+                                width: 40px;
+                                height: 40px;
+                                source: @image-url("../assets/images/O4JfH.png");
+                                image-fit: contain;
+                            }
+                        }
+                        Rectangle {
+                            x: 60px; y: 0px;
+                            width: 240px;
+                            height: 40px;
+                            background: #00000000;
+                            Text {
+                                x: 0px; y: 0px;
+                                width: parent.width;
+                                height: parent.height;
+                                text: I18n.text("other");
+                                color: #ffffffff;
+                                font-family: "Inter";
+                                font-size: 22px;
+                                font-weight: 500;
+                                horizontal-alignment: left;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                    Image {
+                        x: 800px; y: 28px;
+                        width: 32px;
+                        height: 32px;
+                        source: @image-url("../assets/images/IBOw4.png");
+                        image-fit: contain;
+                    }
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.previous-page = State.current-page; State.current-page = "gzCRD"; } }
+            }
+        }
+    }
+    Rectangle {
+        x: 994px; y: 294px;
+        width: 4px;
+        height: 295px;
+        background: #374151ff;
+        border-radius: 16777200px;
+        Rectangle {
+            x: -3px; y: -settings-list.viewport-y / (608px - 295px) * (295px - 39px);
+            width: 9px;
+            height: 39px;
+            background: #dededeff;
+            border-radius: 10px;
+        }
+    }
+}

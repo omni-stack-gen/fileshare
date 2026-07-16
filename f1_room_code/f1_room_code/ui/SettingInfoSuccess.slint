@@ -1,0 +1,17 @@
+import { State, I18n, SmallStatusDialog } from "shared.slint";
+
+export component SettingInfoSuccess inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    background: #00000000;
+
+    SmallStatusDialog {
+        icon-source: @image-url("../assets/images/sUjpt.png");
+        icon-circle-color: #00a63e33;
+        title: I18n.text("setting_info_saved");
+        message1: I18n.text("setting_info_saved_desc");
+        button-label: I18n.text("confirm");
+        button-fill: #00a63eff;
+        confirmed => { State.active-overlay = ""; }
+    }
+}

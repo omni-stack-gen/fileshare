@@ -1,0 +1,374 @@
+import { State, I18n } from "shared.slint";
+
+export component CaptureImage inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: @linear-gradient(210.368deg, #101828ff 0%, #1e2939ff 50%, #101828ff 100%);
+
+    init => {
+        State.capture-records-refresh();
+    }
+
+    Rectangle {
+        x: 80px;
+        y: 40px;
+        width: 864px;
+        height: 48px;
+        background: #00000000;
+
+        Rectangle {
+            x: 24px;
+            y: 0px;
+            width: 48px;
+            height: 48px;
+            background: #00000000;
+            border-radius: 16777200px;
+            Image {
+                x: 8px;
+                y: 8px;
+                width: 32px;
+                height: 32px;
+                source: @image-url("../assets/images/1ZUDW.png");
+                image-fit: contain;
+            }
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    State.current-page = "kKrEC";
+                }
+            }
+        }
+
+        Text {
+            x: 0px;
+            y: 4px;
+            width: parent.width;
+            height: 40px;
+            text: I18n.text("capture_records_title");
+            color: #ffffffff;
+            font-family: "Inter";
+            font-size: 32px;
+            font-weight: 600;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+
+        Rectangle {
+            x: 587px;
+            y: 2px;
+            width: 126px;
+            height: 44px;
+            background: #4a5565ff;
+            border-radius: 12px;
+            opacity: State.capture-record-has-selection ? 1.0 : 0.45;
+            Image {
+                x: 20px;
+                y: 12px;
+                width: 20px;
+                height: 20px;
+                source: @image-url("../assets/images/2p2JY.png");
+                image-fit: contain;
+            }
+            Text {
+                x: 48px;
+                y: 10px;
+                width: 58px;
+                height: 24px;
+                text: I18n.text("delete_selected");
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 16px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    if State.capture-record-has-selection {
+                        State.capture-records-delete-selected();
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            x: 738px;
+            y: 2px;
+            width: 126px;
+            height: 44px;
+            background: #c10007ff;
+            border-radius: 12px;
+            opacity: State.capture-record-images.length > 0 ? 1.0 : 0.45;
+            Image {
+                x: 20px;
+                y: 12px;
+                width: 20px;
+                height: 20px;
+                source: @image-url("../assets/images/2p2JY.png");
+                image-fit: contain;
+            }
+            Text {
+                x: 48px;
+                y: 10px;
+                width: 58px;
+                height: 24px;
+                text: I18n.text("delete_all");
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 16px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    if State.capture-record-images.length > 0 {
+                        State.capture-records-delete-all();
+                    }
+                }
+            }
+        }
+    }
+
+    gallery := Rectangle {
+        x: 80px;
+        y: 105px;
+        width: 864px;
+        height: 432px;
+        background: #00000000;
+
+        if State.capture-record-images.length == 0: Rectangle {
+            width: parent.width;
+            height: parent.height;
+            background: #11182766;
+            border-radius: 24px;
+
+            Text {
+                width: parent.width;
+                height: parent.height;
+                text: I18n.text("capture_records_desc");
+                color: #ffffff99;
+                font-family: "Inter";
+                font-size: 22px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+
+        for image[index] in State.capture-record-images: Rectangle {
+            x: 294px * Math.mod(index, 3);
+            y: 226px * (index / 3);
+            width: 274px;
+            height: 206px;
+            background: #0f172acc;
+            border-radius: 16px;
+            clip: true;
+
+            Image {
+                width: parent.width;
+                height: parent.height;
+                source: image;
+                image-fit: cover;
+            }
+
+            Rectangle {
+                x: 12px;
+                y: 12px;
+                width: 72px;
+                height: 32px;
+                background: #364153e6;
+                border-radius: 8px;
+                Text {
+                    width: parent.width;
+                    height: parent.height;
+                    text: State.capture-record-labels[index];
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 14px;
+                    font-weight: 600;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+
+            if State.capture-record-unread-flags[index]: Rectangle {
+                x: 153px;
+                y: 12px;
+                width: 72px;
+                height: 30px;
+                background: #e7000bff;
+                border-radius: 8px;
+                Image {
+                    x: 10px;
+                    y: 8px;
+                    width: 14px;
+                    height: 14px;
+                    source: @image-url("../assets/images/CcKkn.png");
+                    image-fit: contain;
+                }
+                Text {
+                    x: 28px;
+                    y: 6px;
+                    width: 32px;
+                    height: 18px;
+                    text: I18n.text("new");
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 12px;
+                    font-weight: 600;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+
+            Rectangle {
+                x: 236px;
+                y: 13px;
+                width: 28px;
+                height: 28px;
+                background: State.capture-record-selected-flags[index] ? #155dfcff : #00000088;
+                border-radius: 6px;
+                border-width: 2px;
+                border-color: #ffffffff;
+                TouchArea {
+                    width: parent.width;
+                    height: parent.height;
+                    clicked => { State.play-touch-sound();
+                        State.capture-records-select(index);
+                    }
+                }
+            }
+
+            Rectangle {
+                x: 0px;
+                y: 137px;
+                width: parent.width;
+                height: 69px;
+                background: #00000099;
+                Text {
+                    x: 16px;
+                    y: 12px;
+                    width: parent.width - 32px;
+                    height: 24px;
+                    text: State.capture-record-date-texts[index];
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 16px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+                Text {
+                    x: 16px;
+                    y: 36px;
+                    width: parent.width - 32px;
+                    height: 21px;
+                    text: State.capture-record-time-texts[index];
+                    color: #ffffffcc;
+                    font-family: "Inter";
+                    font-size: 14px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    State.capture-records-open(index);
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        x: 80px;
+        y: 547px;
+        width: 864px;
+        height: 43px;
+        background: #00000000;
+
+        Rectangle {
+            x: 0px;
+            y: 0px;
+            width: 48px;
+            height: 43px;
+            background: #364153ff;
+            border-radius: 12px;
+            opacity: State.capture-record-has-prev-page ? 1.0 : 0.35;
+            Image {
+                x: 8px;
+                y: 6px;
+                width: 32px;
+                height: 32px;
+                source: @image-url("../assets/images/1ZUDW.png");
+                image-fit: contain;
+            }
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    if State.capture-record-has-prev-page {
+                        State.capture-records-prev-page();
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            x: 394px;
+            y: 0px;
+            width: 76px;
+            height: 43px;
+            background: #ffffff1a;
+            border-radius: 12px;
+            Text {
+                width: parent.width;
+                height: parent.height;
+                text: State.capture-record-page-text;
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 18px;
+                font-weight: 500;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+
+        Rectangle {
+            x: 816px;
+            y: 0px;
+            width: 48px;
+            height: 43px;
+            background: #364153ff;
+            border-radius: 12px;
+            opacity: State.capture-record-has-next-page ? 1.0 : 0.35;
+            Image {
+                x: 8px;
+                y: 6px;
+                width: 32px;
+                height: 32px;
+                source: @image-url("../assets/images/Aua4x.png");
+                image-fit: contain;
+            }
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => { State.play-touch-sound();
+                    if State.capture-record-has-next-page {
+                        State.capture-records-next-page();
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+import { State, I18n, SmallStatusDialog } from "shared.slint";
+
+export component SettingInfoFail inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    background: #00000000;
+
+    SmallStatusDialog {
+        panel-y: 143px;
+        panel-height: 313px;
+        icon-source: @image-url("../assets/images/vQ5Y5.png");
+        icon-circle-color: #e7000b33;
+        title: I18n.text("setting_info_save_failed");
+        message1: I18n.text("setting_info_save_failed_desc");
+        button-label: I18n.text("confirm");
+        button-fill: #e7000bff;
+        button-y: 195px;
+        confirmed => { State.active-overlay = ""; }
+    }
+}

@@ -1,0 +1,216 @@
+import { State, I18n } from "shared.slint";
+
+component InfoRow inherits Rectangle {
+    in property <string> label;
+    in property <string> value;
+
+    width: 454px;
+    height: 47px;
+    background: #ffffff0d;
+    border-radius: 10px;
+    border-color: #ffffff0d;
+    border-width: 1px;
+
+    Text {
+        x: 16px; y: 13px;
+        width: 120px;
+        height: 21px;
+        text: root.label;
+        color: #ffffff99;
+        font-family: "Inter";
+        font-size: 14px;
+        vertical-alignment: center;
+    }
+
+    Text {
+        x: 152px; y: 13px;
+        width: 286px;
+        height: 21px;
+        text: root.value;
+        color: #ffffffff;
+        font-family: "Inter";
+        font-size: 14px;
+        font-weight: 500;
+        horizontal-alignment: right;
+        vertical-alignment: center;
+    }
+}
+
+export component SystemInformation inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    background: #00000000;
+
+    Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: #00000099;
+        TouchArea { width: parent.width; height: parent.height; clicked => { } }
+    }
+
+    Rectangle {
+        x: 132px; y: 47px;
+        width: 760px;
+        height: 505px;
+        background: @linear-gradient(225deg, #1d293dff 0%, #0f172bff 100%);
+        border-radius: 20px;
+        border-color: #ffffff1a;
+        border-width: 1px;
+        drop-shadow-color: #00000040;
+        drop-shadow-offset-y: 25px;
+        drop-shadow-blur: 43.75px;
+
+        Rectangle {
+            x: 33px; y: 33px;
+            width: 694px;
+            height: 439px;
+            background: #00000000;
+
+            Rectangle {
+                x: 0px; y: 0px;
+                width: 694px;
+                height: 48px;
+                background: #00000000;
+
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 48px;
+                    height: 48px;
+                    background: #155dfc33;
+                    border-radius: 16777200px;
+
+                    Image {
+                        x: 12px; y: 12px;
+                        width: 24px;
+                        height: 24px;
+                        source: @image-url("../assets/images/Dl001.png");
+                        image-fit: contain;
+                    }
+                }
+
+                Text {
+                    x: 60px; y: 7.5px;
+                    width: 180px;
+                    height: 33px;
+                    text: I18n.text("system_info");
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 22px;
+                    font-weight: 600;
+                    vertical-alignment: center;
+                }
+            }
+
+            Rectangle {
+                x: 0px; y: 72px;
+                width: 220px;
+                height: 283px;
+                background: #ffffff0d;
+                border-radius: 10px;
+                border-color: #ffffff0d;
+                border-width: 1px;
+
+                Rectangle {
+                    x: 20px; y: 20px;
+                    width: 180px;
+                    height: 180px;
+                    background: #ffffffff;
+                    border-radius: 12px;
+
+                    if State.system-info-qr-available: Image {
+                        x: 10px;
+                        y: 10px;
+                        width: 160px;
+                        height: 160px;
+                        source: State.system-info-qr-image;
+                        image-fit: contain;
+                    }
+
+                    if !State.system-info-qr-available: Text {
+                        x: 10px;
+                        y: 10px;
+                        width: 160px;
+                        height: 160px;
+                        text: I18n.text("qr_unavailable");
+                        color: #475467ff;
+                        font-family: "Inter";
+                        font-size: 16px;
+                        font-weight: 500;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                        wrap: word-wrap;
+                    }
+                }
+
+                Text {
+                    x: 20px; y: 220px;
+                    width: 180px;
+                    height: 43px;
+                    text: State.system-info-qr-available ? State.system-info-mac-address : I18n.text("qr_unavailable");
+                    color: #ffffff99;
+                    font-family: "Inter";
+                    font-size: 13px;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                    wrap: word-wrap;
+                }
+            }
+
+            InfoRow {
+                x: 240px; y: 72px;
+                label: I18n.text("model_name");
+                value: "VP-4000X";
+            }
+
+            InfoRow {
+                x: 240px; y: 131px;
+                label: I18n.text("app_version");
+                value: "1.0.4";
+            }
+
+            InfoRow {
+                x: 240px; y: 190px;
+                label: I18n.text("system_version");
+                value: "KR2024-00123456";
+            }
+
+            InfoRow {
+                x: 240px; y: 249px;
+                label: I18n.text("mac_address");
+                value: State.system-info-mac-address;
+            }
+
+            InfoRow {
+                x: 240px; y: 308px;
+                label: I18n.text("ip_address");
+                value: State.system-info-ip-address;
+            }
+
+            Rectangle {
+                x: 0px; y: 387px;
+                width: 694px;
+                height: 52px;
+                background: #155dfcff;
+                border-radius: 12px;
+
+                Text {
+                    width: parent.width;
+                    height: parent.height;
+                    text: I18n.text("confirm");
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 15px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                TouchArea {
+                    width: parent.width;
+                    height: parent.height;
+                    clicked => { State.play-touch-sound(); State.active-overlay = ""; }
+                }
+            }
+        }
+    }
+}

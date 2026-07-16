@@ -1,0 +1,14 @@
+import { State, I18n } from "shared.slint";
+import { NumberOptionPicker } from "NumberOptionPicker.slint";
+
+export component DoorOpenSecondPicker inherits NumberOptionPicker {
+    selected-value: State.door-open-seconds;
+    second-unit: true;
+
+    picked(value) => {
+        State.door-open-seconds = value;
+        State.second-level-value = I18n.second_label(value);
+        State.save-int-setting("mode.door_open_duration_sec", value);
+        State.active-overlay = "";
+    }
+}

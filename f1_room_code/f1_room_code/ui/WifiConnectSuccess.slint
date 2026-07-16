@@ -1,0 +1,21 @@
+import { State, I18n, WifiStatusDialog } from "shared.slint";
+
+export component WifiConnectSuccess inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    background: #00000000;
+
+    WifiStatusDialog {
+        panel-y: 139.75px;
+        panel-height: 320.5px;
+        icon-source: @image-url("../assets/images/KFtiX.png");
+        icon-circle-color: #00a63e33;
+        title: I18n.text("connection_success");
+        message1: I18n.wifi_success_message(State.connected-ssid);
+        message1-color: #51a2ffff;
+        primary-label: I18n.text("confirm");
+        primary-fill: @linear-gradient(270.000deg, #00a63eff 0%, #008236ff 100%);
+        primary-y: 226.5px;
+        primary => { State.active-overlay = ""; }
+    }
+}

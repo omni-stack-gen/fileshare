@@ -1,0 +1,354 @@
+import { State, I18n, InteractiveSlider } from "shared.slint";
+
+export component DisplaySetting inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    clip: true;
+    background: #00000000;
+    Rectangle {
+        x: 0px; y: 0px;
+        width: 1024px;
+        height: 80px;
+        background: @linear-gradient(180.000deg, #000000cc 0%, #00000000 100%);
+        Rectangle {
+            x: 24px; y: 16px;
+            width: 48px;
+            height: 48px;
+            background: #00000000;
+            border-radius: 33554400px;
+            Image {
+                x: 8px; y: 8px;
+                width: 32px;
+                height: 32px;
+                source: @image-url("../assets/images/1ZUDW.png");
+                image-fit: contain;
+            }
+            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.current-page = "kKrEC"; } }
+        }
+        Rectangle {
+            x: 452.703px; y: 19px;
+            width: 118.609px;
+            height: 42px;
+            background: #00000000;
+            Text {
+                x: -33.703px; y: 0px;
+                text: I18n.text("display_setting");
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 28px;
+                font-weight: 500;
+            }
+        }
+    }
+    Rectangle {
+        x: 0px; y: 0px;
+        width: 1024px;
+        height: 600px;
+        background: #00000000;
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 1024px;
+            height: 600px;
+            background: #00000000;
+            clip: true;
+            Rectangle {
+                x: 0px; y: 0px;
+                width: 1024px;
+                height: 600px;
+                background: #00000000;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 1024px;
+                    height: 600px;
+                    background: #00000000;
+                    Rectangle {
+                        x: 0px; y: 0px;
+                        width: 1024px;
+                        height: 683px;
+                        background: #00000000;
+                        clip: true;
+                    }
+                }
+            }
+        }
+    }
+    Rectangle {
+        x: 44px; y: 116px;
+        width: 280px;
+        height: 418px;
+        background: #00000000;
+        Rectangle {
+            x: 0px; y: 372px;
+            width: 280px;
+            height: 46px;
+            background: #00000000;
+            Rectangle {
+                x: 0px; y: 0px;
+                width: 136px;
+                height: 46px;
+                background: #4b4a4aba;
+                border-radius: 12px;
+                border-color: #ffffff33;
+                border-width: 1px;
+                Text {
+                    x: 49.781px; y: 12px;
+                    text: I18n.text("reset");
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 14px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                }
+            }
+            Rectangle {
+                x: 144px; y: 0px;
+                width: 136px;
+                height: 46px;
+                background: @linear-gradient(270.000deg, #155dfcff 0%, #1447e6ff 100%);
+                border-radius: 12px;
+                Text {
+                    x: 54.688px; y: 12px;
+                    text: I18n.text("save");
+                    color: #ffffffff;
+                    font-family: "Inter";
+                    font-size: 14px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                }
+                TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.current-page = "kKrEC"; } }
+            }
+        }
+        Rectangle {
+            x: 0px; y: 0px;
+            width: 280px;
+            height: 81px;
+            background: #000000b2;
+            border-radius: 12px;
+            border-color: #ffffff33;
+            border-width: 1px;
+            Rectangle {
+                x: 17px; y: 11px;
+                width: 246px;
+                height: 21px;
+                background: #00000000;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 23.625px;
+                    height: 21px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        text: I18n.text("brightness");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                }
+                Rectangle {
+                    x: 196px; y: 0px;
+                    width: 50px;
+                    height: 21px;
+                    background: #00000000;
+                    Text {
+                        x: 17.453px; y: 0px;
+                        text: round(State.display-brightness-value * 176) + "%";
+                        color: #51a2ffff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        font-weight: 500;
+                        horizontal-alignment: right;
+                    }
+                }
+            }
+            InteractiveSlider {
+                x: 17px; y: 38px;
+                width: 246px;
+                height: 32px;
+                track-y: 14px;
+                track-height: 4px;
+                track-color: #ffffff33;
+                fill-color: @linear-gradient(270.000deg, #2b7fffff 0%, #155dfcff 100%);
+                knob-color: #1a65fdff;
+                knob-size: 24px;
+                knob-y: 4px;
+                setting-key: "display.brightness";
+                value <=> State.display-brightness-value;
+            }
+        }
+        Rectangle {
+            x: 0px; y: 91px;
+            width: 280px;
+            height: 81px;
+            background: #000000b2;
+            border-radius: 12px;
+            border-color: #ffffff33;
+            border-width: 1px;
+            Rectangle {
+                x: 17px; y: 11px;
+                width: 246px;
+                height: 21px;
+                background: #00000000;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 23.625px;
+                    height: 21px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        text: I18n.text("color");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                }
+                Rectangle {
+                    x: 196px; y: 0px;
+                    width: 50px;
+                    height: 21px;
+                    background: #00000000;
+                    Text {
+                        x: 34.156px; y: 0px;
+                        text: round(State.display-color-value * 360) + "°";
+                        color: #51a2ffff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        font-weight: 500;
+                        horizontal-alignment: right;
+                    }
+                }
+            }
+            InteractiveSlider {
+                x: 17px; y: 38px;
+                width: 246px;
+                height: 32px;
+                track-y: 14px;
+                track-height: 4px;
+                track-color: #ffffff33;
+                fill-color: @linear-gradient(270.000deg, #2b7fffff 0%, #155dfcff 100%);
+                knob-color: #1a65fdff;
+                knob-size: 24px;
+                knob-y: 4px;
+                setting-key: "display.hue";
+                value <=> State.display-color-value;
+            }
+        }
+        Rectangle {
+            x: 0px; y: 182px;
+            width: 280px;
+            height: 81px;
+            background: #000000b2;
+            border-radius: 12px;
+            border-color: #ffffff33;
+            border-width: 1px;
+            Rectangle {
+                x: 17px; y: 11px;
+                width: 246px;
+                height: 21px;
+                background: #00000000;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 23.625px;
+                    height: 21px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        text: I18n.text("contrast");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                }
+                Rectangle {
+                    x: 196px; y: 0px;
+                    width: 50px;
+                    height: 21px;
+                    background: #00000000;
+                    Text {
+                        x: 17.25px; y: 0px;
+                        text: round(State.display-contrast-value * 175) + "%";
+                        color: #51a2ffff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        font-weight: 500;
+                        horizontal-alignment: right;
+                    }
+                }
+            }
+            InteractiveSlider {
+                x: 17px; y: 38px;
+                width: 246px;
+                height: 32px;
+                track-y: 14px;
+                track-height: 4px;
+                track-color: #ffffff33;
+                fill-color: @linear-gradient(270.000deg, #2b7fffff 0%, #155dfcff 100%);
+                knob-color: #1a65fdff;
+                knob-size: 24px;
+                knob-y: 4px;
+                setting-key: "display.contrast";
+                value <=> State.display-contrast-value;
+            }
+        }
+        Rectangle {
+            x: 0px; y: 273px;
+            width: 280px;
+            height: 81px;
+            background: #000000b2;
+            border-radius: 12px;
+            border-color: #ffffff33;
+            border-width: 1px;
+            Rectangle {
+                x: 17px; y: 11px;
+                width: 246px;
+                height: 21px;
+                background: #00000000;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: 23.625px;
+                    height: 21px;
+                    background: #00000000;
+                    Text {
+                        x: 0px; y: 0px;
+                        text: I18n.text("saturation");
+                        color: #ffffffff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                }
+                Rectangle {
+                    x: 196px; y: 0px;
+                    width: 50px;
+                    height: 21px;
+                    background: #00000000;
+                    Text {
+                        x: 21.344px; y: 0px;
+                        text: round(State.display-saturation-value * 200) + "%";
+                        color: #51a2ffff;
+                        font-family: "Inter";
+                        font-size: 14px;
+                        font-weight: 500;
+                        horizontal-alignment: right;
+                    }
+                }
+            }
+            InteractiveSlider {
+                x: 17px; y: 38px;
+                width: 246px;
+                height: 32px;
+                track-y: 14px;
+                track-height: 4px;
+                track-color: #ffffff33;
+                fill-color: @linear-gradient(270.000deg, #2b7fffff 0%, #155dfcff 100%);
+                knob-color: #1a65fdff;
+                knob-size: 24px;
+                knob-y: 4px;
+                setting-key: "display.saturation";
+                value <=> State.display-saturation-value;
+            }
+        }
+    }
+}

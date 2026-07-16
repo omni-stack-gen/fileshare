@@ -1,0 +1,62 @@
+Build all (SDK lib and sample)
+-- The C compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- 
+-- ============= Compile Env =============
+-- CMake Version: 3.28.3
+--  CPU Info:     x86_64
+--   OS Info:     Linux-6.8.0-49-generic
+-- Host Info:     Linux
+-- C COMPILER:    GNU-13.3.0
+--  PROJECT_SOURCE_DIR:    /home/shm/project_A/V1/code/PLC_Door
+--  CMAKE_CURRENT_SOURCE_DIR: /home/shm/project_A/V1/code/PLC_Door
+-- ============= Compile Env =============
+-- 
+-- # EXPORT_ENCRYPTION_LIBS:    
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/shm/project_A/V1/code/PLC_Door/build
+[ 16%] Building C object src/transport/CMakeFiles/goblin_lan_lib.dir/tran.c.o
+[ 13%] Building C object src/transport/CMakeFiles/goblin_lan_lib.dir/spi_plc/spi_plc_call.c.o
+[ 16%] Building C object src/transport/CMakeFiles/goblin_lan_lib.dir/spi_plc/spi_plc_mgnt.c.o
+[ 13%] Building C object src/transport/CMakeFiles/goblin_lan_lib.dir/spi_plc/spi_plc_trans.c.o
+[ 16%] Building C object CMakeFiles/dp_exe.dir/application.c.o
+[ 20%] Building C object src/transport/CMakeFiles/goblin_lan_lib.dir/list.c.o
+[ 26%] Building C object src/transport/CMakeFiles/goblin_lan_lib.dir/trans.c.o
+[ 26%] Building C object CMakeFiles/dp_exe.dir/main.c.o
+[ 30%] Building C object CMakeFiles/dp_exe.dir/src/base/ServiceFile.c.o
+[ 33%] Building C object CMakeFiles/dp_exe.dir/src/base/dpbaselib.c.o
+[ 36%] Building C object CMakeFiles/dp_exe.dir/src/base/dpbase.c.o
+[ 40%] Building C object CMakeFiles/dp_exe.dir/src/base/dpfile.c.o
+[ 43%] Building C object CMakeFiles/dp_exe.dir/src/base/dptcpip.c.o
+[ 46%] Building C object CMakeFiles/dp_exe.dir/src/base/dptime.c.o
+[ 50%] Linking C shared library libdp_plc_tran.so
+[ 53%] Building C object CMakeFiles/dp_exe.dir/src/base/sys/sys_timer.c.o
+[ 56%] Building C object CMakeFiles/dp_exe.dir/src/base/sys/sys_event.c.o
+[ 60%] Building C object CMakeFiles/dp_exe.dir/src/base/systemmsg.c.o
+[ 63%] Building C object CMakeFiles/dp_exe.dir/src/utils/atomic.c.o
+[ 66%] Building C object CMakeFiles/dp_exe.dir/src/utils/bmem.c.o
+[ 70%] Building C object CMakeFiles/dp_exe.dir/src/utils/hex.c.o
+[ 73%] Building C object CMakeFiles/dp_exe.dir/src/utils/log.c.o
+[ 76%] Building C object CMakeFiles/dp_exe.dir/src/utils/mq.c.o
+[ 80%] Building C object CMakeFiles/dp_exe.dir/src/utils/rb_tree.c.o
+[ 83%] Building C object CMakeFiles/dp_exe.dir/src/utils/rw_helper.c.o
+[ 86%] Building C object CMakeFiles/dp_exe.dir/src/utils/sem.c.o
+[ 86%] Built target goblin_lan_lib
+[ 90%] Building C object CMakeFiles/dp_exe.dir/src/utils/time_helper.c.o
+[ 93%] Building C object CMakeFiles/dp_exe.dir/src/utils/wave_file_fmt.c.o
+[ 96%] Building C object CMakeFiles/dp_exe.dir/src/utils/timer_heap.c.o
+[100%] Linking C executable dp_test
+[100%] Built target dp_exe
+[ 76%] Built target dp_exe
+[100%] Built target goblin_lan_lib
+Install the project...
+-- Install configuration: ""
+-- Installing: /home/shm/project_A/V1/code/PLC_Door/output/X5/bin/dp_test
+-- Set non-toolchain portion of runtime path of "/home/shm/project_A/V1/code/PLC_Door/output/X5/bin/dp_test" to ""
+-- Installing: /home/shm/project_A/V1/code/PLC_Door/output/X5/lib/libdp_plc_tran.so
+-- Set non-toolchain portion of runtime path of "/home/shm/project_A/V1/code/PLC_Door/output/X5/lib/libdp_plc_tran.so" to ""

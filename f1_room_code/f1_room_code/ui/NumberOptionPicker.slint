@@ -1,0 +1,35 @@
+import { State, I18n } from "shared.slint";
+
+export component NumberOptionPicker inherits Rectangle {
+    in property <int> selected-value: 1;
+    in property <bool> second-unit: false;
+    callback picked(int);
+
+    width: 120px;
+    height: 222px;
+    clip: true;
+    background: #1d293dff;
+
+    for value[index] in [1, 2, 3, 4, 5]: Rectangle {
+        x: 1px;
+        y: 1px + 44px * index;
+        width: 118px;
+        height: 44px;
+        background: root.selected-value == value ? #155dfc4d : #00000000;
+
+        Text {
+            x: 16px; y: 11px;
+            text: root.second-unit ? I18n.second_label(value) : I18n.minute_label(value);
+            color: root.selected-value == value ? #51a2ffff : #ffffffff;
+            font-family: "Inter";
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        TouchArea {
+            width: parent.width;
+            height: parent.height;
+            clicked => { State.play-touch-sound(); root.picked(value); }
+        }
+    }
+}

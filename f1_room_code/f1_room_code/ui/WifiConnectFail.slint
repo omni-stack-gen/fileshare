@@ -1,0 +1,27 @@
+import { State, I18n, WifiStatusDialog } from "shared.slint";
+
+export component WifiConnectFail inherits Rectangle {
+    width: 1024px;
+    height: 600px;
+    background: #00000000;
+
+    WifiStatusDialog {
+        panel-y: 97.5px;
+        panel-height: 405px;
+        icon-source: @image-url("../assets/images/ygI4P.png");
+        icon-circle-color: #e7000b33;
+        title: I18n.text("connection_failed");
+        message1: I18n.wifi_fail_message(State.wifi-target-ssid == "" ? State.connected-ssid : State.wifi-target-ssid);
+        message2: I18n.text("check_password");
+        message1-color: #ff6467ff;
+        message2-color: #ffffffb2;
+        primary-label: I18n.text("retry");
+        primary-fill: @linear-gradient(270.000deg, #155dfcff 0%, #1447e6ff 100%);
+        primary-y: 249px;
+        secondary-label: I18n.text("cancel");
+        secondary-fill: #ffffff1a;
+        secondary-y: 311px;
+        primary => { State.active-overlay = "wifi-password"; }
+        secondary => { State.active-overlay = ""; }
+    }
+}

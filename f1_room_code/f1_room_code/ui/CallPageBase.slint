@@ -1,0 +1,58 @@
+import { State, Header, SmallButton } from "shared.slint";
+
+export component CallPageBase inherits Rectangle {
+    in property <string> title;
+    in property <string> subtitle;
+    in property <string> first-label;
+    in property <string> second-label;
+    in property <string> third-label;
+    in property <string> first-effect;
+    in property <string> second-effect;
+    in property <string> third-effect;
+
+    width: 1024px;
+    height: 600px;
+    background: #101828;
+    Header { x: 0px; y: 0px; width: parent.width; title: root.title; back-target: "LCvek"; }
+
+    Rectangle {
+        x: 84px; y: 112px; width: 720px; height: 360px;
+        background: #111827;
+        border-radius: 20px;
+        border-width: 2px;
+        border-color: #364153;
+        Text { y: 124px; width: parent.width; text: root.subtitle; color: #ffffff; font-size: 28px; font-weight: 700; horizontal-alignment: center; }
+        Text {
+            y: 178px;
+            width: parent.width;
+            text: State.pressed-effect == "" ? "Waiting" : "Effect locked: " + State.pressed-effect;
+            color: State.pressed-effect == "" ? #ffffff88 : #51a2ff;
+            font-size: 20px;
+            horizontal-alignment: center;
+        }
+    }
+
+    SmallButton {
+        x: 846px; y: 112px; width: 124px; height: 112px;
+        label: root.first-label;
+        bg: State.pressed-effect == root.first-effect ? #1dba25 : #4f39f6;
+        enabled-state: (!State.call-effect-locked || State.pressed-effect == root.first-effect) && root.first-label != "";
+        clicked => { State.play-touch-sound(); State.pressed-effect = root.first-effect; State.call-effect-locked = true; }
+    }
+    SmallButton {
+        x: 846px; y: 244px; width: 124px; height: 112px;
+        label: root.second-label;
+        bg: State.pressed-effect == root.second-effect ? #d16f29 : #314158;
+        enabled-state: (!State.call-effect-locked || State.pressed-effect == root.second-effect) && root.second-label != "";
+        clicked => { State.play-touch-sound(); State.pressed-effect = root.second-effect; State.call-effect-locked = true; }
+    }
+    SmallButton {
+        x: 846px; y: 376px; width: 124px; height: 112px;
+        label: root.third-label;
+        bg: State.pressed-effect == root.third-effect ? #bebbb9 : #314158;
+        fg: root.third-label == "종료" ? #ff6467 : #ffffff;
+        enabled-state: (!State.call-effect-locked || State.pressed-effect == root.third-effect) && root.third-label != "";
+        clicked => { State.play-touch-sound(); State.pressed-effect = root.third-effect; State.call-effect-locked = true; }
+    }
+}
+

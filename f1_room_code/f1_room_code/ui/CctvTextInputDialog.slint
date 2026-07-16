@@ -1,0 +1,119 @@
+import { State, I18n } from "shared.slint";
+import { FullKeyboardPanel } from "FullKeyboardPanel.slint";
+
+export component CctvTextInputDialog inherits Rectangle {
+    in property <bool> password-field: false;
+    in property <string> mode: State.keyboard-mode;
+
+    width: 1024px;
+    height: 600px;
+    background: #000000cc;
+
+    function title() -> string {
+        return root.password-field ? "비밀번호 입력" : "계정 입력";
+    }
+
+    function placeholder() -> string {
+        return root.password-field ? "비밀번호를 입력하세요" : "계정을 입력하세요";
+    }
+
+    Rectangle {
+        x: 162px; y: 76px;
+        width: 700px;
+        height: 448px;
+        background: @linear-gradient(225.000deg, #1d293dff 0%, #0f172bff 100%);
+        border-radius: 20px;
+        border-color: #ffffff1a;
+        border-width: 1px;
+        clip: true;
+
+        Rectangle {
+            x: 1px; y: 1px;
+            width: 698px;
+            height: 65.5px;
+            background: #00000000;
+            border-color: #ffffff14;
+            border-width: 1px;
+
+            Text {
+                x: 24px; y: 23px;
+                text: root.title();
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            Text {
+                x: 670px; y: 20px;
+                text: "×";
+                color: #ffffffff;
+                font-family: "Inter";
+                font-size: 18px;
+                horizontal-alignment: center;
+            }
+            TouchArea { x: 658px; y: 16px; width: 32px; height: 32px; clicked => { State.play-touch-sound(); State.active-overlay = ""; } }
+        }
+
+        Rectangle {
+            x: 25px; y: 86px;
+            width: 650px;
+            height: 48.5px;
+            background: #ffffff0f;
+            border-radius: 12px;
+            border-color: #ffffff1a;
+            border-width: 1px;
+            Text {
+                x: 16px; y: 12px;
+                width: 618px;
+                height: 24px;
+                text: State.cctv-setting-input-buffer == ""
+                    ? root.placeholder()
+                    : (root.password-field && !State.password-visible ? State.cctv-setting-input-mask : State.cctv-setting-input-buffer);
+                color: State.cctv-setting-input-buffer == "" ? #ffffff40 : #ffffffff;
+                font-family: "Inter";
+                font-size: 15px;
+                vertical-alignment: center;
+            }
+        }
+
+        FullKeyboardPanel {
+            x: 25px; y: 150.5px;
+            width: 650px;
+            height: 208px;
+            mode: root.mode;
+            key-pressed(value) => { State.append-cctv-setting-input(value); }
+            mode-changed(value) => { State.keyboard-mode = value; }
+            clear-pressed => { State.clear-cctv-setting-input(); }
+        }
+
+        Rectangle {
+            x: 25px; y: 378.5px;
+            width: 319px;
+            height: 48.5px;
+            background: #ffffff14;
+            border-radius: 12px;
+            Text { width: parent.width; height: parent.height; text: I18n.text("cancel"); color: #ffffffff; font-family: "Inter"; font-size: 15px; font-weight: 500; horizontal-alignment: center; vertical-alignment: center; }
+            TouchArea { width: parent.width; height: parent.height; clicked => { State.play-touch-sound(); State.active-overlay = ""; } }
+        }
+
+        Rectangle {
+            x: 356px; y: 378.5px;
+            width: 319px;
+            height: 48.5px;
+            background: State.cctv-setting-input-buffer == "" ? #ffffff0d : #155dfcff;
+            border-radius: 12px;
+            Text { width: parent.width; height: parent.height; text: I18n.text("confirm"); color: State.cctv-setting-input-buffer == "" ? #ffffff4d : #ffffffff; font-family: "Inter"; font-size: 15px; font-weight: 500; horizontal-alignment: center; vertical-alignment: center; }
+            TouchArea {
+                width: parent.width;
+                height: parent.height;
+                clicked => {
+                    if State.cctv-setting-input-buffer != "" {
+                        State.play-touch-sound();
+                        State.submit-cctv-setting-input();
+                    }
+                }
+            }
+        }
+    }
+}

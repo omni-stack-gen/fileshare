@@ -1,0 +1,81 @@
+#ifndef __FH_AES_MPIPARA_H__
+#define __FH_AES_MPIPARA_H__
+/**|AES|**/
+#include <stdint.h>
+#include "fh_errno.h"
+
+#ifdef __cplusplus
+#if __cplusplus
+extern "C"{
+#endif
+#endif /* End of #ifdef __cplusplus */
+
+
+#define AES_BLOCK_SIZE  16
+
+
+/* All the supported algorithms */
+enum cryptodev_crypto_op_t {
+	CRYPTO_DES_CBC = 1,
+	CRYPTO_3DES_CBC = 2,
+	CRYPTO_BLF_CBC = 3,
+	CRYPTO_CAST_CBC = 4,
+	CRYPTO_SKIPJACK_CBC = 5,
+	CRYPTO_MD5_HMAC = 6,
+	CRYPTO_SHA1_HMAC = 7,
+	CRYPTO_RIPEMD160_HMAC = 8,
+	CRYPTO_MD5_KPDK = 9,
+	CRYPTO_SHA1_KPDK = 10,
+	CRYPTO_RIJNDAEL128_CBC = 11,
+	CRYPTO_AES_CBC = CRYPTO_RIJNDAEL128_CBC,
+	CRYPTO_ARC4 = 12,
+	CRYPTO_MD5 = 13,
+	CRYPTO_SHA1 = 14,
+	CRYPTO_DEFLATE_COMP = 15,
+	CRYPTO_NULL = 16,
+	CRYPTO_LZS_COMP = 17,
+	CRYPTO_SHA2_256_HMAC = 18,
+	CRYPTO_SHA2_384_HMAC = 19,
+	CRYPTO_SHA2_512_HMAC = 20,
+	CRYPTO_AES_CTR = 21,
+	CRYPTO_AES_XTS = 22,
+	CRYPTO_AES_ECB = 23,
+	CRYPTO_AES_CFB = 24,
+	CRYPTO_AES_OFB = 25,
+	CRYPTO_DES_ECB = 26,
+	CRYPTO_DES_OFB = 27,
+	CRYPTO_DES_CFB = 28,
+	CRYPTO_3DES_ECB = 29,
+	CRYPTO_3DES_OFB= 30,
+	CRYPTO_3DES_CFB= 31,
+	CRYPTO_AES_GCM = 50,
+	CRYPTO_AES_CCM = 51,
+	CRYPTO_CAMELLIA_CBC = 101,
+	CRYPTO_RIPEMD160,
+	CRYPTO_SHA2_224,
+	CRYPTO_SHA2_256,
+	CRYPTO_SHA2_384,
+	CRYPTO_SHA2_512,
+	CRYPTO_SHA2_224_HMAC,
+	CRYPTO_TLS11_AES_CBC_HMAC_SHA1,
+	CRYPTO_TLS12_AES_CBC_HMAC_SHA256,
+	CRYPTO_ALGORITHM_ALL, /* Keep updated - see below */
+};
+
+
+/** @brief : 设备未打开 */
+#define FH_ERR_AES_SYS_NOTREADY                FH_DEF_ERR(FH_ID_AES, EN_ERR_LEVEL_ERROR, EN_ERR_SYS_NOTREADY)
+/** @brief : 输入包含空指针 */
+#define FH_ERR_AES_NULL_PTR                    FH_DEF_ERR(FH_ID_AES, EN_ERR_LEVEL_ERROR, EN_ERR_NULL_PTR)
+
+
+#ifdef __cplusplus
+#if __cplusplus
+}
+#endif
+#endif /* End of #ifdef __cplusplus */
+
+
+#endif /* End of #ifndef __FH_AES_MPIPARA_H__ */
+
+
